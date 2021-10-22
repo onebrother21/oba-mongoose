@@ -1,0 +1,31 @@
+import { Keys, Strings } from "@onebro/oba-common";
+import { ModelSelfRefsConfig } from "./model-lvl-0-types";
+import { ModelLvl1Types } from "./model-lvl-1-types";
+import { ModelLvl4Types, ModelLvl4Signature } from "./model-lvl-4-types";
+/** ALL MODEL TYPES */
+export declare type ModelTypes<C, I, J, P, S extends Strings, R extends ModelSelfRefsConfig = undefined> = ModelLvl4Types<ModelLvl1Types<C, I, J, P, S, R>>;
+export declare type ModelBaseSignature<T> = {
+    config: ModelLvl4Signature<T>["C"];
+    instance: ModelLvl4Signature<T>["I"];
+    json: ModelLvl4Signature<T>["J"];
+    preview: ModelLvl4Signature<T>["P"];
+    statuses: ModelLvl4Signature<T>["S"];
+    refs: ModelLvl4Signature<T>["R"];
+    fetches: ModelLvl4Signature<T>["F"];
+    updates: ModelLvl4Signature<T>["U"];
+    queries: ModelLvl4Signature<T>["Q"];
+    model: ModelLvl4Signature<T>["M"];
+};
+export declare type ModelSignature<T> = ModelLvl4Signature<T> & ModelBaseSignature<T>;
+export declare type ModelSignatureKeys<T> = Keys<ModelSignature<T>>;
+export declare type ModelType<T, k extends ModelSignatureKeys<T>> = ModelSignature<T>[k];
+export declare type ModelConfig<T> = ModelType<T, "C">;
+export declare type ModelInstance<T> = ModelType<T, "I">;
+export declare type ModelJson<T> = ModelType<T, "J">;
+export declare type ModelPreview<T> = ModelType<T, "P">;
+export declare type ModelStatuses<T> = ModelType<T, "S">;
+export declare type ModelSelfRefs<T> = ModelType<T, "R">;
+export declare type ModelFetches<T> = ModelType<T, "F">;
+export declare type ModelUpdates<T> = ModelType<T, "U">;
+export declare type ModelQueries<T> = ModelType<T, "Q">;
+export declare type ModelDBModel<T> = ModelType<T, "M">;
