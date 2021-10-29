@@ -31,7 +31,7 @@ class ModelController {
         };
         this.isBadStatus = (o) => this.badStatuses.includes(o.status.name);
         this.init$ = (constructors) => __awaiter(this, void 0, void 0, function* () {
-            this.factories = yield model_factories_1.modelFactoryHub(this.core, constructors);
+            this.factories = yield (0, model_factories_1.modelFactoryHub)(this.core, constructors);
             return this;
         });
         this.privileges = ["use-api"];

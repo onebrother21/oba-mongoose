@@ -1,16 +1,15 @@
-import { Schema, SchemaOptions, SchemaTypeOpts } from "mongoose";
+import { Schema, SchemaOptions } from "mongoose";
 import OBACoreApi from "@onebro/oba-core-api";
-import { Enum, DataMap } from "@onebro/oba-common";
+import { Enum, AllOfType } from "@onebro/oba-common";
 import { IsObjectId, ModelConfig, ModelInstance, ModelJson, ModelStatuses, ModelFetches, ModelUpdates, ModelQueries, ModelDBModel, ModelPopulationRef } from "../model-types";
-import { AllOfType } from "../model-utils";
-export declare type SchemaDefinition = DataMap<SchemaTypeOpts<any>>;
+export declare type SchemaDefinition<T> = any;
 export declare type ModelFactoryConfig<T> = {
     modelName: string;
     businessName: string;
     collectionName: string;
-    definition: SchemaDefinition;
+    definition: SchemaDefinition<T>;
     refs: ModelPopulationRef[];
-    virtuals: Enum<string, {
+    virtuals: Enum<{
         get?: (...a: any) => any;
         set?: (...a: any) => void;
     }>;
@@ -43,15 +42,11 @@ export interface ModelFactory<T> {
 export declare class ModelFactory<T> {
     core: OBACoreApi<null>;
     config: ModelFactoryConfig<T>;
-    get m(): import("mongoose").Model<import("../model-types").OfModelLvl1Types<T>["I"] & Partial<{
-        desc: string;
-    } & import("../model-types").MiscInfoObj> & Record<"created" | "updated", Date> & Record<"stat", string> & {
+    get m(): import("mongoose").Model<import("../model-types").OfModelLvl1Types<T>["I"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
         id: IsObjectId;
         status: import("../model-types").Status<import("../model-types").OfModelLvl1Types<T>["S"], "I">;
     } & import("mongoose").Document & import("../model-types").ModelLvl2SelfRefs<T, "I"> & {
-        json: () => Partial<import("../model-types").OfModelLvl1Types<T>["J"] & Partial<{
-            desc: string;
-        } & import("../model-types").MiscInfoObj> & Record<"created" | "updated", Date> & Record<"stat", string> & {
+        json: () => Partial<import("../model-types").OfModelLvl1Types<T>["J"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
             id: IsObjectId;
             status: import("../model-types").Status<import("../model-types").OfModelLvl1Types<T>["S"], "J">;
         }> & Partial<import("../model-types").ModelLvl2SelfRefs<T, "J">>;
@@ -59,15 +54,11 @@ export declare class ModelFactory<T> {
     }, {}>;
     isObjectId: (q: any) => q is IsObjectId;
     constructor(core: OBACoreApi<null>, config: ModelFactoryConfig<T>);
-    createSchema: () => Schema<import("../model-types").OfModelLvl1Types<T>["I"] & Partial<{
-        desc: string;
-    } & import("../model-types").MiscInfoObj> & Record<"created" | "updated", Date> & Record<"stat", string> & {
+    createSchema: () => Schema<import("../model-types").OfModelLvl1Types<T>["I"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
         id: IsObjectId;
         status: import("../model-types").Status<import("../model-types").OfModelLvl1Types<T>["S"], "I">;
     } & import("mongoose").Document & import("../model-types").ModelLvl2SelfRefs<T, "I"> & {
-        json: () => Partial<import("../model-types").OfModelLvl1Types<T>["J"] & Partial<{
-            desc: string;
-        } & import("../model-types").MiscInfoObj> & Record<"created" | "updated", Date> & Record<"stat", string> & {
+        json: () => Partial<import("../model-types").OfModelLvl1Types<T>["J"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
             id: IsObjectId;
             status: import("../model-types").Status<import("../model-types").OfModelLvl1Types<T>["S"], "J">;
         }> & Partial<import("../model-types").ModelLvl2SelfRefs<T, "J">>;

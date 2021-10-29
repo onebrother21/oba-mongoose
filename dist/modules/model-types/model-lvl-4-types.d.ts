@@ -1,8 +1,7 @@
-import { Keys, DeepPartial } from "@onebro/oba-common";
+import { Keys, DeepPartial, AllOfType, NoneOfType } from "@onebro/oba-common";
 import { IsObjectId, IsPrimitive } from "./model-lvl-0-types";
 import { ModelSelfRefKeys } from "./model-lvl-2-types";
 import { ModelQueryableProps, ModelLvl3Types, ModelLvl3Signature } from "./model-lvl-3-types";
-import { AllOfType, NoneOfType } from "../model-utils";
 /** LEVEL FOUR MODEL TYPES */
 export declare type ModelLvl4Types<T> = ModelLvl3Types<T>;
 export declare type OfModelLvl4Types<T> = T extends ModelLvl4Types<infer T0> ? T : never;

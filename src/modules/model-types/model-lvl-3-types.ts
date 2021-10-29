@@ -1,9 +1,8 @@
 import {Document} from "mongoose";
-import {Keys,OptionalEnum,Overwrite} from "@onebro/oba-common";
+import {Keys,Enum,Overwrite,NoneOfType,DotNotationObj} from "@onebro/oba-common";
 import {IsObjectId} from "./model-lvl-0-types";
 import {ModelLvl2Types,ModelLvl2Signature} from "./model-lvl-2-types";
 import {ModifiedQueries} from "./model-lvl-3-util-types";
-import {NoneOfType,DotNotationObj} from "../model-utils";
 
 /** LEVEL THREE MODEL TYPES */
 export type ModelLvl3Types<T> = ModelLvl2Types<T>;
@@ -18,7 +17,7 @@ export type ModelQueryableProps<T> = DotNotationObj<ModelNonCallable2Props<T>>;
 export type ModelQueryObject<T> = ModifiedQueries<ModelQueryableProps<T>>;
 export type ModelQueryKeys<T> = Keys<ModelQueryableProps<T>>;
 export type ModelQuerySortValues = "asc"|"desc"|1|-1;
-export type ModelQuerySortParams<T> = OptionalEnum<ModelQuerySortValues,undefined,ModelQueryKeys<T>>;
+export type ModelQuerySortParams<T> = Enum<ModelQuerySortValues,undefined,ModelQueryKeys<T>>;
 export type ModelQueryParams<T> = Partial<Record<"skip"|"limit",number> & {sort:ModelQuerySortParams<T>;}>;
 export type ModelQuery<T> = {
   query:ModelQueryObject<T>;

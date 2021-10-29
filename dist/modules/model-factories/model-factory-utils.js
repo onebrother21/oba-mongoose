@@ -7,7 +7,7 @@ const getSpecialTypeSchemaDef = (S) => {
     const specialType = {
         type: String,
         get: (s) => S[s],
-        set: (s) => model_utils_1.mapEnumKey(S, s),
+        set: (s) => (0, model_utils_1.mapEnumKey)(S, s),
     };
     return specialType;
 };
@@ -64,7 +64,7 @@ const getStatusSchemaDef = (statuses) => {
             required: true,
             enum: Object.keys(statuses),
             get: (k) => statuses[k],
-            set: (k) => model_utils_1.mapEnumKey(statuses, k)
+            set: (k) => (0, model_utils_1.mapEnumKey)(statuses, k)
         },
         time: { type: Date, default: Date.now },
         info: { type: Object }

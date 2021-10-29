@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
-import { Strings,Keys,Values,IsConstructor } from "@onebro/oba-common";
+import { Strings,Keys,Values,Constructor,AnyBoolean } from "@onebro/oba-common";
 import { TestProps,Status,Settings,InfoHashMap,ModelMiscReference } from "../model-types";
-import { AnyBoolean,mapEnumKey } from "../model-utils";
+import { mapEnumKey } from "../model-utils";
 
 export const getSpecialTypeSchemaDef = <S extends Strings>(S:S) => {
   const specialType = {
@@ -11,22 +11,22 @@ export const getSpecialTypeSchemaDef = <S extends Strings>(S:S) => {
   };
   return specialType;
 };
-export const getInfoHashMapSchemaDef = <S extends Strings,T extends IsConstructor>(S:S,T:T) => {
+export const getInfoHashMapSchemaDef = <S extends Strings,T extends Constructor<any>>(S:S,T:T) => {
   const infoMapGetter = (o:InfoHashMap<S,InstanceType<T>,"I">,S:S) => {
-    const n:InfoHashMap<S,InstanceType<T>,"C"> = {};
+    const n:any = {};
     for(const s in S){
       const s_ = S[s] as Values<S>;
       o.has(s_)?n[s_] = o.get(s_):null;
     }
-    return n;
+    return n as InfoHashMap<S,InstanceType<T>,"C">;
   };
   const infoMapSetter = (o:InfoHashMap<S,InstanceType<T>,"C">,S:S) => {
-    const n:InfoHashMap<S,InstanceType<T>,"I"> = new Map();
+    const n = new Map();
     for(const s in S){
       const s_ = S[s] as Values<S>;
       o[s_]?n.set(s_,o[s_]):null;
     }
-    return n;
+    return n as InfoHashMap<S,InstanceType<T>,"I">;
   };
   const infoMap = {
     type:Map,

@@ -1,4 +1,4 @@
-import { Keys } from "@onebro/oba-common";
+import { Keys,Extends,AnyBoolean } from "@onebro/oba-common";
 import {
   ModelStages,
   CommonPropSelector,
@@ -11,8 +11,6 @@ import {
   SpecialType,
   Settings,
   InfoHashMap,
-  Extends,
-  AnyBoolean,
 } from "../../../src";
 import {
   ProfileStatuses,

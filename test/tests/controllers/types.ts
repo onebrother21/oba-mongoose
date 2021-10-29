@@ -1,6 +1,6 @@
 import OBACoreApi from "@onebro/oba-core-api";
-import {Keys,Await} from "@onebro/oba-common";
-import {modelControllerHub,GetParameterIfFunc} from "../../../src";
+import {Keys,Await,GetParameterIfFunc} from "@onebro/oba-common";
+import {modelControllerHub} from "../../../src";
 import {
   ApiModelControllerTypes as Types,
   ApiModelControllerHub as Hub,

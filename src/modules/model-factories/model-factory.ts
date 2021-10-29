@@ -1,7 +1,7 @@
 import mongooseUniqueValidator from "mongoose-unique-validator";
-import {Schema,SchemaOptions,SchemaTypeOpts,Types} from "mongoose";
+import {Schema,SchemaOptions,Types} from "mongoose";
 import OBACoreApi from "@onebro/oba-core-api";
-import {Enum,DataMap} from "@onebro/oba-common";
+import {Enum,AllOfType} from "@onebro/oba-common";
 import {
   IsObjectId,
   ModelConfig,
@@ -14,18 +14,17 @@ import {
   ModelDBModel,
   ModelPopulationRef,
 } from "../model-types";
-import {AllOfType,mapSelectedData} from "../model-utils";
+import {mapSelectedData} from "../model-utils";
 import {getStatusSchemaDef} from "./model-factory-utils";
 
-export type SchemaDefinition = DataMap<SchemaTypeOpts<any>>;
-
+export type SchemaDefinition<T> = any;
 export type ModelFactoryConfig<T> = {
   modelName:string;
   businessName:string;
   collectionName:string;
-  definition:SchemaDefinition;
+  definition:SchemaDefinition<T>;
   refs:ModelPopulationRef[];
-  virtuals:Enum<string,{get?:(...a:any) => any;set?:(...a:any) => void;}>;
+  virtuals:Enum<{get?:(...a:any) => any;set?:(...a:any) => void;}>;
   methods:Partial<AllOfType<ModelInstance<T>,Function>>;
   statuses:ModelStatuses<T>;
   opts:SchemaOptions;
@@ -55,14 +54,19 @@ export interface ModelFactory<T> {
 export class ModelFactory<T> {
   get m(){return this.model;}
   isObjectId = (q:any):q is IsObjectId => {
-    try {return !!Types.ObjectId(q as string);}
+    try {
+      const objectId = Types.ObjectId(q as string);
+      const IsValid = objectId instanceof Types.ObjectId;
+      const isMatch = objectId.toString() == q;
+      return IsValid && isMatch;
+    }
     catch(e){return false;}
   };
   constructor(public core:OBACoreApi<null>,public config:ModelFactoryConfig<T>){
     const {refs,businessName} = config;
     this.autopopulate = async (o,s) => {
       if(s) await o.save();
-      await o.populate(this.config.refs).execPopulate();
+      await o.populate(this.config.refs);
       return o;
     };
     this.create_ = async c => await this.autopopulate(new this.m(c),1);

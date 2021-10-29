@@ -1,6 +1,6 @@
 import OBACoreApi from "@onebro/oba-core-api";
-import {Keys,Await} from "@onebro/oba-common";
-import {modelFactoryHub,GetParameterIfFunc} from "../../../src";
+import {Keys,Await,GetParameterIfFunc} from "@onebro/oba-common";
+import {modelFactoryHub} from "../../../src";
 import {
   ApiModelFactoryTypes as Types,
   ApiModelFactoryHub as Hub,

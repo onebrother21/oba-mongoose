@@ -1,4 +1,4 @@
-import { Keys,OPick } from "@onebro/oba-common";
+import { Keys,Extends,AnyBoolean } from "@onebro/oba-common";
 import {
   ModelStages,
   CommonPropSelector,
@@ -8,8 +8,6 @@ import {
   ModelTypes,
   ModelAsPropTypes,
   IsObjectId,
-  Extends,
-  AnyBoolean,
 } from "../../../src";
 import {ProfileAsProp} from "./profile";
 import {MessageStatuses} from "../dicts";

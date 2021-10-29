@@ -1,4 +1,4 @@
-import {Values,Strings} from "@onebro/oba-common";
+import {Values,Strings,NoneOfType} from "@onebro/oba-common";
 import {
   IsObjectId,
   ModelConfig,
@@ -11,7 +11,6 @@ import {
   ModelDBModel,
   ModelPopulationRef,
 } from "../model-types";
-import {NoneOfType} from "../model-utils";
 
 export type ModelControllerReqUserRole<Roles> = Roles extends Strings?Values<Roles>:never;
 export type ModelControllerReqUserTkn<Roles> = {username:string;next:string;role:ModelControllerReqUserRole<Roles>;okto:string;};

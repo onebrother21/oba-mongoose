@@ -1,22 +1,23 @@
 import mongoose from "mongoose";
 import path from "path";
-import OBACoreApi,{masterConfig} from "@onebro/oba-core-api";
+import OBACoreApi,{coreConfig} from "@onebro/oba-core-api";
 
 export const utils = {
   sleep:(n:number) => new Promise(done => setTimeout(done,n)),
   clear:() => process.stdout.write("\x1Bc"),
   desc:describe,
   refreshDb:async () => {
-    const db = await mongoose.createConnection("mongodb://localhost:27017/ob1",{useNewUrlParser:true,useUnifiedTopology:true});
+    const db = await mongoose.createConnection("mongodb://localhost:27017/ob1");
     await db.dropDatabase();
   },
   initCore:async () => {
     try{
-      const {vars,db,errors} = masterConfig("OBA_MONGOOSE");
+      const {vars,db,errors} = coreConfig("OBA_MONGOOSE");
       db.connections = {onebrother:'mongodb://localhost:27017/ob1'};
       const core:OBACoreApi<null> = new OBACoreApi({vars,db,errors});
       await core.db.start();
-      return {core};}
+      return {core};
+    }
     catch(e){console.error(e);throw e;}
   },
 };

@@ -1,4 +1,5 @@
 import OBACoreApi from "@onebro/oba-core-api";
+import {AnyBoolean} from "@onebro/oba-common";
 import {Schema} from "mongoose";
 import {
   ModelFactoryConfig,
@@ -6,7 +7,6 @@ import {
   getInfoHashMapSchemaDef,
   getSettingsSchemaDef,
   getSpecialTypeSchemaDef,
-  AnyBoolean,
 } from "../../../src";
 import {ProfileTypes,Profile} from "../types";
 import {

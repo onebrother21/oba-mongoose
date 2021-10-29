@@ -23,7 +23,10 @@ class ModelFactory {
         this.config = config;
         this.isObjectId = (q) => {
             try {
-                return !!mongoose_1.Types.ObjectId(q);
+                const objectId = mongoose_1.Types.ObjectId(q);
+                const IsValid = objectId instanceof mongoose_1.Types.ObjectId;
+                const isMatch = objectId.toString() == q;
+                return IsValid && isMatch;
             }
             catch (e) {
                 return false;
@@ -34,7 +37,7 @@ class ModelFactory {
             const datasig = "::" + process.env[appname.toLocaleUpperCase() + "_DATA_ID"];
             const { definition, virtuals, methods, statuses, opts, } = this.config;
             const schemaOpts = Object.assign(Object.assign({}, opts), { toObject: { getters: true, virtuals: true }, toJSON: { getters: true, virtuals: true }, timestamps: { createdAt: "created", updatedAt: "updated" } });
-            const schema = new mongoose_1.Schema(Object.assign(Object.assign(Object.assign({}, definition), { desc: { type: String }, info: { type: Object } }), (statuses ? { status: model_factory_utils_1.getStatusSchemaDef(statuses) } : null)), schemaOpts);
+            const schema = new mongoose_1.Schema(Object.assign(Object.assign(Object.assign({}, definition), { desc: { type: String }, info: { type: Object } }), (statuses ? { status: (0, model_factory_utils_1.getStatusSchemaDef)(statuses) } : null)), schemaOpts);
             schema.plugin(mongoose_unique_validator_1.default);
             if (statuses)
                 schema.virtual("stat").get(function () {
@@ -60,13 +63,13 @@ class ModelFactory {
         this.getSelectedData = (s, R) => {
             return ["json", "j"].includes(s) ? R.map(r => r.json()) :
                 ["preview", "p"].includes(s) ? R.map(r => r.preview) :
-                    model_utils_1.mapSelectedData(s, R);
+                    (0, model_utils_1.mapSelectedData)(s, R);
         };
         const { refs, businessName } = config;
         this.autopopulate = (o, s) => __awaiter(this, void 0, void 0, function* () {
             if (s)
                 yield o.save();
-            yield o.populate(this.config.refs).execPopulate();
+            yield o.populate(this.config.refs);
             return o;
         });
         this.create_ = (c) => __awaiter(this, void 0, void 0, function* () { return yield this.autopopulate(new this.m(c), 1); });
