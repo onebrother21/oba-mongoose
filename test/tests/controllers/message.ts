@@ -2,10 +2,10 @@ import {Jest} from "../../utils";
 import {ControllerTestData,ControllerTestFunc,ControllerNetwork} from "./types";
 
 export type messageControllerTestData = {
-  create:ControllerTestData<"messages","create$",0>;
-  fetch:ControllerTestData<"messages","fetch$",0>;
-  update:ControllerTestData<"messages","update$",0>;
-  query:ControllerTestData<"messages","query$",0>;
+  create:ControllerTestData<null,"messages","create$",0>;
+  fetch:ControllerTestData<null,"messages","fetch$",0>;
+  update:ControllerTestData<null,"messages","update$",0>;
+  query:ControllerTestData<null,"messages","query$",0>;
 };
 export const messageControllerTestData:messageControllerTestData = {
   create:jsons => [
@@ -93,12 +93,12 @@ export const messageControllerTestData:messageControllerTestData = {
   ],
 };
 export type messageControllerTests = {
-  create:ControllerTestFunc<"messages","create$">;
-  fetch:ControllerTestFunc<"messages","fetch$">;
-  updateSetAndPush:ControllerTestFunc<"messages","update$">;
-  updatePull:ControllerTestFunc<"messages","update$">;
-  fetchFinal:ControllerTestFunc<"messages","fetch$">;
-  query:ControllerTestFunc<"messages","query$">;
+  create:ControllerTestFunc<null,"messages","create$">;
+  fetch:ControllerTestFunc<null,"messages","fetch$">;
+  updateSetAndPush:ControllerTestFunc<null,"messages","update$">;
+  updatePull:ControllerTestFunc<null,"messages","update$">;
+  fetchFinal:ControllerTestFunc<null,"messages","fetch$">;
+  query:ControllerTestFunc<null,"messages","query$">;
 };
 export const messageControllerTests:messageControllerTests = {
   create:async O => {
@@ -167,7 +167,7 @@ export const messageControllerTests:messageControllerTests = {
     }
   },
 };
-export const messageController = (O:ControllerNetwork) => Jest.utils.desc("Messages",() => {
+export const messageController = (O:ControllerNetwork<null>) => Jest.utils.desc("Messages",() => {
   it("Create",async () => await messageControllerTests.create(O),1E9);
   it("Fetch",async () => await messageControllerTests.fetch(O),1E9);
   it("Update - Set & Push",async () => await messageControllerTests.updateSetAndPush(O),1E9);

@@ -90,4 +90,4 @@ export const messageFactoryConfig:MessageFactoryConfig = {
   virtuals:messageVirtuals,
   methods:messageMethods,
 };
-export class MessageFactory extends ModelFactory<MessageTypes> {constructor(core:OBACoreApi<null>){super(core,messageFactoryConfig);}}
+export class MessageFactory<Ev> extends ModelFactory<Ev,MessageTypes> {constructor(core:OBACoreApi<Ev>){super(core,messageFactoryConfig);}}

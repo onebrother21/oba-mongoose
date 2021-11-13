@@ -13,4 +13,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./model-controller"), exports);
 __exportStar(require("./model-controller-hub"), exports);
 __exportStar(require("./model-controller-reqs"), exports);
+__exportStar(require("./model-controller-types"), exports);
 //# sourceMappingURL=index.js.map

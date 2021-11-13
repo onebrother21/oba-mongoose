@@ -3,9 +3,9 @@ import {ModelController} from "../../../src";
 import {ApiModelFactoryTypes} from "../factory-hub";
 import {ApiUserRoles} from "../dicts";
 
-export interface MessageController extends ModelController<ApiModelFactoryTypes,"messages",ApiUserRoles> {}
-export class MessageController extends ModelController<ApiModelFactoryTypes,"messages",ApiUserRoles> {
-  constructor(public core:OBACoreApi<null>){
+export interface MessageController<Ev> extends ModelController<Ev,ApiModelFactoryTypes,"messages",ApiUserRoles> {}
+export class MessageController<Ev> extends ModelController<Ev,ApiModelFactoryTypes,"messages",ApiUserRoles> {
+  constructor(public core:OBACoreApi<Ev>){
     super(core);
     this.create$ = async ({body:newObj,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()

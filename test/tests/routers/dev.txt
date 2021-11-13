@@ -1,2 +1,0 @@
- - lock updates on msgs, posts, comments after X minutes
- - trim msg preview body to 40 chars

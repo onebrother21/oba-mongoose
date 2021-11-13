@@ -2,10 +2,10 @@ import {Jest} from "../../utils";
 import {FactoryTestData,FactoryTestFunc,FactoryNetwork} from "./types";
 
 export type profileFactoryTestData = {
-  create:FactoryTestData<"profiles","create",0>;
-  fetch:FactoryTestData<"profiles","fetch",0>;
-  update:FactoryTestData<"profiles","update",1>;
-  query:FactoryTestData<"profiles","query",0>;
+  create:FactoryTestData<null,"profiles","create",0>;
+  fetch:FactoryTestData<null,"profiles","fetch",0>;
+  update:FactoryTestData<null,"profiles","update",1>;
+  query:FactoryTestData<null,"profiles","query",0>;
 };
 export const profileFactoryTestData:profileFactoryTestData = {
   create:instances => [
@@ -51,12 +51,12 @@ export const profileFactoryTestData:profileFactoryTestData = {
   ],
 };
 export type profileFactoryTests = {
-  create:FactoryTestFunc<"profiles","create">;
-  fetch:FactoryTestFunc<"profiles","fetch">;
-  updateSetAndPush:FactoryTestFunc<"profiles","update">;
-  updatePull:FactoryTestFunc<"profiles","update">;
-  fetchFinal:FactoryTestFunc<"profiles","fetch">;
-  query:FactoryTestFunc<"profiles","query">;
+  create:FactoryTestFunc<null,"profiles","create">;
+  fetch:FactoryTestFunc<null,"profiles","fetch">;
+  updateSetAndPush:FactoryTestFunc<null,"profiles","update">;
+  updatePull:FactoryTestFunc<null,"profiles","update">;
+  fetchFinal:FactoryTestFunc<null,"profiles","fetch">;
+  query:FactoryTestFunc<null,"profiles","query">;
 };
 export const profileFactoryTests:profileFactoryTests = {
   create:async O => {
@@ -130,7 +130,7 @@ export const profileFactoryTests:profileFactoryTests = {
     }
   },
 };
-export const profileFactory = (O:FactoryNetwork) => Jest.utils.desc("Profiles",() => {
+export const profileFactory = (O:FactoryNetwork<null>) => Jest.utils.desc("Profiles",() => {
   it("Create",async () => await profileFactoryTests.create(O),1E9);
   it("Fetch",async () => await profileFactoryTests.fetch(O),1E9);
   it("Update - Set & Push",async () => await profileFactoryTests.updateSetAndPush(O),1E9);

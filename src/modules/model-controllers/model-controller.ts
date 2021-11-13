@@ -1,22 +1,13 @@
 import OBACoreApi from "@onebro/oba-core-api";
-import {Keys,Values} from "@onebro/oba-common";
-import {ModelInstance,ModelStatuses} from "../model-types";
-import {ModelFactoryConstructors,ModelFactoryHub,modelFactoryHub} from "../model-factories";
-import {ModelControllerMethods,ModelControllerReqUserRole} from "./model-controller-reqs";
+import {Keys} from "@onebro/oba-common";
+import {ModelInstance} from "../model-types";
+import {ModelFactoryConstructors,modelFactoryHub} from "../model-factories";
+import {ModelControllerReqUserRole} from "./model-controller-reqs";
+import {ModelControllerType} from "./model-controller-types";
 
-export type ModelControllerType<TT,k extends Keys<TT>,Roles> = ModelControllerMethods<TT[k],Roles> & {
-  core:OBACoreApi<null>;
-  factories:ModelFactoryHub<TT>;
-  privileges:string[];
-  badStatuses:Values<ModelStatuses<TT[k]>>[];
-  unauthorized:(s:string) => void;
-  isAuth:(okto:string,priv?:string[]) => void;
-  isRole:(role:ModelControllerReqUserRole<Roles>,roles:ModelControllerReqUserRole<Roles>[]) => void;
-  isBadStatus:(o:ModelInstance<TT[k]>) => boolean;
-};
-export interface ModelController<TT,k extends Keys<TT>,Roles> extends ModelControllerType<TT,k,Roles> {}
-export class ModelController<TT,k extends Keys<TT>,Roles> {
-  constructor(public core:OBACoreApi<null>){
+export interface ModelController<Ev,Hub,k extends Keys<Hub>,Roles> extends ModelControllerType<Ev,Hub,k,Roles> {}
+export class ModelController<Ev,Hub,k extends Keys<Hub>,Roles> {
+  constructor(public core:OBACoreApi<Ev>){
     this.privileges = ["use-api"];
     this.badStatuses = ["Deleted" as any];
   }
@@ -33,9 +24,9 @@ export class ModelController<TT,k extends Keys<TT>,Roles> {
       default:break;
     }
   };
-  isBadStatus = (o:ModelInstance<TT[k]>) => this.badStatuses.includes(o.status.name as any);
-  init$ = async (constructors:ModelFactoryConstructors<TT>) => {
-    this.factories = await modelFactoryHub<TT>(this.core,constructors);
+  isBadStatus = (o:ModelInstance<Hub[k]>) => this.badStatuses.includes(o.status.name as any);
+  init$ = async (constructors:ModelFactoryConstructors<Ev,Hub>) => {
+    this.factories = await modelFactoryHub<Ev,Hub>(this.core,constructors);
     return this;
   };
 }

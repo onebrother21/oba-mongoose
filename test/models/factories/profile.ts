@@ -102,4 +102,4 @@ export const profileFactoryConfig:ProfileFactoryConfig = {
   virtuals:profileVirtuals,
   methods:profileMethods,
 };
-export class ProfileFactory extends ModelFactory<ProfileTypes> {constructor(core:OBACoreApi<null>){super(core,profileFactoryConfig);}}
+export class ProfileFactory<Ev> extends ModelFactory<Ev,ProfileTypes> {constructor(core:OBACoreApi<Ev>){super(core,profileFactoryConfig);}}

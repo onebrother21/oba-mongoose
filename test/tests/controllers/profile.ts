@@ -2,10 +2,10 @@ import {Jest} from "../../utils";
 import {ControllerTestData,ControllerTestFunc,ControllerNetwork} from "./types";
 
 export type profileControllerTestData = {
-  create:ControllerTestData<"profiles","create$",0>;
-  fetch:ControllerTestData<"profiles","fetch$",0>;
-  update:ControllerTestData<"profiles","update$",0>;
-  query:ControllerTestData<"profiles","query$",0>;
+  create:ControllerTestData<null,"profiles","create$",0>;
+  fetch:ControllerTestData<null,"profiles","fetch$",0>;
+  update:ControllerTestData<null,"profiles","update$",0>;
+  query:ControllerTestData<null,"profiles","query$",0>;
 };
 export const profileControllerTestData:profileControllerTestData = {
   create:jsons => [
@@ -124,12 +124,12 @@ export const profileControllerTestData:profileControllerTestData = {
   ],
 };
 export type profileControllerTests = {
-  create:ControllerTestFunc<"profiles","create$">;
-  fetch:ControllerTestFunc<"profiles","fetch$">;
-  updateSetAndPush:ControllerTestFunc<"profiles","update$">;
-  updatePull:ControllerTestFunc<"profiles","update$">;
-  fetchFinal:ControllerTestFunc<"profiles","fetch$">;
-  query:ControllerTestFunc<"profiles","query$">;
+  create:ControllerTestFunc<null,"profiles","create$">;
+  fetch:ControllerTestFunc<null,"profiles","fetch$">;
+  updateSetAndPush:ControllerTestFunc<null,"profiles","update$">;
+  updatePull:ControllerTestFunc<null,"profiles","update$">;
+  fetchFinal:ControllerTestFunc<null,"profiles","fetch$">;
+  query:ControllerTestFunc<null,"profiles","query$">;
 };
 export const profileControllerTests:profileControllerTests = {
   create:async O => {
@@ -199,7 +199,7 @@ export const profileControllerTests:profileControllerTests = {
     }
   },
 };
-export const profileController = (O:ControllerNetwork) => Jest.utils.desc("Profiles",() => {
+export const profileController = (O:ControllerNetwork<null>) => Jest.utils.desc("Profiles",() => {
   it("Create",async () => await profileControllerTests.create(O),1E9);
   it("Fetch",async () => await profileControllerTests.fetch(O),1E9);
   it("Update - Set & Push",async () => await profileControllerTests.updateSetAndPush(O),1E9);

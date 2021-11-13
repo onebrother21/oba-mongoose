@@ -14,7 +14,7 @@ export const utils = {
     try{
       const {vars,db,errors} = coreConfig("OBA_MONGOOSE");
       db.connections = {onebrother:'mongodb://localhost:27017/ob1'};
-      const core:OBACoreApi<null> = new OBACoreApi({vars,db,errors});
+      const core:OBACoreApi<null> = new OBACoreApi<null>({vars,db,errors});
       await core.db.start();
       return {core};
     }

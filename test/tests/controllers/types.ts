@@ -4,28 +4,34 @@ import {modelControllerHub} from "../../../src";
 import {
   ApiModelControllerTypes as Types,
   ApiModelControllerHub as Hub,
-  ApiModelControllers as Controllers,
+  getApiModelControllers as Controllers,
   ApiUserRoles as Roles,
-  ApiModelFactories as Factories,
+  getApiModelFactories as Factories,
 } from "../../models";
 
-export type ControllerNames = Keys<Hub>;
+export type ControllerNames<Ev> = Keys<Hub<Ev>>;
 export type ControllerCRUDMethodNames =  "create$"|"update$"|"fetch$"|"query$"|"remove$";
-export type ControllerCRUDMethodParam<k extends ControllerNames,l extends ControllerCRUDMethodNames,n extends number> =  GetParameterIfFunc<Hub[k][l],n>;
-export type ControllerJson<k extends ControllerNames> = Await<ReturnType<Hub[k]["create$"]>>;
-export type ControllerJsons = Partial<{[k in ControllerNames]:ControllerJson<k>[];}>;
+export type ControllerCRUDMethodParam<Ev,
+k extends ControllerNames<Ev>,
+l extends ControllerCRUDMethodNames,
+n extends number> =  GetParameterIfFunc<Hub<Ev>[k][l],n>;
+export type ControllerJson<Ev,k extends ControllerNames<Ev>> = Await<ReturnType<Hub<Ev>[k]["create$"]>>;
+export type ControllerJsons<Ev> = Partial<{[k in ControllerNames<Ev>]:ControllerJson<Ev,k>[];}>;
 
-export interface ControllerNetwork {
-  controllers:Hub;
-  jsons:ControllerJsons;
-  init:(core:OBACoreApi<null>) => Promise<void>;
+export interface ControllerNetwork<Ev> {
+  controllers:Hub<Ev>;
+  jsons:ControllerJsons<Ev>;
+  init:(core:OBACoreApi<Ev>) => Promise<void>;
 }
-export class ControllerNetwork {
+export class ControllerNetwork<Ev> {
   constructor(){this.jsons = {};}
-  init = async (core:OBACoreApi<null>) => {
-    this.controllers = await modelControllerHub<Types,Roles>(core,Controllers,Factories);
-    for(const k in this.controllers) this.jsons[k as ControllerNames] = [];
+  init = async (core:OBACoreApi<Ev>) => {
+    this.controllers = await modelControllerHub<Ev,Types,Roles>(core,Controllers<Ev>(),Factories<Ev>());
+    for(const k in this.controllers) this.jsons[k as ControllerNames<Ev>] = [];
   };
 }
-export type ControllerTestData<k extends ControllerNames,l extends ControllerCRUDMethodNames,n extends 0|1> = (J:ControllerNetwork["jsons"]) => ControllerCRUDMethodParam<k,l,n>[];
-export type ControllerTestFunc<k,l> = (O:ControllerNetwork) => Promise<void>;
+export type ControllerTestData<Ev,
+k extends ControllerNames<Ev>,
+l extends ControllerCRUDMethodNames,
+n extends 0|1> = (J:ControllerNetwork<Ev>["jsons"]) => ControllerCRUDMethodParam<Ev,k,l,n>[];
+export type ControllerTestFunc<Ev,k,l> = (O:ControllerNetwork<Ev>) => Promise<void>;
