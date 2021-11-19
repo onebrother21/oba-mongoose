@@ -32,5 +32,5 @@ switch($versionUpdN){
 }
 runAPI $env {
   Set-Location "D:\ob\dev\oba-mongoose"
-  Start-Process "cmd" -ArgumentList "/k npm run build ^&^& git add . ^&^& git commit -m r"
+  Start-Process "cmd" -ArgumentList "/k npm run build && git add . && git commit -m `"$msgUpd`""
 }
