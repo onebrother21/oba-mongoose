@@ -31,7 +31,7 @@ switch($versionUpdN){
   3 {$versionUpd = "major"}
 }
 $myscript1 = "/k npm run build && git add . && git commit -m `"$msgUpd`" && "
-$myscript2 = "npm version `"$versionUpd`" && echo 'onebro' | git push origin master && npm publish --access public"
+$myscript2 = "npm version `"$versionUpd`" && echo 'onebro\n' | git push origin master && npm publish --access public"
 $myscript = $myscript1 + $myscript2;
 runAPI $env {
   Set-Location "D:\ob\dev\oba-mongoose"
