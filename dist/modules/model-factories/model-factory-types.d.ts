@@ -1,41 +1,41 @@
 import { SchemaOptions } from "mongoose";
 import OBACoreApi from "@onebro/oba-core-api";
 import { Enum, AllOfType } from "@onebro/oba-common";
-import { ModelConfig, ModelInstance, ModelJson, ModelStatuses, ModelFetches, ModelUpdates, ModelQueries, ModelDBModel, ModelPopulationRef } from "../model-types";
-export declare type SchemaDefinition<T> = any;
-export declare type ModelFactoryConfig<T> = {
+import { Model, ModelPopulationRef } from "../model-types";
+export declare type SchemaDefinition<Sig> = any;
+export declare type ModelFactoryConfig<Sig> = {
     modelName: string;
     businessName: string;
     collectionName: string;
-    definition: SchemaDefinition<T>;
+    definition: SchemaDefinition<Sig>;
     refs: ModelPopulationRef[];
     virtuals: Enum<{
         get?: (...a: any) => any;
         set?: (...a: any) => void;
     }>;
-    methods: Partial<AllOfType<ModelInstance<T>, Function>>;
-    statuses: ModelStatuses<T>;
+    methods: Partial<AllOfType<Model<Sig>["instance"], Function>>;
+    statuses: Model<Sig>["statuses"];
     opts: SchemaOptions;
 };
-export declare type ModelFactoryType<Ev, T> = {
+export declare type ModelFactoryType<Ev, Sig> = {
     core: OBACoreApi<Ev>;
-    model: ModelDBModel<T>;
-    config: ModelFactoryConfig<T>;
-    autopopulate: (o: ModelInstance<T>, s?: boolean | 0 | 1) => Promise<ModelInstance<T>>;
-    create_: (c: ModelConfig<T>) => Promise<ModelInstance<T>>;
-    create: (c: ModelConfig<T>) => Promise<ModelInstance<T>>;
-    find: (q: ModelFetches<T>) => Promise<ModelInstance<T>>;
-    findR: (q: ModelFetches<T>) => Promise<ModelInstance<T>>;
-    fetch: (q: ModelFetches<T>) => Promise<ModelInstance<T>>;
-    exists: (q: ModelFetches<T>) => Promise<boolean>;
-    shouldNotExist: (q: ModelFetches<T>) => Promise<void>;
-    update_: (q: ModelFetches<T>, u: ModelUpdates<T>) => Promise<ModelInstance<T>>;
-    update: (q: ModelFetches<T>, u: ModelUpdates<T>) => Promise<ModelInstance<T>>;
-    updateMany: (q: ModelFetches<T>, u: ModelUpdates<T>) => Promise<ModelInstance<T>[]>;
-    remove_: (q: ModelFetches<T>) => Promise<ModelInstance<T>>;
-    remove: (q: ModelFetches<T>) => Promise<ModelInstance<T>>;
-    removeMany: (q: ModelFetches<T>) => Promise<(ModelInstance<T>)[]>;
-    query: (q: ModelQueries<T>) => Promise<ModelJson<T>[]>;
-    search: (q: string) => Promise<ModelJson<T>[]>;
-    count: (q?: ModelQueries<T>) => Promise<number | any>;
+    model: Model<Sig>["ctr"];
+    config: ModelFactoryConfig<Sig>;
+    autopopulate: (o: Model<Sig>["instance"], s?: boolean | 0 | 1) => Promise<Model<Sig>["instance"]>;
+    create_: (c: Model<Sig>["config"]) => Promise<Model<Sig>["instance"]>;
+    create: (c: Model<Sig>["config"]) => Promise<Model<Sig>["instance"]>;
+    find: (q: Model<Sig>["fetches"]) => Promise<Model<Sig>["instance"]>;
+    findR: (q: Model<Sig>["fetches"]) => Promise<Model<Sig>["instance"]>;
+    fetch: (q: Model<Sig>["fetches"]) => Promise<Model<Sig>["instance"]>;
+    exists: (q: Model<Sig>["fetches"]) => Promise<boolean>;
+    shouldNotExist: (q: Model<Sig>["fetches"]) => Promise<void>;
+    update_: (q: Model<Sig>["fetches"], u: Model<Sig>["updates"]) => Promise<Model<Sig>["instance"]>;
+    update: (q: Model<Sig>["fetches"], u: Model<Sig>["updates"]) => Promise<Model<Sig>["instance"]>;
+    updateMany: (q: Model<Sig>["fetches"], u: Model<Sig>["updates"]) => Promise<Model<Sig>["instance"][]>;
+    remove_: (q: Model<Sig>["fetches"]) => Promise<Model<Sig>["instance"]>;
+    remove: (q: Model<Sig>["fetches"]) => Promise<Model<Sig>["instance"]>;
+    removeMany: (q: Model<Sig>["fetches"]) => Promise<(Model<Sig>["instance"])[]>;
+    query: (q: Model<Sig>["queries"]) => Promise<Model<Sig>["json"][]>;
+    search: (q: string) => Promise<Model<Sig>["json"][]>;
+    count: (q?: Model<Sig>["queries"]) => Promise<number | any>;
 };

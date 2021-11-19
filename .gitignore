@@ -1,3 +1,4 @@
 node_modules
 logs
 launch.ps1
+reload-pack.ps1

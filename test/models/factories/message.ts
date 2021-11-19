@@ -2,11 +2,11 @@ import OBACoreApi from "@onebro/oba-core-api";
 import {AnyBoolean} from "@onebro/oba-common";
 import {Schema} from "mongoose";
 import {ModelFactoryConfig,ModelFactory} from "../../../src";
-import {MessageTypes,Message} from "../types";
+import {Message,MessageSignature} from "../types";
 import {MessageStatuses} from "../dicts";
 import {getProfileAsPropSchema,profileRefs} from "./profile";
 
-export type MessageFactoryConfig = ModelFactoryConfig<MessageTypes>;
+export type MessageFactoryConfig = ModelFactoryConfig<MessageSignature>;
 
 export const getMessageAsPropSchema = (arr?:AnyBoolean) => {
   switch(true){
@@ -14,15 +14,15 @@ export const getMessageAsPropSchema = (arr?:AnyBoolean) => {
       return {
         type:[Schema.Types.ObjectId],
         ref:"Message",
-        default:[] as Message<"instance">[],
-        get:(p:Message<"instance">[]) => p.map(o => o.preview),
+        default:[] as Message["instance"][],
+        get:(p:Message["instance"][]) => p.map(o => o.preview),
       };
     }
     default:{
       return {
         type:Schema.Types.ObjectId,
         ref:"Message",
-        get:(p:Message<"instance">) => p?p.preview:null,
+        get:(p:Message["instance"]) => p?p.preview:null,
       };
     }  
   }
@@ -47,8 +47,8 @@ export const messageRefs:MessageFactoryConfig["refs"] = [
 export const messageVirtuals:MessageFactoryConfig["virtuals"] = {
   preview:{
     get:function(){
-      const s = this as Message<"instance">;
-      const p:Message<"preview"> = {};
+      const s = this as Message["instance"];
+      const p = {} as Message["preview"];
       p.id = s.id;
       p.stat = s.stat;
       p.author = s.author as any;
@@ -60,8 +60,8 @@ export const messageVirtuals:MessageFactoryConfig["virtuals"] = {
 };
 export const messageMethods:MessageFactoryConfig["methods"] = {
   json:function(){
-    const s = this as Message<"instance">;
-    const j:Message<"json"> = {};
+    const s = this as Message["instance"];
+    const j = {} as Message["json"];
     j._type_ = "message";
     j.id = s.id;
     j.status = s.status as any;
@@ -90,4 +90,4 @@ export const messageFactoryConfig:MessageFactoryConfig = {
   virtuals:messageVirtuals,
   methods:messageMethods,
 };
-export class MessageFactory<Ev> extends ModelFactory<Ev,MessageTypes> {constructor(core:OBACoreApi<Ev>){super(core,messageFactoryConfig);}}
+export class MessageFactory<Ev> extends ModelFactory<Ev,MessageSignature> {constructor(core:OBACoreApi<Ev>){super(core,messageFactoryConfig);}}

@@ -1,12 +1,11 @@
 import { Keys,Extends,AnyBoolean } from "@onebro/oba-common";
 import {
+  Model,
+  ModelSignature,
+  ModelAsPropSignature,
   ModelStages,
-  CommonPropSelector,
   ModelPropSelector,
-  ModelSignatureKeys,
-  ModelType,
-  ModelTypes,
-  ModelAsPropTypes,
+  CommonPropSelector,
   IsObjectId,
   SpecialType,
   Settings,
@@ -51,17 +50,17 @@ export type ProfilePropSelector<
 t extends ModelStages,
 k extends ProfileAllPropKeys<t> = undefined,
 j extends ProfileAllPropKeys<t> = undefined> = ModelPropSelector<ProfileAllProps<t>,k,j>;
-export type ProfileTypes = ModelTypes<
+export type ProfileSignature = ModelSignature<
 ProfilePropSelector<"C",ProfileConfigKeys,ProfileConfigOptKeys>,
 ProfilePropSelector<"I",ProfileInstanceKeys> & ProfileMethods,
 ProfilePropSelector<"J",undefined,ProfileJsonKeys>,
 ProfilePropSelector<"J",undefined,ProfilePreviewKeys>,
 ProfileStatuses,
 ProfileSelfRefs>;
-export type Profile<k extends ModelSignatureKeys<ProfileTypes>> = ModelType<ProfileTypes,k>;
-export type ProfileAsProp<IsArr extends AnyBoolean,IsUser extends AnyBoolean = undefined> = ModelAsPropTypes<
+export type Profile = Model<ProfileSignature>;
+export type ProfileAsProp<IsArr extends AnyBoolean,IsUser extends AnyBoolean = undefined> = ModelAsPropSignature<
 Extends<IsArr,true|1,IsObjectId[],IsObjectId>,
-Extends<IsArr,true|1,Profile<"instance">[],Profile<"instance">>,
+Extends<IsArr,true|1,Profile["instance"][],Profile["instance"]>,
 Extends<IsArr,true|1,
-Extends<IsUser,true|1,Profile<"json">[],Profile<"preview">[]>,
-Extends<IsUser,true|1,Profile<"json">,Profile<"preview">>>>;
+Extends<IsUser,true|1,Profile["json"][],Profile["preview"][]>,
+Extends<IsUser,true|1,Profile["json"],Profile["preview"]>>>;

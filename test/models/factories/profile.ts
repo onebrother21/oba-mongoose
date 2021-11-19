@@ -8,7 +8,7 @@ import {
   getSettingsSchemaDef,
   getSpecialTypeSchemaDef,
 } from "../../../src";
-import {ProfileTypes,Profile} from "../types";
+import {Profile,ProfileSignature} from "../types";
 import {
   ProfileStatuses,
   ProfilePermissions,
@@ -17,20 +17,20 @@ import {
   ProfileRoles,
 } from "../dicts";
 
-export type ProfileFactoryConfig = ModelFactoryConfig<ProfileTypes>;
+export type ProfileFactoryConfig = ModelFactoryConfig<ProfileSignature>;
 
 export const getProfileAsPropSchema = (arr?:AnyBoolean,useracct?:AnyBoolean) => {
   switch(true){
     case !!arr:return {
       type:[Schema.Types.ObjectId],
       ref:"Profile",
-      default:[] as Profile<"instance">[],
-      get:(p:Profile<"instance">[]) => p.map(o => useracct?o.json():o.preview),
+      default:[] as Profile["instance"][],
+      get:(p:Profile["instance"][]) => p.map(o => useracct?o.json():o.preview),
     }
     default:return {
       type:Schema.Types.ObjectId,
       ref:"Profile",
-      get:(p:Profile<"instance">) => p?useracct?p.json():p.preview:null,
+      get:(p:Profile["instance"]) => p?useracct?p.json():p.preview:null,
     }
   }
 };
@@ -58,8 +58,8 @@ export const profileRefs:ProfileFactoryConfig["refs"] = [
 export const profileVirtuals:ProfileFactoryConfig["virtuals"] = {
   preview:{
     get:function(){
-      const s = this as Profile<"instance">;
-      const p:Profile<"preview"> = {};
+      const s = this as Profile["instance"];
+      const p = {} as Profile["preview"];
       p.id = s.id;
       p.name = s.name;
       return p;
@@ -68,8 +68,8 @@ export const profileVirtuals:ProfileFactoryConfig["virtuals"] = {
 };
 export const profileMethods:ProfileFactoryConfig["methods"] = {
   json:function(){
-    const s = this as Profile<"instance">;
-    const j:Profile<"json"> = {};
+    const s = this as Profile["instance"];
+    const j:Profile["json"] = {};
     j._type_ = "profile";
     j.id = s.id;
     j.status = s.status as any;
@@ -102,4 +102,4 @@ export const profileFactoryConfig:ProfileFactoryConfig = {
   virtuals:profileVirtuals,
   methods:profileMethods,
 };
-export class ProfileFactory<Ev> extends ModelFactory<Ev,ProfileTypes> {constructor(core:OBACoreApi<Ev>){super(core,profileFactoryConfig);}}
+export class ProfileFactory<Ev> extends ModelFactory<Ev,ProfileSignature> {constructor(core:OBACoreApi<Ev>){super(core,profileFactoryConfig);}}

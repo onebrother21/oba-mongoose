@@ -1,33 +1,33 @@
 import { Document } from "mongoose";
 import { Keys, Enum, Overwrite, NoneOfType, DotNotationObj } from "@onebro/oba-common";
 import { IsObjectId } from "./model-lvl-0-types";
-import { ModelLvl2Types, ModelLvl2Signature } from "./model-lvl-2-types";
+import { ModelLvl2Signature, ModelLvl2Types } from "./model-lvl-2-types";
 import { ModifiedQueries } from "./model-lvl-3-util-types";
 /** LEVEL THREE MODEL TYPES */
-export declare type ModelLvl3Types<T> = ModelLvl2Types<T>;
-export declare type OfModelLvl3Types<T> = T extends ModelLvl3Types<infer T0> ? T : never;
+export declare type ModelLvl3Signature<Sig> = ModelLvl2Signature<Sig>;
+export declare type OfModelLvl3Signature<Sig> = Sig extends ModelLvl3Signature<infer T0> ? Sig : never;
 export declare type DocumentKeys = Keys<Document> | "json" | "preview";
-export declare type NoDocumentOrFunctions<T> = NoneOfType<Omit<T, DocumentKeys>, Function>;
-export declare type ModelNonCallableProps<T> = NoDocumentOrFunctions<Overwrite<ModelLvl3<T, "C">, ModelLvl3<T, "I">>>;
-export declare type ModelNonCallable2Props<T> = NoDocumentOrFunctions<ModelLvl3<T, "J">>;
-export declare type ModelQueryableProps<T> = DotNotationObj<ModelNonCallable2Props<T>>;
-export declare type ModelQueryObject<T> = ModifiedQueries<ModelQueryableProps<T>>;
-export declare type ModelQueryKeys<T> = Keys<ModelQueryableProps<T>>;
+export declare type NoDocumentOrFunctions<Sig> = NoneOfType<Omit<Sig, DocumentKeys>, Function>;
+export declare type ModelNonCallableProps<Sig> = NoDocumentOrFunctions<Overwrite<ModelLvl3<Sig, "C">, ModelLvl3<Sig, "I">>>;
+export declare type ModelNonCallable2Props<Sig> = NoDocumentOrFunctions<ModelLvl3<Sig, "J">>;
+export declare type ModelQueryableProps<Sig> = DotNotationObj<ModelNonCallable2Props<Sig>>;
+export declare type ModelQueryObject<Sig> = ModifiedQueries<ModelQueryableProps<Sig>>;
+export declare type ModelQueryKeys<Sig> = Keys<ModelQueryableProps<Sig>>;
 export declare type ModelQuerySortValues = "asc" | "desc" | 1 | -1;
-export declare type ModelQuerySortParams<T> = Enum<ModelQuerySortValues, undefined, ModelQueryKeys<T>>;
-export declare type ModelQueryParams<T> = Partial<Record<"skip" | "limit", number> & {
-    sort: ModelQuerySortParams<T>;
+export declare type ModelQuerySortParams<Sig> = Enum<ModelQuerySortValues, undefined, ModelQueryKeys<Sig>>;
+export declare type ModelQueryParams<Sig> = Partial<Record<"skip" | "limit", number> & {
+    sort: ModelQuerySortParams<Sig>;
 }>;
-export declare type ModelQuery<T> = {
-    query: ModelQueryObject<T>;
-    opts?: ModelQueryParams<T>;
-    select?: "j" | "p" | "json" | "preview" | Keys<ModelLvl3<T, "J">>[];
+export declare type ModelQuery<Sig> = {
+    query: ModelQueryObject<Sig>;
+    opts?: ModelQueryParams<Sig>;
+    select?: "j" | "p" | "json" | "preview" | Keys<ModelLvl3<Sig, "J">>[];
 };
-export declare type ModelFetchObject<T> = IsObjectId | Partial<ModelQueryableProps<T>>;
-export declare type Modellvl3BaseSignature<T> = {
-    F: ModelFetchObject<T>;
-    Q: ModelQuery<T>;
+export declare type ModelFetchObject<Sig> = IsObjectId | Partial<ModelQueryableProps<Sig>>;
+export declare type Modellvl3BaseTypes<Sig> = {
+    F: ModelFetchObject<Sig>;
+    Q: ModelQuery<Sig>;
 };
-export declare type ModelLvl3Signature<T> = ModelLvl2Signature<T> & Modellvl3BaseSignature<T>;
-export declare type ModelLvl3SignatureKeys<T> = Keys<ModelLvl3Signature<T>>;
-export declare type ModelLvl3<T, k extends ModelLvl3SignatureKeys<T>> = ModelLvl3Signature<T>[k];
+export declare type ModelLvl3Types<Sig> = ModelLvl2Types<Sig> & Modellvl3BaseTypes<Sig>;
+export declare type ModelLvl3TypesKeys<Sig> = Keys<ModelLvl3Types<Sig>>;
+export declare type ModelLvl3<Sig, k extends ModelLvl3TypesKeys<Sig>> = ModelLvl3Types<Sig>[k];

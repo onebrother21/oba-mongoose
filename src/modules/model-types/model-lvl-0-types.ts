@@ -2,7 +2,6 @@
 import {Types} from "mongoose";
 import {Keys,Values,Enum,EnumPick,Info,TimeNInfo,Primitive,Strings,AnyBoolean,Entity} from "@onebro/oba-common";
 
-
 export type IsObjectId = string|Types.ObjectId;
 export type IsPrimitive = Primitive|Types.ObjectId;
 
@@ -45,5 +44,6 @@ export type ModelPopulationRef = ModelName & {path:string;populate?:ModelPopulat
 export type ModelSelfRefConfig = {arr:AnyBoolean;out:"J"|"P"|"json"|"preview";};
 export type ModelSelfRefsConfig = Enum<ModelSelfRefConfig,string>;
 
-export type ModelAsPropTypes<C,I,J> = {C:C;I:I;J:J;};
+export type ModelAsPropSignature<C,I,J> = {C:C;I:I;J:J;};
+export type ModelLvl0Signature<C,I,J> = {C:C;I:I;J:J;};
 export type ModelPropSelector<T,k extends Keys<T> = undefined,j extends Keys<T> = undefined> = EnumPick<T,k,j>;

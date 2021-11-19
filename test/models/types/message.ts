@@ -1,12 +1,11 @@
 import { Keys,Extends,AnyBoolean } from "@onebro/oba-common";
 import {
+  Model,
+  ModelSignature,
+  ModelAsPropSignature,
   ModelStages,
-  CommonPropSelector,
   ModelPropSelector,
-  ModelSignatureKeys,
-  ModelType,
-  ModelTypes,
-  ModelAsPropTypes,
+  CommonPropSelector,
   IsObjectId,
 } from "../../../src";
 import {ProfileAsProp} from "./profile";
@@ -31,15 +30,15 @@ export type MessagePropSelector<
 t extends ModelStages,
 k extends MessageAllPropKeys<t> = undefined,
 j extends MessageAllPropKeys<t> = undefined> = ModelPropSelector<MessageAllProps<t>,k,j>;
-export type MessageTypes = ModelTypes<
+export type MessageSignature = ModelSignature<
 MessagePropSelector<"C",MessageConfigKeys,MessageConfigOptKeys>,
 MessagePropSelector<"I",MessageInstanceKeys> & MessageMethods,
 MessagePropSelector<"J",undefined,MessageJsonKeys>,
 MessagePropSelector<"J",undefined,MessagePreviewKeys>,
 MessageStatuses,
 MessageSelfRefs>;
-export type Message<k extends ModelSignatureKeys<MessageTypes>> = ModelType<MessageTypes,k>;
-export type MessageAsProp<IsArr extends AnyBoolean> = ModelAsPropTypes<
+export type Message = Model<MessageSignature>;
+export type MessageAsProp<IsArr extends AnyBoolean> = ModelAsPropSignature<
 Extends<IsArr,true|1,IsObjectId[],IsObjectId>,
-Extends<IsArr,true|1,Message<"instance">,Message<"instance">[]>,
-Extends<IsArr,true|1,Message<"preview">,Message<"preview">[]>>;
+Extends<IsArr,true|1,Message["instance"],Message["instance"][]>,
+Extends<IsArr,true|1,Message["preview"],Message["preview"][]>>;

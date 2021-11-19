@@ -1,18 +1,13 @@
 import mongooseUniqueValidator from "mongoose-unique-validator";
 import {Schema,SchemaOptions,Types} from "mongoose";
 import OBACoreApi from "@onebro/oba-core-api";
-import {
-  IsObjectId,
-  ModelInstance,
-  ModelJson,
-  ModelQueries,
-} from "../model-types";
+import {IsObjectId,Model} from "../model-types";
 import {mapSelectedData} from "../model-utils";
 import {getStatusSchemaDef} from "./model-factory-utils";
 import {ModelFactoryType,ModelFactoryConfig} from "./model-factory-types";
 
-export interface ModelFactory<Ev,T> extends ModelFactoryType<Ev,T> {}
-export class ModelFactory<Ev,T> {
+export interface ModelFactory<Ev,Sig> extends ModelFactoryType<Ev,Sig> {}
+export class ModelFactory<Ev,Sig> {
   get m(){return this.model;}
   isObjectId = (q:any):q is IsObjectId => {
     try {
@@ -23,7 +18,7 @@ export class ModelFactory<Ev,T> {
     }
     catch(e){return false;}
   };
-  constructor(public core:OBACoreApi<Ev>,public config:ModelFactoryConfig<T>){
+  constructor(public core:OBACoreApi<Ev>,public config:ModelFactoryConfig<Sig>){
     const {refs,businessName} = config;
     this.autopopulate = async (o,s) => {
       if(s) await o.save();
@@ -59,13 +54,13 @@ export class ModelFactory<Ev,T> {
       .skip(skip||0)
       .sort(sort||"asc")
       .exec();
-      const results = this.getSelectedData(select,R as ModelInstance<T>[]);
-      return results as ModelJson<T>[];
+      const results = this.getSelectedData(select,R as Model<Sig>["instance"][]);
+      return results as Model<Sig>["json"][];
     };
     this.search = async q => {
       const R = await this.m.find({$regex:q,options:"i"} as any);
-      const results = this.getSelectedData("json",R as ModelInstance<T>[]);
-      return results as ModelJson<T>[];
+      const results = this.getSelectedData("json",R as Model<Sig>["instance"][]);
+      return results as Model<Sig>["json"][];
     };
     this.count = async () => await this.m.estimatedDocumentCount();
   }
@@ -85,7 +80,7 @@ export class ModelFactory<Ev,T> {
       toJSON:{getters:true,virtuals:true},
       timestamps:{createdAt:"created",updatedAt:"updated"},
     };
-    const schema = new Schema<ModelInstance<T>>({
+    const schema = new Schema<Model<Sig>["instance"]>({
       ...definition,
       desc:{type:String},
       info:{type:Object},
@@ -109,7 +104,9 @@ export class ModelFactory<Ev,T> {
     await this.model.init();
     return this;
   };
-  getSelectedData = (s:ModelQueries<T>["select"],R:ModelInstance<T>[]) => {
+  getSelectedData = (
+    s:Model<Sig>["queries"]["select"],
+    R:Model<Sig>["instance"][]) => {
     return ["json","j"].includes(s as any)?R.map(r => r.json()):
     ["preview","p"].includes(s as any)?R.map(r => r.preview):
     mapSelectedData(s as string[],R as any[]);

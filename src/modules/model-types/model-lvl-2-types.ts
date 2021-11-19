@@ -1,33 +1,33 @@
 import {Model} from "mongoose";
 import {Keys} from "@onebro/oba-common";
 import {IsObjectId} from "./model-lvl-0-types";
-import {OfModelLvl1Types,ModelLvl1Signature,ModelLvl1} from "./model-lvl-1-types";
+import {OfModelLvl1Signature,ModelLvl1Types,ModelLvl1} from "./model-lvl-1-types";
 
 /** LEVEL TWO MODEL TYPES:P -> PREVIEW,R -> SELF REFS */
-export type ModelLvl2Types<T> = OfModelLvl1Types<T>;
-export type OfModelLvl2Types<T> = T extends ModelLvl2Types<infer T0>?T:never;
+export type ModelLvl2Signature<Sig> = OfModelLvl1Signature<Sig>;
+export type OfModelLvl2Signature<Sig> = Sig extends ModelLvl2Signature<infer T0>?Sig:never;
 
-export type ModelSelfRefKeys<T> = Keys<ModelLvl1<T,"R">>;
-export type ModelSelfRefArrParam<T,k extends ModelSelfRefKeys<T>> = ModelLvl2<T,"R">[k]["arr"];
-export type ModelSelfRefArrGuard<T,k extends ModelSelfRefKeys<T>,U> = ModelSelfRefArrParam<T,k> extends true|1?U[]:U;
-export type ModelSelfRefOutParam<T,k extends ModelSelfRefKeys<T>> = ModelLvl2<T,"R">[k]["out"];
-export type ModelSelfRefOutGuard<T,k extends ModelSelfRefKeys<T>,J,P> = ModelSelfRefOutParam<T,k> extends "J"?J:P;
+export type ModelSelfRefKeys<Sig> = Keys<ModelLvl1<Sig,"R">>;
+export type ModelSelfRefArrParam<Sig,k extends ModelSelfRefKeys<Sig>> = ModelLvl2<Sig,"R">[k]["arr"];
+export type ModelSelfRefArrGuard<Sig,k extends ModelSelfRefKeys<Sig>,U> = ModelSelfRefArrParam<Sig,k> extends true|1?U[]:U;
+export type ModelSelfRefOutParam<Sig,k extends ModelSelfRefKeys<Sig>> = ModelLvl2<Sig,"R">[k]["out"];
+export type ModelSelfRefOutGuard<Sig,k extends ModelSelfRefKeys<Sig>,J,P> = ModelSelfRefOutParam<Sig,k> extends "J"?J:P;
 export type ModelSelfRefStageGuard<t,A,B,C> = t extends "C"?A:t extends "I"?B:C;
 
-export type ModelSelfRef<T,k extends ModelSelfRefKeys<T>,t> =
+export type ModelSelfRef<Sig,k extends ModelSelfRefKeys<Sig>,t> =
 ModelSelfRefStageGuard<t,
-ModelSelfRefArrGuard<T,k,IsObjectId>,
-ModelSelfRefArrGuard<T,k,ModelLvl2<T,"I">>,
-ModelSelfRefArrGuard<T,k,ModelSelfRefOutGuard<T,k,ModelLvl2<T,"J">,ModelLvl2<T,"P">>>>;
-export type ModelSelfRefsObj<T,t> = {[k in ModelSelfRefKeys<T>]:ModelSelfRef<T,k,t>;};
-export type ModelLvl2SelfRefs<T,t> = ModelLvl1<T,"R"> extends undefined?{}:ModelSelfRefsObj<T,t>;
+ModelSelfRefArrGuard<Sig,k,IsObjectId>,
+ModelSelfRefArrGuard<Sig,k,ModelLvl2<Sig,"I">>,
+ModelSelfRefArrGuard<Sig,k,ModelSelfRefOutGuard<Sig,k,ModelLvl2<Sig,"J">,ModelLvl2<Sig,"P">>>>;
+export type ModelSelfRefsObj<Sig,t> = {[k in ModelSelfRefKeys<Sig>]:ModelSelfRef<Sig,k,t>;};
+export type ModelLvl2SelfRefs<Sig,t> = ModelLvl1<Sig,"R"> extends undefined?{}:ModelSelfRefsObj<Sig,t>;
 
-export type ModelLvl2BaseSignature<T> = {
-  C:Partial<ModelLvl2SelfRefs<T,"C">>;
-  I:ModelLvl2SelfRefs<T,"I"> & {json:() => ModelLvl2<T,"J">;preview:ModelLvl2<T,"P">;};
-  J:Partial<ModelLvl2SelfRefs<T,"J">>;
-  M:Model<ModelLvl2<T,"I">>;
+export type ModelLvl2BaseTypes<Sig> = {
+  C:Partial<ModelLvl2SelfRefs<Sig,"C">>;
+  I:ModelLvl2SelfRefs<Sig,"I"> & {json:() => ModelLvl2<Sig,"J">;preview:ModelLvl2<Sig,"P">;};
+  J:Partial<ModelLvl2SelfRefs<Sig,"J">>;
+  M:Model<ModelLvl2<Sig,"I">>;
 };
-export type ModelLvl2Signature<T> = ModelLvl1Signature<T> & ModelLvl2BaseSignature<T>;
-export type ModelLvl2SignatureKeys<T> = Keys<ModelLvl2Signature<T>>;
-export type ModelLvl2<T,k extends ModelLvl2SignatureKeys<T>> = ModelLvl2Signature<T>[k];
+export type ModelLvl2Types<Sig> = ModelLvl1Types<Sig> & ModelLvl2BaseTypes<Sig>;
+export type ModelLvl2TypesKeys<Sig> = Keys<ModelLvl2Types<Sig>>;
+export type ModelLvl2<Sig,k extends ModelLvl2TypesKeys<Sig>> = ModelLvl2Types<Sig>[k];

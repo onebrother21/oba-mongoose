@@ -2,7 +2,7 @@ import OBACoreApi from "@onebro/oba-core-api";
 import {Keys,Await,GetParameterIfFunc} from "@onebro/oba-common";
 import {modelFactoryHub} from "../../../src";
 import {
-  ApiModelFactoryTypes as Types,
+  ApiModelSignatures as Sigs,
   ApiModelFactoryHub as Hub,
   getApiModelFactories as Factories,
 } from "../../models";
@@ -23,7 +23,7 @@ export interface FactoryNetwork<Ev> {
 export class FactoryNetwork<Ev> {
   constructor(){this.instances = {};}
   init = async (core:OBACoreApi<Ev>) => {
-    this.factories = await modelFactoryHub<Ev,Types>(core,Factories<Ev>());
+    this.factories = await modelFactoryHub<Ev,Sigs>(core,Factories<Ev>());
     for(const k in this.factories) this.instances[k as FactoryNames<Ev>] = [];
   };
 }

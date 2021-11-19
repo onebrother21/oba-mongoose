@@ -1,15 +1,15 @@
 import OBACoreApi from "@onebro/oba-core-api";
 import { Keys, Values } from "@onebro/oba-common";
-import { ModelInstance, ModelStatuses } from "../model-types";
+import { Model } from "../model-types";
 import { ModelFactoryHub } from "../model-factories";
 import { ModelControllerMethods, ModelControllerReqUserRole } from "./model-controller-reqs";
-export declare type ModelControllerType<Ev, Hub, k extends Keys<Hub>, Roles> = ModelControllerMethods<Hub[k], Roles> & {
+export declare type ModelControllerType<Ev, Sigs, k extends Keys<Sigs>, Roles> = ModelControllerMethods<Sigs[k], Roles> & {
     core: OBACoreApi<Ev>;
-    factories: ModelFactoryHub<Ev, Hub>;
+    factories: ModelFactoryHub<Ev, Sigs>;
     privileges: string[];
-    badStatuses: Values<ModelStatuses<Hub[k]>>[];
+    badStatuses: Values<Model<Sigs[k]>["statuses"]>[];
     unauthorized: (s: string) => void;
     isAuth: (okto: string, priv?: string[]) => void;
     isRole: (role: ModelControllerReqUserRole<Roles>, roles: ModelControllerReqUserRole<Roles>[]) => void;
-    isBadStatus: (o: ModelInstance<Hub[k]>) => boolean;
+    isBadStatus: (o: Model<Sigs[k]>["instance"]) => boolean;
 };

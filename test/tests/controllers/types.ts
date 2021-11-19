@@ -2,7 +2,7 @@ import OBACoreApi from "@onebro/oba-core-api";
 import {Keys,Await,GetParameterIfFunc} from "@onebro/oba-common";
 import {modelControllerHub} from "../../../src";
 import {
-  ApiModelControllerTypes as Types,
+  ApiModelSignatures as Sigs,
   ApiModelControllerHub as Hub,
   getApiModelControllers as Controllers,
   ApiUserRoles as Roles,
@@ -26,7 +26,7 @@ export interface ControllerNetwork<Ev> {
 export class ControllerNetwork<Ev> {
   constructor(){this.jsons = {};}
   init = async (core:OBACoreApi<Ev>) => {
-    this.controllers = await modelControllerHub<Ev,Types,Roles>(core,Controllers<Ev>(),Factories<Ev>());
+    this.controllers = await modelControllerHub<Ev,Sigs,Roles>(core,Controllers<Ev>(),Factories<Ev>());
     for(const k in this.controllers) this.jsons[k as ControllerNames<Ev>] = [];
   };
 }

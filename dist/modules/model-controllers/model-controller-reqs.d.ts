@@ -1,5 +1,5 @@
 import { Values, Strings, NoneOfType } from "@onebro/oba-common";
-import { IsObjectId, ModelConfig, ModelJson, ModelFetches, ModelUpdates, ModelQueries } from "../model-types";
+import { IsObjectId, Model } from "../model-types";
 export declare type ModelControllerReqUserRole<Roles> = Roles extends Strings ? Values<Roles> : never;
 export declare type ModelControllerReqUserTkn<Roles> = {
     username: string;
@@ -11,11 +11,11 @@ export declare type ModelControllerReqUserInfo<Roles> = {
     appuser: string;
     authtkn: ModelControllerReqUserTkn<Roles>;
 };
-export declare type ModelControllerFetchIdReq<T> = {
+export declare type ModelControllerFetchIdReq<Sig> = {
     id: IsObjectId;
 };
-export declare type ModelControllerFetchReq<T> = ModelControllerFetchIdReq<T> | NoneOfType<ModelFetches<T>, IsObjectId>;
-export declare type ModelControllerFetchAdminReq<T> = ModelControllerFetchIdReq<T> & {
+export declare type ModelControllerFetchReq<Sig> = ModelControllerFetchIdReq<Sig> | NoneOfType<Model<Sig>["fetches"], IsObjectId>;
+export declare type ModelControllerFetchAdminReq<Sig> = ModelControllerFetchIdReq<Sig> & {
     adminId: string;
 };
 export declare type ModelControllerReqParams<Params> = Params extends undefined ? {} : {
@@ -28,43 +28,43 @@ export declare type ModelControllerReqQuery<Query> = Query extends undefined ? {
     query: Query;
 };
 export declare type ModelControllerReq<Params = undefined, Body = undefined, Query = undefined, Roles = undefined> = ModelControllerReqUserInfo<Roles> & ModelControllerReqBody<Body> & ModelControllerReqParams<Params> & ModelControllerReqQuery<Query>;
-export declare type ModelControllerBaseReqs<T, Roles> = {
-    C: ModelControllerReq<undefined, ModelConfig<T>, undefined, Roles>;
-    F: ModelControllerReq<ModelControllerFetchReq<T>, undefined, undefined, Roles>;
-    U: ModelControllerReq<ModelControllerFetchReq<T>, ModelUpdates<T>, undefined, Roles>;
-    R: ModelControllerReq<ModelControllerFetchIdReq<T>, undefined, undefined, Roles>;
-    X: ModelControllerReq<ModelControllerFetchAdminReq<T>, undefined, undefined, Roles>;
-    Q: ModelControllerReq<undefined, undefined, ModelQueries<T>, Roles>;
+export declare type ModelControllerBaseReqs<Sig, Roles> = {
+    C: ModelControllerReq<undefined, Model<Sig>["config"], undefined, Roles>;
+    F: ModelControllerReq<ModelControllerFetchReq<Sig>, undefined, undefined, Roles>;
+    U: ModelControllerReq<ModelControllerFetchReq<Sig>, Model<Sig>["updates"], undefined, Roles>;
+    R: ModelControllerReq<ModelControllerFetchIdReq<Sig>, undefined, undefined, Roles>;
+    X: ModelControllerReq<ModelControllerFetchAdminReq<Sig>, undefined, undefined, Roles>;
+    Q: ModelControllerReq<undefined, undefined, Model<Sig>["queries"], Roles>;
     S: ModelControllerReq<undefined, undefined, {
         text: string;
     }, Roles>;
 };
-export declare type ModelControllerExtReqs<T, Roles> = {
-    create$: ModelControllerBaseReqs<T, Roles>["C"];
-    fetch$: ModelControllerBaseReqs<T, Roles>["F"];
-    update$: ModelControllerBaseReqs<T, Roles>["U"];
-    remove$: ModelControllerBaseReqs<T, Roles>["R"];
-    remove$$: ModelControllerBaseReqs<T, Roles>["X"];
-    query$: ModelControllerBaseReqs<T, Roles>["Q"];
-    search$: ModelControllerBaseReqs<T, Roles>["S"];
+export declare type ModelControllerExtReqs<Sig, Roles> = {
+    create$: ModelControllerBaseReqs<Sig, Roles>["C"];
+    fetch$: ModelControllerBaseReqs<Sig, Roles>["F"];
+    update$: ModelControllerBaseReqs<Sig, Roles>["U"];
+    remove$: ModelControllerBaseReqs<Sig, Roles>["R"];
+    remove$$: ModelControllerBaseReqs<Sig, Roles>["X"];
+    query$: ModelControllerBaseReqs<Sig, Roles>["Q"];
+    search$: ModelControllerBaseReqs<Sig, Roles>["S"];
 };
-export declare type ModelControllerReqs<T, Roles> = ModelControllerBaseReqs<T, Roles> & ModelControllerExtReqs<T, Roles>;
-export declare type ModelControllerMethods<T, Roles> = {
-    create$: (o: ModelControllerReqs<T, Roles>["create$"]) => Promise<ModelJson<T>>;
-    fetch$: (o: ModelControllerReqs<T, Roles>["fetch$"]) => Promise<ModelJson<T>>;
-    update$: (o: ModelControllerReqs<T, Roles>["update$"]) => Promise<ModelJson<T>>;
-    updateMany$: (o: ModelControllerReqs<T, Roles>["update$"]) => Promise<{
-        results: (IsObjectId | ModelJson<T>)[];
+export declare type ModelControllerReqs<Sig, Roles> = ModelControllerBaseReqs<Sig, Roles> & ModelControllerExtReqs<Sig, Roles>;
+export declare type ModelControllerMethods<Sig, Roles> = {
+    create$: (o: ModelControllerReqs<Sig, Roles>["create$"]) => Promise<Model<Sig>["json"]>;
+    fetch$: (o: ModelControllerReqs<Sig, Roles>["fetch$"]) => Promise<Model<Sig>["json"]>;
+    update$: (o: ModelControllerReqs<Sig, Roles>["update$"]) => Promise<Model<Sig>["json"]>;
+    updateMany$: (o: ModelControllerReqs<Sig, Roles>["update$"]) => Promise<{
+        results: (IsObjectId | Model<Sig>["json"])[];
     }>;
-    remove$: (o: ModelControllerReqs<T, Roles>["remove$"]) => Promise<ModelJson<T>>;
-    remove$$: (o: ModelControllerReqs<T, Roles>["remove$$"]) => Promise<ModelJson<T>>;
-    removeMany$: (q: ModelControllerReqs<T, Roles>["remove$"]) => Promise<{
-        results: (IsObjectId | ModelJson<T>)[];
+    remove$: (o: ModelControllerReqs<Sig, Roles>["remove$"]) => Promise<Model<Sig>["json"]>;
+    remove$$: (o: ModelControllerReqs<Sig, Roles>["remove$$"]) => Promise<Model<Sig>["json"]>;
+    removeMany$: (q: ModelControllerReqs<Sig, Roles>["remove$"]) => Promise<{
+        results: (IsObjectId | Model<Sig>["json"])[];
     }>;
-    query$: (o: ModelControllerReqs<T, Roles>["query$"]) => Promise<{
-        results: (IsObjectId | ModelJson<T>)[];
+    query$: (o: ModelControllerReqs<Sig, Roles>["query$"]) => Promise<{
+        results: (IsObjectId | Model<Sig>["json"])[];
     }>;
-    search$: (o: ModelControllerReqs<T, Roles>["search$"]) => Promise<{
-        results: (IsObjectId | ModelJson<T>)[];
+    search$: (o: ModelControllerReqs<Sig, Roles>["search$"]) => Promise<{
+        results: (IsObjectId | Model<Sig>["json"])[];
     }>;
 };

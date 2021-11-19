@@ -1,34 +1,34 @@
 import { Schema } from "mongoose";
 import OBACoreApi from "@onebro/oba-core-api";
-import { IsObjectId, ModelInstance, ModelQueries } from "../model-types";
+import { IsObjectId, Model } from "../model-types";
 import { ModelFactoryType, ModelFactoryConfig } from "./model-factory-types";
-export interface ModelFactory<Ev, T> extends ModelFactoryType<Ev, T> {
+export interface ModelFactory<Ev, Sig> extends ModelFactoryType<Ev, Sig> {
 }
-export declare class ModelFactory<Ev, T> {
+export declare class ModelFactory<Ev, Sig> {
     core: OBACoreApi<Ev>;
-    config: ModelFactoryConfig<T>;
-    get m(): import("mongoose").Model<import("../model-types").OfModelLvl1Types<T>["I"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
+    config: ModelFactoryConfig<Sig>;
+    get m(): import("mongoose").Model<import("../model-types").OfModelLvl1Signature<Sig>["I"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
         id: IsObjectId;
-        status: import("../model-types").Status<import("../model-types").OfModelLvl1Types<T>["S"], "I">;
-    } & import("mongoose").Document & import("../model-types").ModelLvl2SelfRefs<T, "I"> & {
-        json: () => Partial<import("../model-types").OfModelLvl1Types<T>["J"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
+        status: import("../model-types").Status<import("../model-types").OfModelLvl1Signature<Sig>["S"], "I">;
+    } & import("mongoose").Document & import("../model-types").ModelLvl2SelfRefs<Sig, "I"> & {
+        json: () => Partial<import("../model-types").OfModelLvl1Signature<Sig>["J"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
             id: IsObjectId;
-            status: import("../model-types").Status<import("../model-types").OfModelLvl1Types<T>["S"], "J">;
-        }> & Partial<import("../model-types").ModelLvl2SelfRefs<T, "J">>;
-        preview: Partial<import("../model-types").OfModelLvl1Types<T>["P"] & import("../model-types").ModelObjectIdStamp<import("../model-types").OfModelLvl1Types<T>["S"]>>;
+            status: import("../model-types").Status<import("../model-types").OfModelLvl1Signature<Sig>["S"], "J">;
+        }> & Partial<import("../model-types").ModelLvl2SelfRefs<Sig, "J">>;
+        preview: Partial<import("../model-types").OfModelLvl1Signature<Sig>["P"] & import("../model-types").ModelObjectIdStamp<import("../model-types").OfModelLvl1Signature<Sig>["S"]>>;
     }, {}>;
     isObjectId: (q: any) => q is IsObjectId;
-    constructor(core: OBACoreApi<Ev>, config: ModelFactoryConfig<T>);
-    createSchema: () => Schema<import("../model-types").OfModelLvl1Types<T>["I"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
+    constructor(core: OBACoreApi<Ev>, config: ModelFactoryConfig<Sig>);
+    createSchema: () => Schema<import("../model-types").OfModelLvl1Signature<Sig>["I"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
         id: IsObjectId;
-        status: import("../model-types").Status<import("../model-types").OfModelLvl1Types<T>["S"], "I">;
-    } & import("mongoose").Document & import("../model-types").ModelLvl2SelfRefs<T, "I"> & {
-        json: () => Partial<import("../model-types").OfModelLvl1Types<T>["J"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
+        status: import("../model-types").Status<import("../model-types").OfModelLvl1Signature<Sig>["S"], "I">;
+    } & import("mongoose").Document & import("../model-types").ModelLvl2SelfRefs<Sig, "I"> & {
+        json: () => Partial<import("../model-types").OfModelLvl1Signature<Sig>["J"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
             id: IsObjectId;
-            status: import("../model-types").Status<import("../model-types").OfModelLvl1Types<T>["S"], "J">;
-        }> & Partial<import("../model-types").ModelLvl2SelfRefs<T, "J">>;
-        preview: Partial<import("../model-types").OfModelLvl1Types<T>["P"] & import("../model-types").ModelObjectIdStamp<import("../model-types").OfModelLvl1Types<T>["S"]>>;
+            status: import("../model-types").Status<import("../model-types").OfModelLvl1Signature<Sig>["S"], "J">;
+        }> & Partial<import("../model-types").ModelLvl2SelfRefs<Sig, "J">>;
+        preview: Partial<import("../model-types").OfModelLvl1Signature<Sig>["P"] & import("../model-types").ModelObjectIdStamp<import("../model-types").OfModelLvl1Signature<Sig>["S"]>>;
     }>;
     init: () => Promise<this>;
-    getSelectedData: (s: ModelQueries<T>["select"], R: ModelInstance<T>[]) => any[];
+    getSelectedData: (s: Model<Sig>["queries"]["select"], R: Model<Sig>["instance"][]) => any[];
 }

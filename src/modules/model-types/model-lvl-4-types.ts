@@ -1,29 +1,30 @@
 import {Keys,DeepPartial,AllOfType,NoneOfType} from "@onebro/oba-common";
 import {IsObjectId,IsPrimitive} from "./model-lvl-0-types";
 import {ModelSelfRefKeys} from "./model-lvl-2-types";
-import {ModelQueryableProps,ModelLvl3Types,ModelLvl3Signature} from "./model-lvl-3-types";
+import {ModelQueryableProps,ModelLvl3Signature,ModelLvl3Types} from "./model-lvl-3-types";
 
 /** LEVEL FOUR MODEL TYPES */
-export type ModelLvl4Types<T> = ModelLvl3Types<T>;
-export type OfModelLvl4Types<T> = T extends ModelLvl4Types<infer T0>?T:never;
+export type ModelLvl4Signature<Sig> = ModelLvl3Signature<Sig>;
+export type OfModelLvl4Signature<Sig> = Sig extends ModelLvl4Signature<infer T0>?Sig:never;
 
-export type ModelNoArrayUpdateProps<T> = NoneOfType<ModelQueryableProps<T>,any[]>;
-export type ModelNoArrayUpdateObj<T> = Record<"$set",ModelNoArrayUpdateProps<T>>;
+export type ModelNoArrayUpdateProps<Sig> = NoneOfType<ModelQueryableProps<Sig>,any[]>;
+export type ModelNoArrayUpdateObj<Sig> = Record<"$set",ModelNoArrayUpdateProps<Sig>>;
 
-export type ModelNumerableUpdateProps<T> = AllOfType<ModelQueryableProps<T>,number|Date>;
-export type ModelNumerableUpdateObj<T> = Record<"$inc"|"$dec",ModelNumerableUpdateProps<T>>;
+export type ModelNumerableUpdateProps<Sig> = AllOfType<ModelQueryableProps<Sig>,number|Date>;
+export type ModelNumerableUpdateObj<Sig> = Record<"$inc"|"$dec",ModelNumerableUpdateProps<Sig>>;
 
-export type ModelArrUpdateProps<T> = AllOfType<ModelQueryableProps<T>,any[]>;
-export type ModelArrUpdatePropKeys<T> = Keys<ModelArrUpdateProps<T>>;
-export type ModelArrUpdateTypes<T> = T|T[]|{$in:T[]};
-export type ModelArrUpdateGuard<T> = T extends Array<infer S>?ModelArrUpdateTypes<S extends IsPrimitive?S:Partial<S>>:never;
-export type ModelArrUpdateSelfRefGuard<T,k,U> = k extends ModelSelfRefKeys<T>?IsObjectId[]:U;
-export type ModelArrUpdatePropsUpd<T> = {[k in ModelArrUpdatePropKeys<T>]:ModelArrUpdateGuard<ModelArrUpdateSelfRefGuard<T,k,ModelArrUpdateProps<T>[k]>>;};
-export type ModelArrayUpdateObj<T> = Record<"$push"|"$pull",ModelArrUpdatePropsUpd<T>>;
+export type ModelArrUpdateProps<Sig> = AllOfType<ModelQueryableProps<Sig>,any[]>;
+export type ModelArrUpdatePropKeys<Sig> = Keys<ModelArrUpdateProps<Sig>>;
+export type ModelArrUpdateSignature<Sig> = Sig|Sig[]|{$in:Sig[]};
+export type ModelArrUpdateGuard<Sig> = Sig extends Array<infer S>?ModelArrUpdateSignature<S extends IsPrimitive?S:Partial<S>>:never;
+export type ModelArrUpdateSelfRefGuard<Sig,k,U> = k extends ModelSelfRefKeys<Sig>?IsObjectId[]:U;
+export type ModelArrUpdatePropsUpd<Sig> = {[k in ModelArrUpdatePropKeys<Sig>]:
+ModelArrUpdateGuard<ModelArrUpdateSelfRefGuard<Sig,k,ModelArrUpdateProps<Sig>[k]>>;};
+export type ModelArrayUpdateObj<Sig> = Record<"$push"|"$pull",ModelArrUpdatePropsUpd<Sig>>;
 
-export type ModelLvl4Updates<T> = DeepPartial<ModelNoArrayUpdateObj<T>&ModelNumerableUpdateObj<T>&ModelArrayUpdateObj<T>>;
+export type ModelLvl4Updates<Sig> = DeepPartial<ModelNoArrayUpdateObj<Sig>&ModelNumerableUpdateObj<Sig>&ModelArrayUpdateObj<Sig>>;
 
-export type ModelLvl4BaseSignature<T> = {U:ModelLvl4Updates<T>;};
-export type ModelLvl4Signature<T> = ModelLvl3Signature<T> & ModelLvl4BaseSignature<T>;
-export type ModelLvl4SignatureKeys<T> = Keys<ModelLvl4Signature<T>>;
-export type ModelLvl4<T,k extends ModelLvl4SignatureKeys<T>> = ModelLvl4Signature<T>[k];
+export type ModelLvl4BaseTypes<Sig> = {U:ModelLvl4Updates<Sig>;};
+export type ModelLvl4Types<Sig> = ModelLvl3Types<Sig> & ModelLvl4BaseTypes<Sig>;
+export type ModelLvl4TypesKeys<Sig> = Keys<ModelLvl4Types<Sig>>;
+export type ModelLvl4<Sig,k extends ModelLvl4TypesKeys<Sig>> = ModelLvl4Types<Sig>[k];

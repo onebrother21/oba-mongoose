@@ -53,7 +53,12 @@ export declare type ModelSelfRefConfig = {
     out: "J" | "P" | "json" | "preview";
 };
 export declare type ModelSelfRefsConfig = Enum<ModelSelfRefConfig, string>;
-export declare type ModelAsPropTypes<C, I, J> = {
+export declare type ModelAsPropSignature<C, I, J> = {
+    C: C;
+    I: I;
+    J: J;
+};
+export declare type ModelLvl0Signature<C, I, J> = {
     C: C;
     I: I;
     J: J;
