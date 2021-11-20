@@ -6,7 +6,7 @@ import {messageController} from "./message";
 export const initControllerTests = (O:ControllerNetwork<null>) => Jest.utils.desc("INIT",() => {
   it("Init DB & Controller Network",async () => {
     await Jest.utils.refreshDb();
-    await O.init((await Jest.utils.initCore()).core);
+    await O.init((await Jest.utils.init()).core);
   },1E9);
 });
 export const wrapupControllerTests = ({jsons}:ControllerNetwork<null>) => Jest.utils.desc("WRAPUP",() => {

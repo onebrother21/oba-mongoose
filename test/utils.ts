@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import path from "path";
 import OBACoreApi,{coreConfig} from "@onebro/oba-core-api";
 
 export const utils = {
@@ -10,11 +9,11 @@ export const utils = {
     const db = await mongoose.createConnection("mongodb://localhost:27017/ob1");
     await db.dropDatabase();
   },
-  initCore:async () => {
+  init:async () => {
     try{
       const {vars,db,errors} = coreConfig("OBA_MONGOOSE");
-      db.connections = {onebrother:'mongodb://localhost:27017/ob1'};
       const core:OBACoreApi<null> = new OBACoreApi<null>({vars,db,errors});
+      core.init();
       await core.db.start();
       return {core};
     }

@@ -54,9 +54,10 @@ class ModelFactory {
             return schema;
         };
         this.init = () => __awaiter(this, void 0, void 0, function* () {
+            const { vars: { name: dbName } } = this.core;
             const { modelName, collectionName } = this.config;
             const schema = this.createSchema();
-            this.model = yield this.core.db.model("onebrother", modelName, schema, collectionName);
+            this.model = yield this.core.db.model(dbName, modelName, schema, collectionName);
             yield this.model.init();
             return this;
         });

@@ -6,7 +6,7 @@ import {messageFactory} from "./message";
 export const initFactoryTests = (O:FactoryNetwork<null>) => Jest.utils.desc("INIT",() => {
   it("Init DB & Factory Network",async () => {
     await Jest.utils.refreshDb();
-    await O.init((await Jest.utils.initCore()).core);
+    await O.init((await Jest.utils.init()).core);
   },1E9);
 });
 export const wrapupFactoryTests = ({instances}:FactoryNetwork<null>) => Jest.utils.desc("WRAPUP",() => {

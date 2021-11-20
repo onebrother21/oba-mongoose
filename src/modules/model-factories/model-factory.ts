@@ -8,16 +8,6 @@ import {ModelFactoryType,ModelFactoryConfig} from "./model-factory-types";
 
 export interface ModelFactory<Ev,Sig> extends ModelFactoryType<Ev,Sig> {}
 export class ModelFactory<Ev,Sig> {
-  get m(){return this.model;}
-  isObjectId = (q:any):q is IsObjectId => {
-    try {
-      const objectId = Types.ObjectId(q as string);
-      const IsValid = objectId instanceof Types.ObjectId;
-      const isMatch = objectId.toString() == q;
-      return IsValid && isMatch;
-    }
-    catch(e){return false;}
-  };
   constructor(public core:OBACoreApi<Ev>,public config:ModelFactoryConfig<Sig>){
     const {refs,businessName} = config;
     this.autopopulate = async (o,s) => {
@@ -64,6 +54,16 @@ export class ModelFactory<Ev,Sig> {
     };
     this.count = async () => await this.m.estimatedDocumentCount();
   }
+  get m(){return this.model;}
+  isObjectId = (q:any):q is IsObjectId => {
+    try {
+      const objectId = Types.ObjectId(q as string);
+      const IsValid = objectId instanceof Types.ObjectId;
+      const isMatch = objectId.toString() == q;
+      return IsValid && isMatch;
+    }
+    catch(e){return false;}
+  };
   createSchema = () => {
     const appname = this.core.vars.name;
     const datasig = "::" + process.env[appname.toLocaleUpperCase() + "_DATA_ID"];
@@ -98,9 +98,10 @@ export class ModelFactory<Ev,Sig> {
     return schema;
   };
   init = async () => {
+    const {vars:{name:dbName}} = this.core;
     const {modelName,collectionName} = this.config;
     const schema = this.createSchema();
-    this.model = await this.core.db.model("onebrother",modelName,schema,collectionName);
+    this.model = await this.core.db.model(dbName,modelName,schema,collectionName);
     await this.model.init();
     return this;
   };
