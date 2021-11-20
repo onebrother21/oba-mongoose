@@ -98,7 +98,7 @@ export class ModelFactory<Ev,Sig> {
     return schema;
   };
   init = async () => {
-    const {vars:{name:dbName}} = this.core;
+    const dbName = this.core.vars.name;
     const {modelName,collectionName} = this.config;
     const schema = this.createSchema();
     this.model = await this.core.db.model(dbName,modelName,schema,collectionName);

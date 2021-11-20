@@ -1,8 +1,8 @@
 
 import {ModelControllerHub,ModelControllerConstructors} from "../../src";
 import {ProfileController,MessageController,} from "./controllers";
-import {ApiUserRoles} from "./dicts";
-import {ApiModelSignatures} from "./factory-hub";
+import {ApiModelSignatures} from "./types";
+import {ApiUserRoles} from "./dicts"
 
 export type ApiModelControllerHub<Ev> = ModelControllerHub<Ev,ApiModelSignatures,ApiUserRoles>;
 export type ApiModelControllers<Ev> = ModelControllerConstructors<Ev,ApiModelSignatures,ApiUserRoles>;

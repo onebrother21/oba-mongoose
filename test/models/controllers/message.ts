@@ -1,6 +1,6 @@
 import OBACoreApi from "@onebro/oba-core-api";
 import {ModelController} from "../../../src";
-import {ApiModelSignatures} from "../factory-hub";
+import {ApiModelSignatures} from "../types";
 import {ApiUserRoles} from "../dicts";
 
 export interface MessageController<Ev> extends ModelController<Ev,ApiModelSignatures,"messages",ApiUserRoles> {}
