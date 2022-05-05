@@ -1,27 +1,5 @@
-import mongoose from "mongoose";
-import OBACoreApi,{coreConfig} from "@onebro/oba-core-api";
-
-export const utils = {
-  sleep:(n:number) => new Promise(done => setTimeout(done,n)),
-  clear:() => process.stdout.write("\x1Bc"),
+export const J = {
   desc:describe,
-  refreshDb:async () => {
-    const db = await mongoose.createConnection("mongodb://localhost:27017/ob1");
-    await db.dropDatabase();
-  },
-  init:async () => {
-    try{
-      const {vars,db,errors} = coreConfig("OBA_MONGOOSE");
-      const core:OBACoreApi<null> = new OBACoreApi<null>({vars,db,errors});
-      core.init();
-      await core.db.start();
-      return {core};
-    }
-    catch(e){console.error(e);throw e;}
-  },
-};
-export const Jest = {
-  utils,
   type:(a:any,b:string) => expect(typeof a).toBe(b),
   instance:(a:any,b:any) => expect(a instanceof b).toBe(true),
   arr:(a:any) => expect(Array.isArray(a)).toBe(true),

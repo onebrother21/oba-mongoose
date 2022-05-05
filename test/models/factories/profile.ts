@@ -4,7 +4,7 @@ import {Schema} from "mongoose";
 import {
   ModelFactoryConfig,
   ModelFactory,
-  getInfoHashMapSchemaDef,
+  getInfoMapSchemaDef,
   getSettingsSchemaDef,
   getSpecialTypeSchemaDef,
 } from "../../../src";
@@ -41,9 +41,9 @@ export const profileSchemaDef:ProfileFactoryConfig["definition"] = {
   motto:{type:String,trim:true},
   rating:{type:Number,default:5},
   settings:getSettingsSchemaDef(),
-  permissions:getInfoHashMapSchemaDef(ProfilePermissions,Date),
-  socials:getInfoHashMapSchemaDef(ProfileSocials,String),
-  stats:getInfoHashMapSchemaDef(ProfileStats,Number),
+  permissions:getInfoMapSchemaDef(ProfilePermissions,Date),
+  socials:getInfoMapSchemaDef(ProfileSocials,String),
+  stats:getInfoMapSchemaDef(ProfileStats,Number),
   following:getProfileAsPropSchema(1),
   followers:getProfileAsPropSchema(1),
   endorsements:getProfileAsPropSchema(1),
@@ -102,4 +102,4 @@ export const profileFactoryConfig:ProfileFactoryConfig = {
   virtuals:profileVirtuals,
   methods:profileMethods,
 };
-export class ProfileFactory<Ev> extends ModelFactory<Ev,ProfileSignature> {constructor(core:OBACoreApi<Ev>){super(core,profileFactoryConfig);}}
+export class ProfileFactory extends ModelFactory<ProfileSignature> {constructor(core:OBACoreApi){super(core,profileFactoryConfig);}}

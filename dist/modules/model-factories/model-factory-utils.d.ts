@@ -1,17 +1,17 @@
 import { Schema } from "mongoose";
-import { Strings, Keys, Values, Constructor, AnyBoolean } from "@onebro/oba-common";
-import { Status, Settings, InfoHashMap, ModelMiscReference } from "../model-types";
+import { Strings, Keys, Values, Constructor, AnyBoolean, Status, Settings, InfoMap } from "@onebro/oba-common";
+import { ModelMiscReference, StageGuard } from "../model-types";
 export declare const getSpecialTypeSchemaDef: <S extends Strings>(S: S) => {
     type: StringConstructor;
-    get: (s: Extract<keyof S, string>) => S[Extract<keyof S, string>];
+    get: (s: Keys<S>) => S[Keys<S>];
     set: (s: Values<S>) => string;
 };
-export declare const getInfoHashMapSchemaDef: <S extends Strings, T extends Constructor<any>>(S: S, T: T) => {
+export declare const getInfoMapSchemaDef: <S extends Strings, T extends Constructor<any>>(S: S, T: T) => {
     type: MapConstructor;
     of: T;
-    get: (o: import("../model-types").InfoMapOne<S, InstanceType<T>>) => import("../model-types").InfoMapTwo<S, InstanceType<T>>;
-    set: (o: import("../model-types").InfoMapTwo<S, InstanceType<T>>) => import("../model-types").InfoMapOne<S, InstanceType<T>>;
-    default: Map<Extract<keyof S, string>, InstanceType<T>>;
+    get: (o: import("@onebro/oba-common").InfoMapOne<S, InstanceType<T>>) => import("@onebro/oba-common").InfoMapTwo<S, InstanceType<T>>;
+    set: (o: import("@onebro/oba-common").InfoMapTwo<S, InstanceType<T>>) => import("@onebro/oba-common").InfoMapOne<S, InstanceType<T>>;
+    default: Map<Keys<S>, InstanceType<T>>;
 };
 export declare const getMiscReferenceSchemaDef: (arr?: AnyBoolean) => {
     type: Schema<ModelMiscReference>[];
@@ -21,13 +21,13 @@ export declare const getMiscReferenceSchemaDef: (arr?: AnyBoolean) => {
     default?: undefined;
 };
 export declare const getStatusSchemaDef: <S extends Strings>(statuses: S) => {
-    type: Schema<Status<S, "I">>;
+    type: Schema<Status<S, true>>;
     default: () => {
         name: string;
     };
-    get: (s: Status<S, "I">) => {
+    get: (s: Status<S, true>) => {
         info: import("@onebro/oba-common").Primitives;
-        name: Extract<keyof S, string>;
+        name: Keys<S>;
         time: Date;
     };
 };

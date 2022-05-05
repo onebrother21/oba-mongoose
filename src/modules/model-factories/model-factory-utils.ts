@@ -1,6 +1,7 @@
 import { Schema } from "mongoose";
-import { Strings,Keys,Values,Constructor,AnyBoolean } from "@onebro/oba-common";
-import { TestProps,Status,Settings,InfoHashMap,ModelMiscReference } from "../model-types";
+import { Strings,Keys,Values,Constructor,AnyBoolean,
+  TestProps,Status,Settings,InfoMap, } from "@onebro/oba-common";
+import { ModelMiscReference, StageGuard } from "../model-types";
 import { mapEnumKey } from "../model-utils";
 
 export const getSpecialTypeSchemaDef = <S extends Strings>(S:S) => {
@@ -11,28 +12,28 @@ export const getSpecialTypeSchemaDef = <S extends Strings>(S:S) => {
   };
   return specialType;
 };
-export const getInfoHashMapSchemaDef = <S extends Strings,T extends Constructor<any>>(S:S,T:T) => {
-  const infoMapGetter = (o:InfoHashMap<S,InstanceType<T>,"I">,S:S) => {
+export const getInfoMapSchemaDef = <S extends Strings,T extends Constructor<any>>(S:S,T:T) => {
+  const infoMapGetter = (o:InfoMap<S,InstanceType<T>,StageGuard<"I">>,S:S) => {
     const n:any = {};
     for(const s in S){
       const s_ = S[s] as Values<S>;
       o.has(s_)?n[s_] = o.get(s_):null;
     }
-    return n as InfoHashMap<S,InstanceType<T>,"C">;
+    return n as InfoMap<S,InstanceType<T>,StageGuard<"C">>;
   };
-  const infoMapSetter = (o:InfoHashMap<S,InstanceType<T>,"C">,S:S) => {
+  const infoMapSetter = (o:InfoMap<S,InstanceType<T>,StageGuard<"C">>,S:S) => {
     const n = new Map();
     for(const s in S){
       const s_ = S[s] as Values<S>;
       o[s_]?n.set(s_,o[s_]):null;
     }
-    return n as InfoHashMap<S,InstanceType<T>,"I">;
+    return n as InfoMap<S,InstanceType<T>,StageGuard<"I">>;
   };
   const infoMap = {
     type:Map,
     of:T,
-    get:(o:InfoHashMap<S,InstanceType<T>,"I">) => infoMapGetter(o,S),
-    set:(o:InfoHashMap<S,InstanceType<T>,"C">) => infoMapSetter(o,S),
+    get:(o:InfoMap<S,InstanceType<T>,StageGuard<"I">>) => infoMapGetter(o,S),
+    set:(o:InfoMap<S,InstanceType<T>,StageGuard<"C">>) => infoMapSetter(o,S),
     default:new Map<Keys<S>,InstanceType<T>>(),
   };
   return infoMap;
@@ -51,7 +52,7 @@ export const getMiscReferenceSchemaDef = (arr?:AnyBoolean) => {
   return miscRefOrRefs;
 };
 export const getStatusSchemaDef = <S extends Strings>(statuses:S) => {
-  const statusSchema = new Schema<Status<S,"I">>({
+  const statusSchema = new Schema<Status<S,StageGuard<"I">>>({
     name:{
       type:String,
       required:true,
@@ -64,7 +65,7 @@ export const getStatusSchemaDef = <S extends Strings>(statuses:S) => {
   const status = {
     type:statusSchema,
     default:() => ({name:"New"}),
-    get:(s:Status<S,"I">) => ({name:s.name,time:s.time,...s.info?{info:s.info}:null})
+    get:(s:Status<S,StageGuard<"I">>) => ({name:s.name,time:s.time,...s.info?{info:s.info}:null})
   };
   return status;
 };

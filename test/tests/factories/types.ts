@@ -1,34 +1,33 @@
 import OBACoreApi from "@onebro/oba-core-api";
-import {Keys,Await,GetParameterIfFunc} from "@onebro/oba-common";
-import {modelFactoryHub} from "../../../src";
+import OB, {Keys} from "@onebro/oba-common";
+import {Model} from "../../../src";
 import {
   ApiModelSignatures as Sigs,
-  ApiModelFactoryHub as Hub,
-  getApiModelFactories as Factories,
+  ApiModelFactories,
 } from "../../models";
 
-export type FactoryNames<Ev> = Keys<Hub<Ev>>;
-export type FactoryCRUDMethodNames = "create"|"update"|"fetch"|"query"|"remove";
-export type FactoryCRUDMethodParam<Ev,
-k extends FactoryNames<Ev>,
-l extends FactoryCRUDMethodNames,
-n extends number> =  GetParameterIfFunc<Hub<Ev>[k][l],n>;
-export type FactoryInstance<Ev,k extends FactoryNames<Ev>> = Await<ReturnType<Hub<Ev>[k]["create"]>>;
-export type FactoryInstances<Ev> = Partial<{[k in FactoryNames<Ev>]:FactoryInstance<Ev,k>[];}>;
-export interface FactoryNetwork<Ev> {
-  factories:Hub<Ev>;
-  instances:FactoryInstances<Ev>;
-  init:(core:OBACoreApi<Ev>) => Promise<void>;
+export type FactoryCRUDMethodNames = {
+  "create":"config";
+  "update":"updates";
+  "fetch":"fetches";
+  "query":"queries";
+  "remove":"fetches";
+};
+export interface FactoryNetwork {
+  users:string[];
+  factories:ApiModelFactories;
+  instances:Partial<{[k in Keys<Sigs>]:Model<Sigs[k]>["instance"][];}>;
+  init:(core:OBACoreApi) => Promise<void>;
 }
-export class FactoryNetwork<Ev> {
+export class FactoryNetwork {
+  users = [OB.slugId("John"),OB.slugId("Jim"),OB.slugId("Jenn"),OB.slugId("Jack")];
   constructor(){this.instances = {};}
-  init = async (core:OBACoreApi<Ev>) => {
-    this.factories = await modelFactoryHub<Ev,Sigs>(core,Factories<Ev>());
-    for(const k in this.factories) this.instances[k as FactoryNames<Ev>] = [];
+  init = async (core:OBACoreApi) => {
+    this.factories = await new ApiModelFactories().init(core);
+    for(const k in this.factories) this.instances[k as Keys<Sigs>] = [];
   };
 }
-export type FactoryTestData<Ev,
-k extends FactoryNames<Ev>,
-l extends FactoryCRUDMethodNames,
-n extends 0|1> = (I:FactoryNetwork<Ev>["instances"]) => FactoryCRUDMethodParam<Ev,k,l,n>[];
-export type FactoryTestFunc<Ev,k,l> = (O:FactoryNetwork<Ev>) => Promise<void>;
+export type FactoryTestData<
+k extends Keys<Sigs>,
+l extends Keys<FactoryCRUDMethodNames>> = (O:FactoryNetwork) => Model<Sigs[k]>[FactoryCRUDMethodNames[l]][];
+export type FactoryTestFunc<k,l> = (O:FactoryNetwork) => Promise<void>;

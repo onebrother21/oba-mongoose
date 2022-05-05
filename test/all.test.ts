@@ -1,5 +1,5 @@
-import {Jest} from "./utils";
+import OB from "@onebro/oba-common";
 import {allTests} from "./tests";
 
-Jest.utils.clear();
+OB.clear();
 allTests();

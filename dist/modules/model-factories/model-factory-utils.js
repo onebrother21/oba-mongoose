@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTestPropsSchemaDef = exports.getSettingsSchemaDef = exports.getStatusSchemaDef = exports.getMiscReferenceSchemaDef = exports.getInfoHashMapSchemaDef = exports.getSpecialTypeSchemaDef = void 0;
+exports.getTestPropsSchemaDef = exports.getSettingsSchemaDef = exports.getStatusSchemaDef = exports.getMiscReferenceSchemaDef = exports.getInfoMapSchemaDef = exports.getSpecialTypeSchemaDef = void 0;
 const mongoose_1 = require("mongoose");
 const model_utils_1 = require("../model-utils");
 const getSpecialTypeSchemaDef = (S) => {
@@ -12,7 +12,7 @@ const getSpecialTypeSchemaDef = (S) => {
     return specialType;
 };
 exports.getSpecialTypeSchemaDef = getSpecialTypeSchemaDef;
-const getInfoHashMapSchemaDef = (S, T) => {
+const getInfoMapSchemaDef = (S, T) => {
     const infoMapGetter = (o, S) => {
         const n = {};
         for (const s in S) {
@@ -38,7 +38,7 @@ const getInfoHashMapSchemaDef = (S, T) => {
     };
     return infoMap;
 };
-exports.getInfoHashMapSchemaDef = getInfoHashMapSchemaDef;
+exports.getInfoMapSchemaDef = getInfoMapSchemaDef;
 const getMiscReferenceSchemaDef = (arr) => {
     let miscRefOrRefs;
     const miscRefSchema = new mongoose_1.Schema({

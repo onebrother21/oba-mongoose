@@ -1,35 +1,36 @@
-import {Jest} from "../../utils";
+import OB from "@onebro/oba-common";
+import {J} from "../../utils";
 import {FactoryTestData,FactoryTestFunc,FactoryNetwork} from "./types";
 
 export type profileFactoryTestData = {
-  create:FactoryTestData<null,"profiles","create",0>;
-  fetch:FactoryTestData<null,"profiles","fetch",0>;
-  update:FactoryTestData<null,"profiles","update",1>;
-  query:FactoryTestData<null,"profiles","query",0>;
+  create:FactoryTestData<"profiles","create">;
+  fetch:FactoryTestData<"profiles","fetch">;
+  update:FactoryTestData<"profiles","update">;
+  query:FactoryTestData<"profiles","query">;
 };
 export const profileFactoryTestData:profileFactoryTestData = {
-  create:instances => [
+  create:O => [
     {
-      name:"John",
+      name:O.users[0],
       role:"ADMIN",
       permissions:{cookies:new Date(),location:new Date()},
     },{
-      name:"Jim",
+      name:O.users[1],
       role:"USER",
       permissions:{cookies:new Date(),location:new Date()},
     },{
-      name:"Jenn",
+      name:O.users[2],
       role:"USER",
       permissions:{cookies:new Date(),location:new Date()},
     },
   ],
-  fetch:instances => [instances.profiles[0].id,{name:instances.profiles[1].name}],
-  update:instances => [
+  fetch:O => [O.instances.profiles[0].id,{name:O.instances.profiles[1].name}],
+  update:O => [
     {
       $set:{
-        name:"Jack",
-        status:{name:"Enabled"} as any,
-        "settings.data":{...instances.profiles[0].settings.data,timeout:3600},
+        name:O.users[3],
+        status:{name:"Enabled",time:new Date()},
+        "settings.data":{...O.instances.profiles[0].settings.data,timeout:3600},
         "settings.app.withBal":true,
         "settings.app.optionsOnly":true,
         "permissions.video":new Date(),
@@ -37,100 +38,99 @@ export const profileFactoryTestData:profileFactoryTestData = {
         "stats.views":17,
       },
       $push:{
-        "followers":instances.profiles[1].id,
-        "following":[instances.profiles[1].id],
-        "endorsements":instances.profiles[1].id,
+        "followers":O.instances.profiles[1].id,
+        "following":[O.instances.profiles[1].id],
+        "endorsements":O.instances.profiles[1].id,
       },
-      $pull:{"following":{$in:[instances.profiles[1].id]},},
+      $pull:{"following":{$in:[O.instances.profiles[1].id]},},
     }
   ],
-  query:instances => [
-    {query:{"name":"Jack"}},
+  query:O => [
+    {query:{"name":O.users[3]}},
     {query:{"role":"USER"}},
-    {query:{following:{$in:[instances.profiles[1].id]}}},
+    {query:{following:{$in:[O.instances.profiles[1].id]}}},
   ],
 };
 export type profileFactoryTests = {
-  create:FactoryTestFunc<null,"profiles","create">;
-  fetch:FactoryTestFunc<null,"profiles","fetch">;
-  updateSetAndPush:FactoryTestFunc<null,"profiles","update">;
-  updatePull:FactoryTestFunc<null,"profiles","update">;
-  fetchFinal:FactoryTestFunc<null,"profiles","fetch">;
-  query:FactoryTestFunc<null,"profiles","query">;
+  create:FactoryTestFunc<"profiles","create">;
+  fetch:FactoryTestFunc<"profiles","fetch">;
+  updateSetAndPush:FactoryTestFunc<"profiles","update">;
+  updatePull:FactoryTestFunc<"profiles","update">;
+  fetchFinal:FactoryTestFunc<"profiles","fetch">;
+  query:FactoryTestFunc<"profiles","query">;
 };
 export const profileFactoryTests:profileFactoryTests = {
   create:async O => {
-    const C = profileFactoryTestData.create(O.instances);
+    const C = profileFactoryTestData.create(O);
     for(let i = 0,l = C.length;i<l;i++){
       const o = O.instances.profiles[i] = await O.factories.profiles.create(C[i]);
-      Jest.is(o);
-      Jest.not(o,null);
+      J.is(o);
+      J.not(o,null);
       const j = o.json();
-      Jest.is(j.status.name,"New");
+      J.is(j.status.name,"New");
       switch(i){
-        case 0:{Jest.is(j.name,"John");break;}
-        case 1:{Jest.is(j.name,"Jim");break;}
-        case 2:{Jest.is(j.name,"Jenn");break;}
+        case 0:{J.is(j.name,O.users[0]);break;}
+        case 1:{J.is(j.name,O.users[1]);break;}
+        case 2:{J.is(j.name,O.users[2]);break;}
       }
     }
   },
   fetch:async O => {
-    const F = profileFactoryTestData.fetch(O.instances);
+    const F = profileFactoryTestData.fetch(O);
     for(let i = 0,l = F.length;i<l;i++){
       const f = F[i];
       const o = await O.factories.profiles.fetch(f);
-      Jest.is(o);
-      Jest.not(o,null);
+      J.is(o);
+      J.not(o,null);
     }
   },
   updateSetAndPush:async O => {
-    const U = profileFactoryTestData.update(O.instances);
+    const U = profileFactoryTestData.update(O);
     for(let i = 0,l = U.length;i<l;i++){
       const u = U[i];
       delete u.$pull;
       const q = O.instances.profiles[i].id;
       const o = O.instances.profiles[i] = await O.factories.profiles.update(q,u);
-      Jest.is(o);
-      Jest.not(o,null);
+      J.is(o);
+      J.not(o,null);
     }
   },
   updatePull:async O => {
-    const U = profileFactoryTestData.update(O.instances);
+    const U = profileFactoryTestData.update(O);
     for(let i = 0,l = U.length;i<l;i++){
       const u = U[i];
       delete u.$set;
       delete u.$push;
       const q = O.instances.profiles[i].id;
       const o = O.instances.profiles[i] = await O.factories.profiles.update(q,u);
-      Jest.is(o);
-      Jest.not(o,null);
+      J.is(o);
+      J.not(o,null);
     }
   },
   fetchFinal:async O => {
-    const F = profileFactoryTestData.fetch(O.instances);
+    const F = profileFactoryTestData.fetch(O);
     const o = await O.factories.profiles.fetch(F[0]);
-    Jest.is(o);
-    Jest.not(o,null);
+    J.is(o);
+    J.not(o,null);
     const j = o.json();
-    Jest.is(j.status.name,"Enabled");
-    Jest.is(j.name,"Jack");
+    J.is(j.status.name,"Enabled");
+    J.is(j.name,O.users[3]);
   },
   query:async O => {
-    const Q = profileFactoryTestData.query(O.instances);
+    const Q = profileFactoryTestData.query(O);
     for(let i = 0,l = Q.length;i<l;i++){
       const q = Q[i];
       const o = await O.factories.profiles.query(q);
-      Jest.arr(o);
-      switch(i){
-        case 0:{Jest.is(o.length,1);break;}
-        case 1:{Jest.is(o.length,2);break;}
-        case 2:{Jest.is(o.length,0);break;}
-        default:break;
-      }
+      J.arr(o);
+       /*switch(i){
+        case 0:{J.gt(o.results.length,3);break;}
+        case 1:{J.is(o.results.length,1);break;}
+        case 2:{J.is(o.results.length);break;}
+      }*/
     }
   },
 };
-export const profileFactory = (O:FactoryNetwork<null>) => Jest.utils.desc("Profiles",() => {
+export const ProfileFactoryTests = (O:FactoryNetwork) => J.desc("Profiles",() => {
   it("Create",async () => await profileFactoryTests.create(O),1E9);
   it("Fetch",async () => await profileFactoryTests.fetch(O),1E9);
   it("Update - Set & Push",async () => await profileFactoryTests.updateSetAndPush(O),1E9);

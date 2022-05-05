@@ -1,15 +1,19 @@
-import { Keys,Extends,AnyBoolean } from "@onebro/oba-common";
+import {
+  Keys,
+  Extends,
+  AnyBoolean,
+  PropSelector,
+  CommonPropSelector,
+  SpecialType,
+  Settings,
+  InfoMap, 
+} from "@onebro/oba-common";
 import {
   Model,
   ModelSignature,
-  ModelAsPropSignature,
-  ModelStages,
-  ModelPropSelector,
-  CommonPropSelector,
-  IsObjectId,
-  SpecialType,
-  Settings,
-  InfoHashMap,
+  ModelBaseTypes,
+  Stages,
+  StageGuard,
 } from "../../../src";
 import {
   ProfileStatuses,
@@ -19,17 +23,17 @@ import {
   ProfileStats,
 } from "../dicts";
 
-export type ProfileProps<t extends ModelStages> =
+export type ProfileProps<t extends Stages> =
 CommonPropSelector<"name"|"bio"|"motto"> &
-SpecialType<ProfileRoles,t,"role"> &
+SpecialType<ProfileRoles,StageGuard<t>,"role"> &
 {
   settings:Settings<{optionsOnly:boolean;withBal:boolean}>;
-  permissions:InfoHashMap<ProfilePermissions,Date,t>;
-  socials:InfoHashMap<ProfileSocials,string,t>;
-  stats:InfoHashMap<ProfileStats,number,t>;
+  permissions:InfoMap<ProfilePermissions,Date,StageGuard<t>>;
+  socials:InfoMap<ProfileSocials,string,StageGuard<t>>;
+  stats:InfoMap<ProfileStats,number,StageGuard<t>>;
 };
-export type ProfileRefs<t extends ModelStages> = {};
-export type ProfileMeta<t extends ModelStages> = {_type_:"profile";memberSince:Date;};
+export type ProfileRefs<t extends Stages> = {};
+export type ProfileMeta<t extends Stages> = {_type_:"profile";memberSince:Date;};
 
 export type ProfileConfigKeys = "name"|"role";
 export type ProfileConfigOptKeys = "bio"|"motto"|"settings"|"permissions"|"socials"|"stats";
@@ -44,12 +48,12 @@ export type ProfileSelfRefs = {
 };
 export type ProfileMethods = {};
 
-export type ProfileAllProps<t extends ModelStages> =  ProfileProps<t> & ProfileRefs<t> & ProfileMeta<t>;
-export type ProfileAllPropKeys<t extends ModelStages> = Keys<ProfileAllProps<t>>;
+export type ProfileAllProps<t extends Stages> =  ProfileProps<t> & ProfileRefs<t> & ProfileMeta<t>;
+export type ProfileAllPropKeys<t extends Stages> = Keys<ProfileAllProps<t>>;
 export type ProfilePropSelector<
-t extends ModelStages,
+t extends Stages,
 k extends ProfileAllPropKeys<t> = undefined,
-j extends ProfileAllPropKeys<t> = undefined> = ModelPropSelector<ProfileAllProps<t>,k,j>;
+j extends ProfileAllPropKeys<t> = undefined> = PropSelector<ProfileAllProps<t>,k,j>;
 export type ProfileSignature = ModelSignature<
 ProfilePropSelector<"C",ProfileConfigKeys,ProfileConfigOptKeys>,
 ProfilePropSelector<"I",ProfileInstanceKeys> & ProfileMethods,
@@ -58,8 +62,8 @@ ProfilePropSelector<"J",undefined,ProfilePreviewKeys>,
 ProfileStatuses,
 ProfileSelfRefs>;
 export type Profile = Model<ProfileSignature>;
-export type ProfileAsProp<IsArr extends AnyBoolean,IsUser extends AnyBoolean = undefined> = ModelAsPropSignature<
-Extends<IsArr,true|1,IsObjectId[],IsObjectId>,
+export type ProfileAsProp<IsArr extends AnyBoolean,IsUser extends AnyBoolean = undefined> = ModelBaseTypes<
+Extends<IsArr,true|1,string[],string>,
 Extends<IsArr,true|1,Profile["instance"][],Profile["instance"]>,
 Extends<IsArr,true|1,
 Extends<IsUser,true|1,Profile["json"][],Profile["preview"][]>,

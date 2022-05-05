@@ -1,17 +1,24 @@
 import OBACoreApi from "@onebro/oba-core-api";
-import { Keys } from "@onebro/oba-common";
+import { Values } from "@onebro/oba-common";
 import { Model } from "../model-types";
-import { ModelFactoryConstructors } from "../model-factories";
-import { ModelControllerReqUserRole } from "./model-controller-reqs";
-import { ModelControllerType } from "./model-controller-types";
-export interface ModelController<Ev, Sigs, k extends Keys<Sigs>, Roles> extends ModelControllerType<Ev, Sigs, k, Roles> {
+import { ModelControllerMethods, ModelControllerReqUserRole } from "./model-controller-reqs";
+export declare type ModelControllerBaseType<R, T> = {
+    core: OBACoreApi;
+    privileges: string[];
+    badStatuses: Values<Model<T>["statuses"]>[];
+    unauthorized: (s: string) => void;
+    isAuth: (okto: string, priv?: string[]) => void;
+    isRole: (role: ModelControllerReqUserRole<R>, R: ModelControllerReqUserRole<R>[]) => void;
+    isBadStatus: (o: Model<T>["instance"]) => boolean;
+};
+export declare type ModelControllerType<R, T> = ModelControllerBaseType<R, T> & ModelControllerMethods<R, T>;
+export interface ModelController<R, T> extends ModelControllerType<R, T> {
 }
-export declare class ModelController<Ev, Sigs, k extends Keys<Sigs>, Roles> {
-    core: OBACoreApi<Ev>;
-    constructor(core: OBACoreApi<Ev>);
+export declare class ModelController<R, T> {
+    core: OBACoreApi;
+    constructor(core: OBACoreApi);
     unauthorized: (s: string) => never;
     isAuth: (okto: string, privileges?: string[]) => void;
-    isRole: (role: ModelControllerReqUserRole<Roles>, roles: ModelControllerReqUserRole<Roles>[]) => never;
-    isBadStatus: (o: Model<Sigs[k]>["instance"]) => boolean;
-    init$: (constructors: ModelFactoryConstructors<Ev, Sigs>) => Promise<this>;
+    isRole: (role: ModelControllerReqUserRole<R>, R: ModelControllerReqUserRole<R>[]) => never;
+    isBadStatus: (o: Model<T>["instance"]) => boolean;
 }

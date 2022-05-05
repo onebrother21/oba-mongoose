@@ -1,15 +1,49 @@
 import mongooseUniqueValidator from "mongoose-unique-validator";
 import {Schema,SchemaOptions,Types} from "mongoose";
 import OBACoreApi from "@onebro/oba-core-api";
-import {IsObjectId,Model} from "../model-types";
+import OB,{Enum,AllOfType} from "@onebro/oba-common";
+import {IsObjectId,Model,ModelPopulationRef} from "../model-types";
 import {mapSelectedData} from "../model-utils";
 import {getStatusSchemaDef} from "./model-factory-utils";
-import {ModelFactoryType,ModelFactoryConfig} from "./model-factory-types";
 
-export interface ModelFactory<Ev,Sig> extends ModelFactoryType<Ev,Sig> {}
-export class ModelFactory<Ev,Sig> {
-  constructor(public core:OBACoreApi<Ev>,public config:ModelFactoryConfig<Sig>){
+export type SchemaDefinition = any;
+export type ModelFactoryConfig<T> = {
+  modelName:string;
+  businessName:string;
+  collectionName:string;
+  definition:SchemaDefinition;
+  refs:ModelPopulationRef[];
+  virtuals:Enum<{get?:(...a:any) => any;set?:(...a:any) => void;}>;
+  methods:Partial<AllOfType<Model<T>["instance"],Function>>;
+  statuses:Model<T>["statuses"];
+  opts:SchemaOptions;
+};
+export interface ModelFactory<T> {
+  core:OBACoreApi;
+  model:Model<T>["ctr"];
+  config:ModelFactoryConfig<T>;
+  autopopulate:(o:Model<T>["instance"],s?:boolean|0|1) => Promise<Model<T>["instance"]>;
+  create_:(c:Model<T>["config"]) => Promise<Model<T>["instance"]>;
+  create:(c:Model<T>["config"]) => Promise<Model<T>["instance"]>;
+  find:(q:Model<T>["fetches"]) => Promise<Model<T>["instance"]>;
+  findR:(q:Model<T>["fetches"]) => Promise<Model<T>["instance"]>;
+  fetch:(q:Model<T>["fetches"]) => Promise<Model<T>["instance"]>;
+  exists:(q:Model<T>["fetches"]) => Promise<boolean>;
+  shouldNotExist:(q:Model<T>["fetches"]) => Promise<void>;
+  update_:(q:Model<T>["fetches"],u:Model<T>["updates"]) => Promise<Model<T>["instance"]>;
+  update:(q:Model<T>["fetches"],u:Model<T>["updates"]) => Promise<Model<T>["instance"]>;
+  updateMany:(q:Model<T>["fetches"],u:Model<T>["updates"]) => Promise<Model<T>["instance"][]>;
+  remove_:(q:Model<T>["fetches"]) => Promise<Model<T>["instance"]>;
+  remove:(q:Model<T>["fetches"]) => Promise<Model<T>["instance"]>;
+  removeMany:(q:Model<T>["fetches"]) => Promise<(Model<T>["instance"])[]>;
+  query:(q:Model<T>["queries"]) => Promise<Model<T>["json"][]>;
+  search:(q:string) => Promise<Model<T>["json"][]>;
+  count:(q?:Model<T>["queries"]) => Promise<number|any>;
+}
+export class ModelFactory<T> {
+  constructor(public core:OBACoreApi,public config:ModelFactoryConfig<T>){
     const {refs,businessName} = config;
+    const {core:{e:{_:E}}} = this;
     this.autopopulate = async (o,s) => {
       if(s) await o.save();
       await o.populate(this.config.refs);
@@ -19,13 +53,13 @@ export class ModelFactory<Ev,Sig> {
     this.create = this.create_;
     this.find = async q => this.isObjectId(q)?await this.m.findById(q):await this.m.findOne(this.m.translateAliases(q));
     this.fetch = async q => {
-      if(q == undefined || q == null) throw this.core.e.badinfo();
+      if(q == undefined || q == null) throw E.badinfo();
       const o = await this.find(q);
-      if(!o) throw this.core.e.doesNotExist(businessName);
+      if(!o) throw E.doesNotExist(businessName);
       return await this.autopopulate(o);
     };
     this.exists = async q => !!(await this.find(q));
-    this.shouldNotExist = async q => {if(await this.exists(q)) throw this.core.e.existing(businessName);};
+    this.shouldNotExist = async q => {if(await this.exists(q)) throw E.existing(businessName);};
     this.update_ = async (q,u) => {
       const o = this.isObjectId(q)?
       await this.m.findByIdAndUpdate(q,u as any,{new:true}):
@@ -44,13 +78,13 @@ export class ModelFactory<Ev,Sig> {
       .skip(skip||0)
       .sort(sort||"asc")
       .exec();
-      const results = this.getSelectedData(select,R as Model<Sig>["instance"][]);
-      return results as Model<Sig>["json"][];
+      const results = this.getSelectedData(select,R as Model<T>["instance"][]);
+      return results as Model<T>["json"][];
     };
     this.search = async q => {
       const R = await this.m.find({$regex:q,options:"i"} as any);
-      const results = this.getSelectedData("json",R as Model<Sig>["instance"][]);
-      return results as Model<Sig>["json"][];
+      const results = this.getSelectedData("json",R as Model<T>["instance"][]);
+      return results as Model<T>["json"][];
     };
     this.count = async () => await this.m.estimatedDocumentCount();
   }
@@ -65,8 +99,7 @@ export class ModelFactory<Ev,Sig> {
     catch(e){return false;}
   };
   createSchema = () => {
-    const appname = this.core.vars.name;
-    const datasig = "::" + process.env[appname.toLocaleUpperCase() + "_DATA_ID"];
+    const datasig = "::" + OB.appvar("_DATA_ID");
     const {
       definition,
       virtuals,
@@ -80,7 +113,7 @@ export class ModelFactory<Ev,Sig> {
       toJSON:{getters:true,virtuals:true},
       timestamps:{createdAt:"created",updatedAt:"updated"},
     };
-    const schema = new Schema<Model<Sig>["instance"]>({
+    const schema = new Schema<Model<T>["instance"]>({
       ...definition,
       desc:{type:String},
       info:{type:Object},
@@ -98,16 +131,16 @@ export class ModelFactory<Ev,Sig> {
     return schema;
   };
   init = async () => {
-    const dbName = this.core.vars.name;
+    //const dbName = this.core.vars.name;
     const {modelName,collectionName} = this.config;
     const schema = this.createSchema();
-    this.model = await this.core.db.model(dbName,modelName,schema,collectionName);
+    this.model = await this.core.db.model(modelName,schema,collectionName);
     await this.model.init();
     return this;
   };
   getSelectedData = (
-    s:Model<Sig>["queries"]["select"],
-    R:Model<Sig>["instance"][]) => {
+    s:Model<T>["queries"]["select"],
+    R:Model<T>["instance"][]) => {
     return ["json","j"].includes(s as any)?R.map(r => r.json()):
     ["preview","p"].includes(s as any)?R.map(r => r.preview):
     mapSelectedData(s as string[],R as any[]);

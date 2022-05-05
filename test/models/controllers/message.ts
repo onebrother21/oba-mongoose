@@ -1,34 +1,36 @@
 import OBACoreApi from "@onebro/oba-core-api";
-import {ModelController} from "../../../src";
-import {ApiModelSignatures} from "../types";
+import {ModelController,Model} from "../../../src";
 import {ApiUserRoles} from "../dicts";
+import {MessageSignature} from "../types";
+import {ApiModelFactories,MessageFactory} from "../factories";
 
-export interface MessageController<Ev> extends ModelController<Ev,ApiModelSignatures,"messages",ApiUserRoles> {}
-export class MessageController<Ev> extends ModelController<Ev,ApiModelSignatures,"messages",ApiUserRoles> {
-  constructor(public core:OBACoreApi<Ev>){
+export interface MessageController extends ModelController<ApiUserRoles,MessageSignature> {}
+export class MessageController extends ModelController<ApiUserRoles,MessageSignature> {
+  constructor(public core:OBACoreApi,public factories:ApiModelFactories){
     super(core);
-    this.create$ = async ({body:newObj,appuser:username,authtkn:{okto}}) => {
+    const messages = factories["messages"];
+    this.create$ = async ({body,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto))
-      .then(async () => await this.factories.messages.create(newObj))
+      .then(async () => await messages.create(body))
       .then(o => o.json());
     };
     this.fetch$ = async ({params,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto))
-      .then(async () => await this.factories.messages.fetch((params as any).id||params))
+      .then(async () => await messages.fetch((params as any).id||params))
       .then(o => o.json());
     };
-    this.update$ = async ({params,body:updates,appuser:username,authtkn:{okto}}) => {
+    this.update$ = async ({params,body:updates,appuser:username,authtkn:{okto}}:any) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto))
-      .then(async () => await this.factories.messages.update((params as any).id||params,updates))
+      .then(async () => await messages.update((params as any).id||params,updates))
       .then(o => o.json());
     };
     this.remove$ = async ({params:{id},appuser:username,authtkn:{okto,role}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto))
-      .then(async () => await this.factories.messages.update(id,{$set:{
+      .then(async () => await messages.update(id,{$set:{
         status:{name:"Deleted",time:new Date(),info:{username,role}}
       }}))
       .then(o => o.json());
@@ -37,19 +39,19 @@ export class MessageController<Ev> extends ModelController<Ev,ApiModelSignatures
       return await Promise.resolve()
       .then(() => this.isAuth(okto))
       .then(() => this.isRole(role,["ADMIN","SUPER","_SA_"]))
-      .then(async () => await this.factories.messages.remove(id))
+      .then(async () => await messages.remove(id))
       .then(o => o.json());
     };
     this.query$ = async ({query,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto))
-      .then(async () => await this.factories.messages.query(query))
+      .then(async () => await messages.query(query))
       .then(o => ({results:o}));//.map(n => {console.log(n);return n.json()})}));
     };
     this.search$ = async ({query:{text},appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto))
-      .then(async () => await this.factories.messages.search(text))
+      .then(async () => await messages.search(text))
       .then(o => ({results:o}));//.map(n => n.json())}));
     };
   }

@@ -1,35 +1,37 @@
 import OBACoreApi from "@onebro/oba-core-api";
 import {ModelController} from "../../../src";
-import {ApiModelSignatures} from "../types";
+import {ProfileSignature} from "../types";
 import {ApiUserRoles} from "../dicts";
+import {ApiModelFactories} from "../factories";
 
-export interface ProfileController<Ev> extends ModelController<Ev,ApiModelSignatures,"profiles",ApiUserRoles> {}
-export class ProfileController<Ev> extends ModelController<Ev,ApiModelSignatures,"profiles",ApiUserRoles> {
-  constructor(public core:OBACoreApi<Ev>){
+export interface ProfileController extends ModelController<ApiUserRoles,ProfileSignature> {}
+export class ProfileController extends ModelController<ApiUserRoles,ProfileSignature> {
+  constructor(public core:OBACoreApi,public factories:ApiModelFactories){
+    const profiles = factories["profiles"];
     super(core);
     this.create$ = async ({body:newObj,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
-      .then(async () => await this.factories.profiles.shouldNotExist({name:username}))
-      .then(async () => await this.factories.profiles.create({...newObj,name:username}))
+      .then(async () => await profiles.shouldNotExist({name:username}))
+      .then(async () => await profiles.create({...newObj,name:username}))
       .then(o => o.json());
     };
     this.fetch$ = async ({params,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
-      .then(async () => await this.factories.profiles.fetch((params as any).id||params))
+      .then(async () => await profiles.fetch((params as any).id||params))
       .then(o => o.json());
     };
-    this.update$ = async ({params,body:updates,appuser:username,authtkn:{okto}}) => {
+    this.update$ = async ({params,body:updates,appuser:username,authtkn:{okto}}:any) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
-      .then(async () => await this.factories.profiles.update((params as any).id||params,updates))
+      .then(async () => await profiles.update((params as any).id||params,updates))
       .then(o => o.json());
     };
     this.remove$ = async ({params:{id},appuser:username,authtkn:{okto,role}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
-      .then(async () => await this.factories.profiles.update(id,{$set:{
+      .then(async () => await profiles.update(id,{$set:{
         status:{name:"Deleted",time:new Date(),info:{username,role}}
       }}))
       .then(o => o.json());
@@ -38,19 +40,19 @@ export class ProfileController<Ev> extends ModelController<Ev,ApiModelSignatures
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(() => this.isRole(role,["ADMIN","SUPER","_SA_"]))
-      .then(async () => await this.factories.profiles.remove(id))//activity line
+      .then(async () => await profiles.remove(id))//activity line
       .then(o => o.json());
     };
     this.query$ = async ({query,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
-      .then(async () => await this.factories.profiles.query(query))
+      .then(async () => await profiles.query(query))
       .then(o => ({results:o}));//.map(n => n.json())}));
     };
     this.search$ = async ({query:{text},appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
-      .then(async () => await this.factories.profiles.search(text))
+      .then(async () => await profiles.search(text))
       .then(o => ({results:o}));//.map(n => n.json())}));
     };
   }

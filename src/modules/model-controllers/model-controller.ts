@@ -1,32 +1,37 @@
 import OBACoreApi from "@onebro/oba-core-api";
-import {Keys} from "@onebro/oba-common";
+import {Keys,Values} from "@onebro/oba-common";
 import {Model} from "../model-types";
-import {ModelFactoryConstructors,modelFactoryHub} from "../model-factories";
-import {ModelControllerReqUserRole} from "./model-controller-reqs";
-import {ModelControllerType} from "./model-controller-types";
+import {ModelFactoryHub} from "../model-factories";
+import {ModelControllerMethods,ModelControllerReqUserRole} from "./model-controller-reqs";
 
-export interface ModelController<Ev,Sigs,k extends Keys<Sigs>,Roles> extends ModelControllerType<Ev,Sigs,k,Roles> {}
-export class ModelController<Ev,Sigs,k extends Keys<Sigs>,Roles> {
-  constructor(public core:OBACoreApi<Ev>){
+export type ModelControllerBaseType<R,T> = {
+  core:OBACoreApi;
+  privileges:string[];
+  badStatuses:Values<Model<T>["statuses"]>[];
+  unauthorized:(s:string) => void;
+  isAuth:(okto:string,priv?:string[]) => void;
+  isRole:(role:ModelControllerReqUserRole<R>,R:ModelControllerReqUserRole<R>[]) => void;
+  isBadStatus:(o:Model<T>["instance"]) => boolean;
+};
+export type ModelControllerType<R,T> = ModelControllerBaseType<R,T> & ModelControllerMethods<R,T>;
+export interface ModelController<R,T> extends ModelControllerType<R,T> {}
+export class ModelController<R,T> {
+  constructor(public core:OBACoreApi){
     this.privileges = ["use-api"];
     this.badStatuses = ["Deleted" as any];
   }
-  unauthorized = (s:string) => {throw this.core.e.unauthorized(s);};
+  unauthorized = (s:string) => {throw this.core.e._.unauthorized(s);};
   isAuth = (okto:string,privileges?:string[]) => {
     switch(true){
       case !(privileges||this.privileges).includes(okto):this.unauthorized("api privileges");break;
       default:break;
     }
   };
-  isRole = (role:ModelControllerReqUserRole<Roles>,roles:ModelControllerReqUserRole<Roles>[]) => {
+  isRole = (role:ModelControllerReqUserRole<R>,R:ModelControllerReqUserRole<R>[]) => {
     switch(true){
-      case !roles.includes(role):return this.unauthorized("api privileges");
+      case !R.includes(role):return this.unauthorized("api privileges");
       default:break;
     }
   };
-  isBadStatus = (o:Model<Sigs[k]>["instance"]) => this.badStatuses.includes(o.status.name as any);
-  init$ = async (constructors:ModelFactoryConstructors<Ev,Sigs>) => {
-    this.factories = await modelFactoryHub<Ev,Sigs>(this.core,constructors);
-    return this;
-  };
+  isBadStatus = (o:Model<T>["instance"]) => this.badStatuses.includes(o.status.name as any);
 }

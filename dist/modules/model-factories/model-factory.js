@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModelFactory = void 0;
 const mongoose_unique_validator_1 = __importDefault(require("mongoose-unique-validator"));
 const mongoose_1 = require("mongoose");
+const oba_common_1 = __importDefault(require("@onebro/oba-common"));
 const model_utils_1 = require("../model-utils");
 const model_factory_utils_1 = require("./model-factory-utils");
 class ModelFactory {
@@ -33,8 +34,7 @@ class ModelFactory {
             }
         };
         this.createSchema = () => {
-            const appname = this.core.vars.name;
-            const datasig = "::" + process.env[appname.toLocaleUpperCase() + "_DATA_ID"];
+            const datasig = "::" + oba_common_1.default.appvar("_DATA_ID");
             const { definition, virtuals, methods, statuses, opts, } = this.config;
             const schemaOpts = Object.assign(Object.assign({}, opts), { toObject: { getters: true, virtuals: true }, toJSON: { getters: true, virtuals: true }, timestamps: { createdAt: "created", updatedAt: "updated" } });
             const schema = new mongoose_1.Schema(Object.assign(Object.assign(Object.assign({}, definition), { desc: { type: String }, info: { type: Object } }), (statuses ? { status: (0, model_factory_utils_1.getStatusSchemaDef)(statuses) } : null)), schemaOpts);
@@ -54,10 +54,10 @@ class ModelFactory {
             return schema;
         };
         this.init = () => __awaiter(this, void 0, void 0, function* () {
-            const dbName = this.core.vars.name;
+            //const dbName = this.core.vars.name;
             const { modelName, collectionName } = this.config;
             const schema = this.createSchema();
-            this.model = yield this.core.db.model(dbName, modelName, schema, collectionName);
+            this.model = yield this.core.db.model(modelName, schema, collectionName);
             yield this.model.init();
             return this;
         });
@@ -67,6 +67,7 @@ class ModelFactory {
                     (0, model_utils_1.mapSelectedData)(s, R);
         };
         const { refs, businessName } = config;
+        const { core: { e: { _: E } } } = this;
         this.autopopulate = (o, s) => __awaiter(this, void 0, void 0, function* () {
             if (s)
                 yield o.save();
@@ -78,15 +79,15 @@ class ModelFactory {
         this.find = (q) => __awaiter(this, void 0, void 0, function* () { return this.isObjectId(q) ? yield this.m.findById(q) : yield this.m.findOne(this.m.translateAliases(q)); });
         this.fetch = (q) => __awaiter(this, void 0, void 0, function* () {
             if (q == undefined || q == null)
-                throw this.core.e.badinfo();
+                throw E.badinfo();
             const o = yield this.find(q);
             if (!o)
-                throw this.core.e.doesNotExist(businessName);
+                throw E.doesNotExist(businessName);
             return yield this.autopopulate(o);
         });
         this.exists = (q) => __awaiter(this, void 0, void 0, function* () { return !!(yield this.find(q)); });
         this.shouldNotExist = (q) => __awaiter(this, void 0, void 0, function* () { if (yield this.exists(q))
-            throw this.core.e.existing(businessName); });
+            throw E.existing(businessName); });
         this.update_ = (q, u) => __awaiter(this, void 0, void 0, function* () {
             const o = this.isObjectId(q) ?
                 yield this.m.findByIdAndUpdate(q, u, { new: true }) :
