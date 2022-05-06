@@ -103,7 +103,8 @@ export const messageControllerTests:messageControllerTests = {
   create:async O => {
     const C = messageControllerTestData.create(O);
     for(let i = 0,l = C.length;i<l;i++){
-      const o = O.jsons.messages[i] = await O.controllers.messages.create$(C[i]);
+      const {data:o} = await O.controllers.messages.create$(C[i]);
+      O.jsons.messages[i] = o;
       J.is(o);
       J.not(o,null);
       J.is(o.status.name,"New");
@@ -118,7 +119,7 @@ export const messageControllerTests:messageControllerTests = {
   fetch:async O => {
     const F = messageControllerTestData.fetch(O);
     for(let i = 0,l = F.length;i<l;i++){
-      const o = await O.controllers.messages.fetch$(F[i]);
+      const {data:o} = await O.controllers.messages.fetch$(F[i]);
       J.is(o);
       J.not(o,null);
     }
@@ -128,7 +129,8 @@ export const messageControllerTests:messageControllerTests = {
     for(let i = 0,l = U.length;i<l;i++){
       const req = U[i];
       delete req.body.$pull;
-      const o = O.jsons.messages[i] = await O.controllers.messages.update$(req);
+      const {data:o} = await O.controllers.messages.update$(req);
+      O.jsons.messages[i] = o;
       J.is(o);
       J.not(o,null);
     }
@@ -139,14 +141,15 @@ export const messageControllerTests:messageControllerTests = {
       const req = U[i];
       delete req.body.$set;
       delete req.body.$push;
-      const o = O.jsons.messages[i] = await O.controllers.messages.update$(req);
+      const {data:o} = await O.controllers.messages.update$(req);
+      O.jsons.messages[i] = o;
       J.is(o);
       J.not(o,null);
     }
   },
   fetchFinal:async O => {
     const F = messageControllerTestData.fetch(O);
-    const o = await O.controllers.messages.fetch$(F[0]);
+    const {data:o} = await O.controllers.messages.fetch$(F[0]);
     J.is(o);
     J.not(o,null);
     J.is(o.status.name.toLocaleUpperCase(),"SEEN");
@@ -155,7 +158,7 @@ export const messageControllerTests:messageControllerTests = {
   query:async O => {
     const Q = messageControllerTestData.query(O);
     for(let i = 0,l = Q.length;i<l;i++){
-      const o = await O.controllers.messages.query$(Q[i]);
+      const {data:o} = await O.controllers.messages.query$(Q[i]);
       J.is(o);
       J.arr(o.results);
       /*switch(i){

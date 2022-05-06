@@ -1,4 +1,4 @@
-import {Values,Strings} from "@onebro/oba-common";
+import {Values,Strings, AnyBoolean} from "@onebro/oba-common";
 import {IsObjectId,Model,ModelFetchObject} from "../model-types";
 
 export type ModelControllerConfig<T> = Model<T>["config"];
@@ -26,6 +26,7 @@ ModelControllerReqUserCreds<R> &
 ModelControllerReqParams<P> &
 ModelControllerReqBody<B> &
 ModelControllerReqQuery<Q>;
+export type ModelControllerResp<T> = {user:string;data:T;auth:AnyBoolean;};
 export type ModelControllerBaseReqs<R,T> = {
   C:ModelControllerReq<undefined,ModelControllerConfig<T>,undefined,R>;
   F:ModelControllerReq<ModelControllerFetches<T>,undefined,undefined,R>;
@@ -46,13 +47,13 @@ export type ModelControllerExtReqs<R,T> = {
 };
 export type ModelControllerReqs<R,T> = ModelControllerBaseReqs<R,T> & ModelControllerExtReqs<R,T>;
 export type ModelControllerMethods<R,T> = {
-  create$:(req:ModelControllerReqs<R,T>["create$"]) => Promise<ModelControllerJson<T>>;
-  fetch$:(req:ModelControllerReqs<R,T>["fetch$"]) => Promise<ModelControllerJson<T>>;
-  update$:(req:ModelControllerReqs<R,T>["update$"]) => Promise<ModelControllerJson<T>>;
-  updateMany$:(req:ModelControllerReqs<R,T>["update$"]) => Promise<{results:(IsObjectId|ModelControllerJson<T>)[]}>;
-  remove$:(req:ModelControllerReqs<R,T>["remove$"]) => Promise<ModelControllerJson<T>>;
-  remove$$:(req:ModelControllerReqs<R,T>["remove$$"]) => Promise<ModelControllerJson<T>>;
-  removeMany$:(req:ModelControllerReqs<R,T>["remove$"]) => Promise<{results:(IsObjectId|ModelControllerJson<T>)[]}>;
-  query$:(req:ModelControllerReqs<R,T>["query$"]) => Promise<{results:(IsObjectId|ModelControllerJson<T>)[]}>;
-  search$:(req:ModelControllerReqs<R,T>["search$"]) => Promise<{results:(IsObjectId|ModelControllerJson<T>)[]}>;
+  create$:(req:ModelControllerReqs<R,T>["create$"]) => Promise<ModelControllerResp<ModelControllerJson<T>>>;
+  fetch$:(req:ModelControllerReqs<R,T>["fetch$"]) => Promise<ModelControllerResp<ModelControllerJson<T>>>;
+  update$:(req:ModelControllerReqs<R,T>["update$"]) => Promise<ModelControllerResp<ModelControllerJson<T>>>;
+  updateMany$:(req:ModelControllerReqs<R,T>["update$"]) => Promise<ModelControllerResp<{results:(IsObjectId|ModelControllerJson<T>)[]}>>;
+  remove$:(req:ModelControllerReqs<R,T>["remove$"]) => Promise<ModelControllerResp<ModelControllerJson<T>>>;
+  remove$$:(req:ModelControllerReqs<R,T>["remove$$"]) => Promise<ModelControllerResp<ModelControllerJson<T>>>;
+  removeMany$:(req:ModelControllerReqs<R,T>["remove$"]) => Promise<ModelControllerResp<{results:(IsObjectId|ModelControllerJson<T>)[]}>>;
+  query$:(req:ModelControllerReqs<R,T>["query$"]) => Promise<ModelControllerResp<{results:(IsObjectId|ModelControllerJson<T>)[]}>>;
+  search$:(req:ModelControllerReqs<R,T>["search$"]) => Promise<ModelControllerResp<{results:(IsObjectId|ModelControllerJson<T>)[]}>>;
 };

@@ -134,8 +134,8 @@ export const profileControllerTests:profileControllerTests = {
   create:async O => {
     const C = profileControllerTestData.create(O);
     for(let i = 0,l = C.length;i<l;i++){
-      const o = O.jsons.profiles[i] = await O.controllers.profiles.create$(C[i]);
-      console.log(C[i],o)
+      const {data:o} = await O.controllers.profiles.create$(C[i]);
+      O.jsons.profiles[i] = o;
       J.is(o);
       J.not(o,null);
       J.is(o.status.name,"New");
@@ -149,7 +149,7 @@ export const profileControllerTests:profileControllerTests = {
   fetch:async O => {
     const F = profileControllerTestData.fetch(O);
     for(let i = 0,l = F.length;i<l;i++){
-      const o = await O.controllers.profiles.fetch$(F[i]);
+      const {data:o} = await O.controllers.profiles.fetch$(F[i]);
       J.is(o);
       J.not(o,null);
     }
@@ -159,7 +159,8 @@ export const profileControllerTests:profileControllerTests = {
     for(let i = 0,l = U.length;i<l;i++){
       const req = U[i];
       delete req.body.$pull;
-      const o = O.jsons.profiles[i] = await O.controllers.profiles.update$(req);
+      const {data:o} = await O.controllers.profiles.update$(req);
+      O.jsons.profiles[i] = o;
       J.is(o);
       J.not(o,null);
     }
@@ -170,14 +171,15 @@ export const profileControllerTests:profileControllerTests = {
       const req = U[i];
       delete req.body.$set;
       delete req.body.$push;
-      const o = O.jsons.profiles[i] = await O.controllers.profiles.update$(req);
+      const {data:o} = await O.controllers.profiles.update$(req);
+      O.jsons.profiles[i] = o;
       J.is(o);
       J.not(o,null);
     }
   },
   fetchFinal:async O => {
     const F = profileControllerTestData.fetch(O);
-    const o = await O.controllers.profiles.fetch$(F[0]);
+    const {data:o} = await O.controllers.profiles.fetch$(F[0]);
     J.is(o);
     J.not(o,null);
     J.is(o.status.name,"Enabled");
@@ -188,7 +190,7 @@ export const profileControllerTests:profileControllerTests = {
   query:async O => {
     const Q = profileControllerTestData.query(O);
     for(let i = 0,l = Q.length;i<l;i++){
-      const o = await O.controllers.profiles.query$(Q[i]);
+      const {data:o} = await O.controllers.profiles.query$(Q[i]);
       J.is(o);
       J.arr(o.results);
        /*switch(i){

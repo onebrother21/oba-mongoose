@@ -14,19 +14,19 @@ export class ProfileController extends ModelController<ApiUserRoles,ProfileSigna
       .then(() => this.isAuth(okto,["use-api"]))
       .then(async () => await profiles.shouldNotExist({name:username}))
       .then(async () => await profiles.create({...newObj,name:username}))
-      .then(o => o.json());
+      .then(o => ({user:username,data:o.json(),auth:true}));
     };
     this.fetch$ = async ({params,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(async () => await profiles.fetch((params as any).id||params))
-      .then(o => o.json());
+      .then(o => ({user:username,data:o.json(),auth:true}));
     };
     this.update$ = async ({params,body:updates,appuser:username,authtkn:{okto}}:any) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(async () => await profiles.update((params as any).id||params,updates))
-      .then(o => o.json());
+      .then(o => ({user:username,data:o.json(),auth:true}));
     };
     this.remove$ = async ({params:{id},appuser:username,authtkn:{okto,role}}) => {
       return await Promise.resolve()
@@ -34,26 +34,26 @@ export class ProfileController extends ModelController<ApiUserRoles,ProfileSigna
       .then(async () => await profiles.update(id,{$set:{
         status:{name:"Deleted",time:new Date(),info:{username,role}}
       }}))
-      .then(o => o.json());
+      .then(o => ({user:username,data:o.json(),auth:true}));
     };
-    this.remove$$ = async ({params:{id,adminId},authtkn:{okto,role}}) => {
+    this.remove$$ = async ({params:{id,adminId},appuser:username,authtkn:{okto,role}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(() => this.isRole(role,["ADMIN","SUPER","_SA_"]))
       .then(async () => await profiles.remove(id))//activity line
-      .then(o => o.json());
+      .then(o => ({user:username,data:o.json(),auth:true}));
     };
     this.query$ = async ({query,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(async () => await profiles.query(query))
-      .then(o => ({results:o}));//.map(n => n.json())}));
+      .then(o => ({user:username,data:{results:o},auth:true}));
     };
     this.search$ = async ({query:{text},appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(async () => await profiles.search(text))
-      .then(o => ({results:o}));//.map(n => n.json())}));
+      .then(o => ({user:username,data:{results:o},auth:true}));
     };
   }
 }
