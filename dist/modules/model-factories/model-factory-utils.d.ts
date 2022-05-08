@@ -1,12 +1,12 @@
 import { Schema } from "mongoose";
 import { Strings, Keys, Values, Constructor, AnyBoolean, Status, Settings, InfoMap } from "@onebro/oba-common";
 import { ModelMiscReference, StageGuard } from "../model-types";
-export declare const getSpecialTypeSchemaDef: <S extends Strings>(S: S) => {
+export declare const getSpecialTypeSchemaDef: <S extends Strings<undefined>>(S: S) => {
     type: StringConstructor;
     get: (s: Keys<S>) => S[Keys<S>];
     set: (s: Values<S>) => string;
 };
-export declare const getInfoMapSchemaDef: <S extends Strings, T extends Constructor<any>>(S: S, T: T) => {
+export declare const getInfoMapSchemaDef: <S extends Strings<undefined>, T extends Constructor<any>>(S: S, T: T) => {
     type: MapConstructor;
     of: T;
     get: (o: import("@onebro/oba-common").InfoMapOne<S, InstanceType<T>>) => import("@onebro/oba-common").InfoMapTwo<S, InstanceType<T>>;
@@ -20,7 +20,7 @@ export declare const getMiscReferenceSchemaDef: (arr?: AnyBoolean) => {
     type: Schema<ModelMiscReference>;
     default?: undefined;
 };
-export declare const getStatusSchemaDef: <S extends Strings>(statuses: S) => {
+export declare const getStatusSchemaDef: <S extends Strings<undefined>>(statuses: S) => {
     type: Schema<Status<S, true>>;
     default: () => {
         name: string;

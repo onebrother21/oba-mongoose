@@ -1,5 +1,4 @@
-import { Keys, Enum, Overwrite, Extends } from "@onebro/oba-common";
-import { DotNotation } from "./model-lvl-util-types";
+import { Keys, Enum, Overwrite, Extends, DotNotation } from "@onebro/oba-common";
 import { IsObjectId, IsPrimitiveGuard } from "./model-lvl-1-types";
 import { ModelL2 } from "./model-lvl-2-types";
 /** LEVEL THREE MODEL TYPES */
