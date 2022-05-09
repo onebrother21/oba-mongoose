@@ -1,4 +1,4 @@
-import OBACoreApi from "@onebro/oba-core-api";
+import OBACore from "@onebro/oba-core";
 import {AnyBoolean} from "@onebro/oba-common";
 import {Schema} from "mongoose";
 import {
@@ -102,4 +102,4 @@ export const profileFactoryConfig:ProfileFactoryConfig = {
   virtuals:profileVirtuals,
   methods:profileMethods,
 };
-export class ProfileFactory extends ModelFactory<ProfileSignature> {constructor(core:OBACoreApi){super(core,profileFactoryConfig);}}
+export class ProfileFactory extends ModelFactory<ProfileSignature> {constructor(core:OBACore){super(core,profileFactoryConfig);}}

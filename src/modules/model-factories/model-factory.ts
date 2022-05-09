@@ -1,6 +1,6 @@
 import mongooseUniqueValidator from "mongoose-unique-validator";
 import {Schema,SchemaOptions,Types} from "mongoose";
-import OBACoreApi from "@onebro/oba-core-api";
+import OBACore from "@onebro/oba-core";
 import OB,{Enum,AllOfType} from "@onebro/oba-common";
 import {IsObjectId,Model,ModelPopulationRef} from "../model-types";
 import {mapSelectedData} from "../model-utils";
@@ -19,7 +19,7 @@ export type ModelFactoryConfig<T> = {
   opts:SchemaOptions;
 };
 export interface ModelFactory<T> {
-  core:OBACoreApi;
+  core:OBACore;
   model:Model<T>["ctr"];
   config:ModelFactoryConfig<T>;
   autopopulate:(o:Model<T>["instance"],s?:boolean|0|1) => Promise<Model<T>["instance"]>;
@@ -41,7 +41,7 @@ export interface ModelFactory<T> {
   count:(q?:Model<T>["queries"]) => Promise<number|any>;
 }
 export class ModelFactory<T> {
-  constructor(public core:OBACoreApi,public config:ModelFactoryConfig<T>){
+  constructor(public core:OBACore,public config:ModelFactoryConfig<T>){
     const {refs,businessName} = config;
     const {core:{e:{_:E}}} = this;
     this.autopopulate = async (o,s) => {

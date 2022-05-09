@@ -2,7 +2,7 @@
 /// <reference types="mongoose/types/error" />
 /// <reference types="mongoose/types/connection" />
 import { Schema, SchemaOptions } from "mongoose";
-import OBACoreApi from "@onebro/oba-core-api";
+import OBACore from "@onebro/oba-core";
 import { Enum, AllOfType } from "@onebro/oba-common";
 import { IsObjectId, Model, ModelPopulationRef } from "../model-types";
 export declare type SchemaDefinition = any;
@@ -21,7 +21,7 @@ export declare type ModelFactoryConfig<T> = {
     opts: SchemaOptions;
 };
 export interface ModelFactory<T> {
-    core: OBACoreApi;
+    core: OBACore;
     model: Model<T>["ctr"];
     config: ModelFactoryConfig<T>;
     autopopulate: (o: Model<T>["instance"], s?: boolean | 0 | 1) => Promise<Model<T>["instance"]>;
@@ -43,9 +43,9 @@ export interface ModelFactory<T> {
     count: (q?: Model<T>["queries"]) => Promise<number | any>;
 }
 export declare class ModelFactory<T> {
-    core: OBACoreApi;
+    core: OBACore;
     config: ModelFactoryConfig<T>;
-    constructor(core: OBACoreApi, config: ModelFactoryConfig<T>);
+    constructor(core: OBACore, config: ModelFactoryConfig<T>);
     get m(): import("mongoose").Model<import("../model-types").IsModelSignature<T>["I"] & Omit<import("@onebro/oba-common").Entity, "id"> & {
         id: IsObjectId;
         status: import("../model-types").IsModelSignature<T>["S"] extends import("@onebro/oba-common").Strings<undefined> ? import("@onebro/oba-common").Status<import("../model-types").IsModelSignature<T>["S"], true> : never;

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import OBACoreApi,{coreConfig} from "@onebro/oba-core-api";
+import OBACore,{coreConfig} from "@onebro/oba-core";
 import OB from "@onebro/oba-common";
 
 export const App = {
@@ -18,7 +18,7 @@ export const App = {
   initCore:async () => {
     try{
       const {vars,db,errors} = coreConfig();
-      const core:OBACoreApi = new OBACoreApi({vars,db,errors});
+      const core:OBACore = new OBACore({vars,db,errors});
       await core.init(1);
       return core;
     }

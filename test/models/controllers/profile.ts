@@ -1,4 +1,4 @@
-import OBACoreApi from "@onebro/oba-core-api";
+import OBACore from "@onebro/oba-core";
 import {ModelController} from "../../../src";
 import {ProfileSignature} from "../types";
 import {ApiUserRoles} from "../dicts";
@@ -6,7 +6,7 @@ import {ApiModelFactories} from "../factories";
 
 export interface ProfileController extends ModelController<ApiUserRoles,ProfileSignature> {}
 export class ProfileController extends ModelController<ApiUserRoles,ProfileSignature> {
-  constructor(public core:OBACoreApi,public factories:ApiModelFactories){
+  constructor(public core:OBACore,public factories:ApiModelFactories){
     const profiles = factories["profiles"];
     super(core);
     this.create$ = async ({body:newObj,appuser:username,authtkn:{okto}}) => {

@@ -1,4 +1,4 @@
-import OBACoreApi from "@onebro/oba-core-api";
+import OBACore from "@onebro/oba-core";
 import {ModelController,Model} from "../../../src";
 import {ApiUserRoles} from "../dicts";
 import {MessageSignature} from "../types";
@@ -6,7 +6,7 @@ import {ApiModelFactories,MessageFactory} from "../factories";
 
 export interface MessageController extends ModelController<ApiUserRoles,MessageSignature> {}
 export class MessageController extends ModelController<ApiUserRoles,MessageSignature> {
-  constructor(public core:OBACoreApi,public factories:ApiModelFactories){
+  constructor(public core:OBACore,public factories:ApiModelFactories){
     super(core);
     const messages = factories["messages"];
     this.create$ = async ({body,appuser:username,authtkn:{okto}}) => {

@@ -1,4 +1,4 @@
-import OBACoreApi from "@onebro/oba-core-api";
+import OBACore from "@onebro/oba-core";
 import {AnyBoolean} from "@onebro/oba-common";
 import {Schema} from "mongoose";
 import {ModelFactoryConfig,ModelFactory} from "../../../src";
@@ -90,4 +90,4 @@ export const messageFactoryConfig:MessageFactoryConfig = {
   virtuals:messageVirtuals,
   methods:messageMethods,
 };
-export class MessageFactory extends ModelFactory<MessageSignature> {constructor(core:OBACoreApi){super(core,messageFactoryConfig);}}
+export class MessageFactory extends ModelFactory<MessageSignature> {constructor(core:OBACore){super(core,messageFactoryConfig);}}

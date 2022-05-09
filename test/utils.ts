@@ -25,7 +25,7 @@ export const initApi = async () => {
     config.logger.dirname = path.join(__dirname,"/../../logs");
     config.middleware.views.dirname = path.join(__dirname,"/../../views");
     config.middleware.public.dirname = path.join(__dirname,"/../../views");
-    const core = new OBACoreApi(config);
+    const core = new OBACore(config);
     const app = request(core.app);
     await core.db.start();
     return {core,app};}

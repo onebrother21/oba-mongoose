@@ -1,16 +1,16 @@
 import { ProfileFactory } from "./profile";
 import { MessageFactory } from "./message";
-import OBACoreApi from "@onebro/oba-core-api";
+import OBACore from "@onebro/oba-core";
 import { Enum } from "@onebro/oba-common";
 
 export type ApiModelFactoriesType = Enum<any,"profiles"|"messages">;
 export interface ApiModelFactories extends ApiModelFactoriesType {
   profiles:ProfileFactory;
   messages:MessageFactory;
-  init:(core:OBACoreApi) => Promise<ApiModelFactories>;
+  init:(core:OBACore) => Promise<ApiModelFactories>;
 };
 export class ApiModelFactories {
-  init = async (core:OBACoreApi) => {
+  init = async (core:OBACore) => {
     this.profiles = new ProfileFactory(core);
     this.messages = new MessageFactory(core);
     await this.profiles.init();
