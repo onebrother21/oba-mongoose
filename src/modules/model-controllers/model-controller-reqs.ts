@@ -20,7 +20,7 @@ ModelControllerReqUserCreds<R> &
 ModelControllerReqParams<P> &
 ModelControllerReqBody<B> &
 ModelControllerReqQuery<Q>;
-type ModelControllerResp<T> = {
+export type ModelControllerResp<T> = {
   user:string;
   data:T;
   auth:AnyBoolean;
