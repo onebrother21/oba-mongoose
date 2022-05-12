@@ -46,7 +46,7 @@ export class ModelFactory<T> {
     const {core:{e:{_:E}}} = this;
     this.autopopulate = async (o,s) => {
       if(s) await o.save();
-      await o.populate(this.config.refs);
+      await Promise.resolve().then(() => o.populate(this.config.refs));
       return o;
     };
     this.create_ = async c => await this.autopopulate(new this.m(c),1);

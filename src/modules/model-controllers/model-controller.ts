@@ -4,7 +4,7 @@ import {Model} from "../model-types";
 import {ModelFactoryHub} from "../model-factories";
 import {ModelControllerMethods,ModelControllerReqUserRole} from "./model-controller-reqs";
 
-export type ModelControllerBaseType<R,T> = {
+export type ModelControllerType<R,T> = ModelControllerMethods<R,T> & {
   core:OBACore;
   privileges:string[];
   badStatuses:Values<Model<T>["statuses"]>[];
@@ -13,7 +13,6 @@ export type ModelControllerBaseType<R,T> = {
   isRole:(role:ModelControllerReqUserRole<R>,R:ModelControllerReqUserRole<R>[]) => void;
   isBadStatus:(o:Model<T>["instance"]) => boolean;
 };
-export type ModelControllerType<R,T> = ModelControllerBaseType<R,T> & ModelControllerMethods<R,T>;
 export interface ModelController<R,T> extends ModelControllerType<R,T> {}
 export class ModelController<R,T> {
   constructor(public core:OBACore){

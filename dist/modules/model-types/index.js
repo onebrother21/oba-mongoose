@@ -14,8 +14,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./model-lvl-1-types"), exports);
-__exportStar(require("./model-lvl-2-types"), exports);
-__exportStar(require("./model-lvl-3-types"), exports);
-__exportStar(require("./model-lvl-4-types"), exports);
+__exportStar(require("./model-signature-1"), exports);
+__exportStar(require("./model-signature-2"), exports);
+__exportStar(require("./model-signature-3"), exports);
 //# sourceMappingURL=index.js.map

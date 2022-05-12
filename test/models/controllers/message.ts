@@ -15,16 +15,22 @@ export class MessageController extends ModelController<ApiUserRoles,MessageSigna
       .then(async () => await messages.create(body))
       .then(o => ({user:username,data:o.json(),auth:true}));
     };
+    this.fetchID$ = async ({params:{id},appuser:username,authtkn:{okto}}) => {
+      return await Promise.resolve()
+      .then(() => this.isAuth(okto))
+      .then(async () => await messages.fetch(id))
+      .then(o => ({user:username,data:o.json(),auth:true}));
+    };
     this.fetch$ = async ({params,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto))
-      .then(async () => await messages.fetch((params as any).id||params))
+      .then(async () => await messages.fetch(params))
       .then(o => ({user:username,data:o.json(),auth:true}));
     };
-    this.update$ = async ({params,body:updates,appuser:username,authtkn:{okto}}:any) => {
+    this.update$ = async ({params:{id},body:updates,appuser:username,authtkn:{okto}}:any) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto))
-      .then(async () => await messages.update((params as any).id||params,updates))
+      .then(async () => await messages.update(id,updates))
       .then(o => ({user:username,data:o.json(),auth:true}));
     };
     this.remove$ = async ({params:{id},appuser:username,authtkn:{okto,role}}) => {
@@ -35,7 +41,7 @@ export class MessageController extends ModelController<ApiUserRoles,MessageSigna
       }}))
       .then(o => ({user:username,data:o.json(),auth:true}));
     };
-    this.remove$$ = async ({params:{id,adminId},appuser:username,authtkn:{okto,role}}) => {
+    this.remove$$ = async ({params:{id,admin},appuser:username,authtkn:{okto,role}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto))
       .then(() => this.isRole(role,["ADMIN","SUPER","_SA_"]))

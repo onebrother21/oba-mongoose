@@ -3,10 +3,10 @@ import {J} from "../../utils";
 import {ControllerTestData,ControllerTestFunc,ControllerNetwork} from "./types";
 
 export type profileControllerTestData = {
-  create:ControllerTestData<"profiles","create$">;
-  fetch:ControllerTestData<"profiles","fetch$">;
-  update:ControllerTestData<"profiles","update$">;
-  query:ControllerTestData<"profiles","query$">;
+  create:ControllerTestData<"profiles","create">;
+  fetch:ControllerTestData<"profiles","fetch">;
+  update:ControllerTestData<"profiles","update">;
+  query:ControllerTestData<"profiles","query">;
 };
 export const profileControllerTestData:profileControllerTestData = {
   create:O => [

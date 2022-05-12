@@ -1,5 +1,5 @@
 import {Keys} from "@onebro/oba-common";
-import {IsObjectId,ModelL1} from "./model-lvl-1-types";
+import {IsObjectId,ModelL1} from "./model-signature-1";
 
 /** LEVEL TWO MODEL TYPES:P -> PREVIEW,R -> SELF REFS */
 type SelfRefArrParam<T,k extends Keys<ModelL1<T>["R"]>> = ModelL1<T>["R"][k]["arr"];
@@ -14,7 +14,7 @@ SelfRefArrGuard<T,k,ModelL2<T>[SelfRefOutParam<T,k>]>>;
 type SelfRefs<T,t> =  ModelL1<T>["R"] extends undefined?{}:{[k in Keys<ModelL1<T>["R"]>]:SelfRef<T,k,t>;};
 
 export type ModelSelfRefs<T,t> = SelfRefs<T,t>;
-export type ModelL2<T> = ModelL1<T> & {
+export type ModelL2Type<T> = ModelL1<T> & {
   C:Partial<ModelSelfRefs<T,"C">>;
   I:ModelSelfRefs<T,"I"> & {
     json:() => ModelL2<T>["J"];
@@ -22,3 +22,4 @@ export type ModelL2<T> = ModelL1<T> & {
   };
   J:Partial<ModelSelfRefs<T,"J">>;
 };
+export type ModelL2<T> = ModelL2Type<T>;

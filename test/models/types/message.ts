@@ -9,7 +9,7 @@ import {
 import {
   Model,
   ModelSignature,
-  ModelBaseTypes,
+  ModelBaseTypeSig,
   Stages,
 } from "../../../src";
 import {ProfileAsProp} from "./profile";
@@ -42,7 +42,7 @@ MessagePropSelector<"J",undefined,MessagePreviewKeys>,
 MessageStatuses,
 MessageSelfRefs>;
 export type Message = Model<MessageSignature>;
-export type MessageAsProp<IsArr extends AnyBoolean> = ModelBaseTypes<
+export type MessageAsProp<IsArr extends AnyBoolean> = ModelBaseTypeSig<
 Extends<IsArr,true|1,string[],string>,
 Extends<IsArr,true|1,Message["instance"],Message["instance"][]>,
 Extends<IsArr,true|1,Message["preview"],Message["preview"][]>>;

@@ -71,7 +71,7 @@ class ModelFactory {
         this.autopopulate = (o, s) => __awaiter(this, void 0, void 0, function* () {
             if (s)
                 yield o.save();
-            yield o.populate(this.config.refs);
+            yield Promise.resolve().then(() => o.populate(this.config.refs));
             return o;
         });
         this.create_ = (c) => __awaiter(this, void 0, void 0, function* () { return yield this.autopopulate(new this.m(c), 1); });

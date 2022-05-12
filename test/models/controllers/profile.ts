@@ -3,6 +3,7 @@ import {ModelController} from "../../../src";
 import {ProfileSignature} from "../types";
 import {ApiUserRoles} from "../dicts";
 import {ApiModelFactories} from "../factories";
+import OB, { AppError } from "@onebro/oba-common";
 
 export interface ProfileController extends ModelController<ApiUserRoles,ProfileSignature> {}
 export class ProfileController extends ModelController<ApiUserRoles,ProfileSignature> {
@@ -16,13 +17,19 @@ export class ProfileController extends ModelController<ApiUserRoles,ProfileSigna
       .then(async () => await profiles.create({...newObj,name:username}))
       .then(o => ({user:username,data:o.json(),auth:true}));
     };
+    this.fetchID$ = async ({params:{id},appuser:username,authtkn:{okto}}) => {
+      return await Promise.resolve()
+      .then(() => this.isAuth(okto,["use-api"]))
+      .then(async () => await profiles.fetch(id))
+      .then(o => ({user:username,data:o.json(),auth:true}));
+    };
     this.fetch$ = async ({params,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
-      .then(async () => await profiles.fetch((params as any).id||params))
+      .then(async () => await profiles.fetch(params))
       .then(o => ({user:username,data:o.json(),auth:true}));
     };
-    this.update$ = async ({params,body:updates,appuser:username,authtkn:{okto}}:any) => {
+    this.update$ = async ({params,body:updates,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(async () => await profiles.update((params as any).id||params,updates))
@@ -36,7 +43,7 @@ export class ProfileController extends ModelController<ApiUserRoles,ProfileSigna
       }}))
       .then(o => ({user:username,data:o.json(),auth:true}));
     };
-    this.remove$$ = async ({params:{id,adminId},appuser:username,authtkn:{okto,role}}) => {
+    this.remove$$ = async ({params:{id,admin},appuser:username,authtkn:{okto,role}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(() => this.isRole(role,["ADMIN","SUPER","_SA_"]))

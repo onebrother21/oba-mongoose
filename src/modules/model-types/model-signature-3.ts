@@ -1,6 +1,6 @@
 import {Keys,Enum,Overwrite,Extends,DotNotation} from "@onebro/oba-common";
-import {IsObjectId,IsPrimitiveGuard} from "./model-lvl-1-types";
-import {ModelL2} from "./model-lvl-2-types";
+import {IsObjectId,IsPrimitiveGuard} from "./model-signature-1";
+import {ModelL2} from "./model-signature-2";
 
 /** LEVEL THREE MODEL TYPES */
 type configurable<T> = ModelL2<T>["C"];
@@ -23,8 +23,9 @@ type superqueryable<T> = {[k in Keys<T>]?:
 type megaqueryable<T> = superqueryable<queryable<T>>;
 type logical<T> = Enum<T[],undefined,"$and"|"$or"|"$where"|"$not">;
 type ultraqueryable<T> = megaqueryable<T> & logical<megaqueryable<T>>;
+
 type settable<T> = {[j in "$set"]?:{[k in Keys<T>]?:T[k] extends Array<any>?never:T[k];}};
-type incrementable<T> = {[j in "$inc"|"$dec"]?:{[k in Keys<T>]?:T[k] extends number|Date?T[k]:never;}};
+type incrementable<T> = {[j in "$inc"|"$dec"]?:{[k in Keys<T>]?:T[k] extends number?number:T[k] extends Date?number|Date:never;}};
 type ArrayUpdateObj<T> = T|T[]|{$in:T[]};
 type ArrayUpdateable<T,k,S> = ArrayUpdateObj<Extends<k,Keys<ModelL2<T>["R"]>,IsObjectId,IsPrimitiveGuard<S>>>;
 type pushpullable<T> = {[j in "$push"|"$pull"]?:{[k in Keys<T>]?:T[k] extends Array<infer S>?ArrayUpdateable<T,k,S>:never;}};

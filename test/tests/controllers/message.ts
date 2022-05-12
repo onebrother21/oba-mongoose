@@ -2,10 +2,10 @@ import {J} from "../../utils";
 import {ControllerTestData,ControllerTestFunc,ControllerNetwork} from "./types";
 
 export type messageControllerTestData = {
-  create:ControllerTestData<"messages","create$">;
-  fetch:ControllerTestData<"messages","fetch$">;
-  update:ControllerTestData<"messages","update$">;
-  query:ControllerTestData<"messages","query$">;
+  create:ControllerTestData<"messages","create">;
+  fetch:ControllerTestData<"messages","fetch">;
+  update:ControllerTestData<"messages","update">;
+  query:ControllerTestData<"messages","query">;
 };
 export const messageControllerTestData:messageControllerTestData = {
   create:O => [

@@ -11,7 +11,7 @@ import {
 import {
   Model,
   ModelSignature,
-  ModelBaseTypes,
+  ModelBaseTypeSig,
   Stages,
   StageGuard,
 } from "../../../src";
@@ -62,7 +62,7 @@ ProfilePropSelector<"J",undefined,ProfilePreviewKeys>,
 ProfileStatuses,
 ProfileSelfRefs>;
 export type Profile = Model<ProfileSignature>;
-export type ProfileAsProp<IsArr extends AnyBoolean,IsUser extends AnyBoolean = undefined> = ModelBaseTypes<
+export type ProfileAsProp<IsArr extends AnyBoolean,IsUser extends AnyBoolean = undefined> = ModelBaseTypeSig<
 Extends<IsArr,true|1,string[],string>,
 Extends<IsArr,true|1,Profile["instance"][],Profile["instance"]>,
 Extends<IsArr,true|1,
