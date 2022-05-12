@@ -15,7 +15,7 @@ type ModelControllerReqUserCreds<R = undefined> = {
 type ModelControllerReqParams<P> = P extends undefined?{}:{params:P;};
 type ModelControllerReqBody<B> = B extends undefined?{}:{body:B;};
 type ModelControllerReqQuery<Q> = Q extends undefined?{}:{query:Q;};
-type ModelControllerReq<P = undefined,B = undefined,Q = undefined,R = undefined> =
+export type ModelControllerReq<P = undefined,B = undefined,Q = undefined,R = undefined> =
 ModelControllerReqUserCreds<R> &
 ModelControllerReqParams<P> &
 ModelControllerReqBody<B> &

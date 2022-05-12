@@ -20,7 +20,7 @@ declare type ModelControllerReqBody<B> = B extends undefined ? {} : {
 declare type ModelControllerReqQuery<Q> = Q extends undefined ? {} : {
     query: Q;
 };
-declare type ModelControllerReq<P = undefined, B = undefined, Q = undefined, R = undefined> = ModelControllerReqUserCreds<R> & ModelControllerReqParams<P> & ModelControllerReqBody<B> & ModelControllerReqQuery<Q>;
+export declare type ModelControllerReq<P = undefined, B = undefined, Q = undefined, R = undefined> = ModelControllerReqUserCreds<R> & ModelControllerReqParams<P> & ModelControllerReqBody<B> & ModelControllerReqQuery<Q>;
 declare type ModelControllerResp<T> = {
     user: string;
     data: T;
