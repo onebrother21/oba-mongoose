@@ -2,10 +2,10 @@ import {J} from "../../utils";
 import {FactoryTestData,FactoryTestFunc,FactoryNetwork} from "./types";
 
 export type messageFactoryTestData = {
-  create:FactoryTestData<"messages","create">;
-  fetch:FactoryTestData<"messages","fetch">;
-  update:FactoryTestData<"messages","update">;
-  query:FactoryTestData<"messages","query">;
+  create:FactoryTestData["messages"]["create"];
+  fetch:FactoryTestData["messages"]["fetch"];
+  update:FactoryTestData["messages"]["update"];
+  query:FactoryTestData["messages"]["query"];
 };
 export const messageFactoryTestData:messageFactoryTestData = {
   create:O => [
@@ -63,12 +63,12 @@ export const messageFactoryTestData:messageFactoryTestData = {
   ],
 };
 export type messageFactoryTests = {
-  create:FactoryTestFunc<"messages","create">;
-  fetch:FactoryTestFunc<"messages","fetch">;
-  updateSetAndPush:FactoryTestFunc<"messages","update">;
-  updatePull:FactoryTestFunc<"messages","update">;
-  fetchFinal:FactoryTestFunc<"messages","fetch">;
-  query:FactoryTestFunc<"messages","query">;
+  create:FactoryTestFunc["messages"]["create"];
+  fetch:FactoryTestFunc["messages"]["fetch"];
+  updateSetAndPush:FactoryTestFunc["messages"]["update"];
+  updatePull:FactoryTestFunc["messages"]["update"];
+  fetchFinal:FactoryTestFunc["messages"]["fetch"];
+  query:FactoryTestFunc["messages"]["query"];
 };
 export const messageFactoryTests:messageFactoryTests = {
   create:async O => {

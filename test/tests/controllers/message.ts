@@ -2,10 +2,10 @@ import {J} from "../../utils";
 import {ControllerTestData,ControllerTestFunc,ControllerNetwork} from "./types";
 
 export type messageControllerTestData = {
-  create:ControllerTestData<"messages","create">;
-  fetch:ControllerTestData<"messages","fetch">;
-  update:ControllerTestData<"messages","update">;
-  query:ControllerTestData<"messages","query">;
+  create:ControllerTestData["messages"]["create"];
+  fetch:ControllerTestData["messages"]["fetch"];
+  update:ControllerTestData["messages"]["update"];
+  query:ControllerTestData["messages"]["query"];
 };
 export const messageControllerTestData:messageControllerTestData = {
   create:O => [
@@ -92,12 +92,12 @@ export const messageControllerTestData:messageControllerTestData = {
   ],
 };
 export type messageControllerTests = {
-  create:ControllerTestFunc<"messages","create$">;
-  fetch:ControllerTestFunc<"messages","fetch$">;
-  updateSetAndPush:ControllerTestFunc<"messages","update$">;
-  updatePull:ControllerTestFunc<"messages","update$">;
-  fetchFinal:ControllerTestFunc<"messages","fetch$">;
-  query:ControllerTestFunc<"messages","query$">;
+  create:ControllerTestFunc["messages"]["create"];
+  fetch:ControllerTestFunc["messages"]["fetch"];
+  updateSetAndPush:ControllerTestFunc["messages"]["update"];
+  updatePull:ControllerTestFunc["messages"]["update"];
+  fetchFinal:ControllerTestFunc["messages"]["fetch"];
+  query:ControllerTestFunc["messages"]["query"];
 };
 export const messageControllerTests:messageControllerTests = {
   create:async O => {

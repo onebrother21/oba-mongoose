@@ -6,7 +6,7 @@ import {
   ApiModelFactories,
 } from "../../models";
 
-export type FactoryCRUDMethodNames = {
+export type FactoryCRUDMethods = {
   "create":"config";
   "update":"updates";
   "fetch":"fetches";
@@ -27,7 +27,5 @@ export class FactoryNetwork {
     for(const k in this.factories) this.instances[k as Keys<Sigs>] = [];
   };
 }
-export type FactoryTestData<
-k extends Keys<Sigs>,
-l extends Keys<FactoryCRUDMethodNames>> = (O:FactoryNetwork) => Model<Sigs[k]>[FactoryCRUDMethodNames[l]][];
-export type FactoryTestFunc<k,l> = (O:FactoryNetwork) => Promise<void>;
+export type FactoryTestData = {[k in Keys<Sigs>]:{[l in Keys<FactoryCRUDMethods>]:(O:FactoryNetwork) => Model<Sigs[k]>[FactoryCRUDMethods[l]][];};};
+export type FactoryTestFunc = {[k in Keys<Sigs>]:{[l in Keys<FactoryCRUDMethods>]:(O:FactoryNetwork) => Promise<void>;};};

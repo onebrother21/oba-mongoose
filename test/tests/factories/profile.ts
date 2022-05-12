@@ -3,10 +3,10 @@ import {J} from "../../utils";
 import {FactoryTestData,FactoryTestFunc,FactoryNetwork} from "./types";
 
 export type profileFactoryTestData = {
-  create:FactoryTestData<"profiles","create">;
-  fetch:FactoryTestData<"profiles","fetch">;
-  update:FactoryTestData<"profiles","update">;
-  query:FactoryTestData<"profiles","query">;
+  create:FactoryTestData["profiles"]["create"];
+  fetch:FactoryTestData["profiles"]["fetch"];
+  update:FactoryTestData["profiles"]["update"];
+  query:FactoryTestData["profiles"]["query"];
 };
 export const profileFactoryTestData:profileFactoryTestData = {
   create:O => [
@@ -52,12 +52,12 @@ export const profileFactoryTestData:profileFactoryTestData = {
   ],
 };
 export type profileFactoryTests = {
-  create:FactoryTestFunc<"profiles","create">;
-  fetch:FactoryTestFunc<"profiles","fetch">;
-  updateSetAndPush:FactoryTestFunc<"profiles","update">;
-  updatePull:FactoryTestFunc<"profiles","update">;
-  fetchFinal:FactoryTestFunc<"profiles","fetch">;
-  query:FactoryTestFunc<"profiles","query">;
+  create:FactoryTestFunc["profiles"]["create"];
+  fetch:FactoryTestFunc["profiles"]["fetch"];
+  updateSetAndPush:FactoryTestFunc["profiles"]["update"];
+  updatePull:FactoryTestFunc["profiles"]["update"];
+  fetchFinal:FactoryTestFunc["profiles"]["fetch"];
+  query:FactoryTestFunc["profiles"]["query"];
 };
 export const profileFactoryTests:profileFactoryTests = {
   create:async O => {

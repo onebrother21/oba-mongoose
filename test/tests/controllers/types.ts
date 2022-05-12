@@ -22,7 +22,6 @@ export class ControllerNetwork {
     for(const k in this.controllers) this.jsons[k as Keys<Sigs>] = [];
   };
 }
-export type ControllerTestData<
-k extends Keys<Sigs>,
-l extends Keys<ModelControllerReqs<Roles,Sigs[k]>>> = (O:ControllerNetwork) => ModelControllerReqs<Roles,Sigs[k]>[l][];
-export type ControllerTestFunc<k,l> = (O:ControllerNetwork) => Promise<void>;
+export type controllerreq<k extends Keys<Sigs>> = ModelControllerReqs<Roles,Sigs[k]>;
+export type ControllerTestData = {[k in Keys<Sigs>]:{[l in Keys<controllerreq<k>>]:(O:ControllerNetwork) => controllerreq<k>[l][];};};
+export type ControllerTestFunc = {[k in Keys<Sigs>]:{[l in Keys<controllerreq<k>>]:(O:ControllerNetwork) => Promise<void>;};};
