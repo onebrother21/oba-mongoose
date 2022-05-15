@@ -53,7 +53,7 @@ export class ProfileController extends ModelController<ApiUserRoles,ProfileSigna
     this.query$ = async ({query,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
-      .then(async () => await profiles.query(query))
+      .then(async () => await profiles.query(this.parseQueryObj(query)))
       .then(o => ({user:username,data:{results:o},auth:true}));
     };
     this.search$ = async ({query:{text},appuser:username,authtkn:{okto}}) => {

@@ -51,7 +51,7 @@ export class MessageController extends ModelController<ApiUserRoles,MessageSigna
     this.query$ = async ({query,appuser:username,authtkn:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto))
-      .then(async () => await messages.query(query))
+      .then(async () => await messages.query(this.parseQueryObj(query)))
       .then(o => ({user:username,data:{results:o},auth:true}));
     };
     this.search$ = async ({query:{text},appuser:username,authtkn:{okto}}) => {

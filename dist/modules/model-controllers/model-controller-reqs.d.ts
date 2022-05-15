@@ -1,7 +1,7 @@
-import { Values, Strings, AnyBoolean } from "@onebro/oba-common";
+import { Keys, Values, Strings, AnyBoolean } from "@onebro/oba-common";
 import { IsObjectId, Model } from "../model-types";
 export declare type ModelControllerReqUserRole<R> = R extends Strings ? Values<R> : never;
-export declare type ModelControllerFetchReq<T> = Exclude<Model<T>["fetches"], IsObjectId>;
+export declare type ModelControllerQuery<T> = Model<T>["queries"] | Record<Keys<Model<T>["queries"]>, string>;
 declare type ModelControllerReqUserCreds<R = undefined> = {
     appuser: string;
     authtkn: {
@@ -43,7 +43,7 @@ export declare type ModelControllerReqs<R, T> = {
         id: IsObjectId;
         admin: IsObjectId;
     }, undefined, undefined, R>;
-    query: ModelControllerReq<undefined, undefined, Model<T>["queries"], R>;
+    query: ModelControllerReq<undefined, undefined, ModelControllerQuery<T>, R>;
     search: ModelControllerReq<undefined, undefined, {
         text: string;
     }, R>;

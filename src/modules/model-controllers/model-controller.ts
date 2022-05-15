@@ -1,8 +1,8 @@
 import OBACore from "@onebro/oba-core";
-import {Keys,Values} from "@onebro/oba-common";
+import OB, {Keys,Values} from "@onebro/oba-common";
 import {Model} from "../model-types";
 import {ModelFactoryHub} from "../model-factories";
-import {ModelControllerMethods,ModelControllerReqUserRole} from "./model-controller-reqs";
+import {ModelControllerMethods,ModelControllerQuery,ModelControllerReqUserRole} from "./model-controller-reqs";
 
 export type ModelControllerType<R,T> = ModelControllerMethods<R,T> & {
   core:OBACore;
@@ -19,6 +19,15 @@ export class ModelController<R,T> {
     this.privileges = ["use-api"];
     this.badStatuses = ["Deleted" as any];
   }
+  parseQueryObj = (q:ModelControllerQuery<T>):Model<T>["queries"] => {
+    const q_:Partial<Model<T>["queries"]> = {};
+    for(const k in q){
+      const K = k as Keys<Model<T>["queries"]>;
+      const o = q[K];
+      q_[K] = OB.str(o)?OB.parse(o):o;
+    }
+    return q_ as Model<T>["queries"];
+  };
   unauthorized = (s:string) => {throw this.core.e._.unauthorized(s);};
   isAuth = (okto:string,privileges?:string[]) => {
     switch(true){
