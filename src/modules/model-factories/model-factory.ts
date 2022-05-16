@@ -1,9 +1,9 @@
 import mongooseUniqueValidator from "mongoose-unique-validator";
-import {Schema,SchemaOptions,Types} from "mongoose";
+import {Schema,SchemaOptions} from "mongoose";
 import OBACore from "@onebro/oba-core";
 import OB,{Enum,AllOfType} from "@onebro/oba-common";
-import {IsObjectId,Model,ModelPopulationRef} from "../model-types";
-import {mapSelectedData} from "../model-utils";
+import {Model,ModelPopulationRef} from "../model-types";
+import {mapSelectedData,isObjectId} from "../model-utils";
 import {getStatusSchemaDef} from "./model-factory-utils";
 
 export type SchemaDefinition = any;
@@ -51,7 +51,7 @@ export class ModelFactory<T> {
     };
     this.create_ = async c => await this.autopopulate(new this.m(c),1);
     this.create = this.create_;
-    this.find = async q => this.isObjectId(q)?await this.m.findById(q):await this.m.findOne(this.m.translateAliases(q));
+    this.find = async q => isObjectId(q)?await this.m.findById(q):await this.m.findOne(this.m.translateAliases(q));
     this.fetch = async q => {
       if(q == undefined || q == null) throw E.badinfo();
       const o = await this.find(q);
@@ -61,22 +61,22 @@ export class ModelFactory<T> {
     this.exists = async q => !!(await this.find(q));
     this.shouldNotExist = async q => {if(await this.exists(q)) throw E.existing(businessName);};
     this.update_ = async (q,u) => {
-      const o = this.isObjectId(q)?
+      const o = isObjectId(q)?
       await this.m.findByIdAndUpdate(q,u as any,{new:true}):
       await this.m.findOneAndUpdate(q as any,u as any,{new:true});
       return await this.autopopulate(o);
     };
     this.update = this.update_;
-    this.remove_ = async q => this.isObjectId(q)?await this.m.findByIdAndRemove(q):await this.m.findOneAndRemove(q as any);
+    this.remove_ = async q => isObjectId(q)?await this.m.findByIdAndRemove(q):await this.m.findOneAndRemove(q as any);
     this.remove = this.remove_;
     this.query = async q => {
       const {query,opts:{limit,skip,sort} = {limit:25,skip:0,sort:"asc"},select} = q;
       const R = await this.m.find(this.m.translateAliases(query))
       .populate(refs)
       //.where(where)
-      .limit(limit||25)
-      .skip(skip||0)
-      .sort(sort||"asc")
+      .limit(limit)
+      .skip(skip)
+      .sort(sort)
       .exec();
       const results = this.getSelectedData(select,R as Model<T>["instance"][]);
       return results as Model<T>["json"][];
@@ -89,15 +89,6 @@ export class ModelFactory<T> {
     this.count = async () => await this.m.estimatedDocumentCount();
   }
   get m(){return this.model;}
-  isObjectId = (q:any):q is IsObjectId => {
-    try {
-      const objectId = Types.ObjectId(q as string);
-      const IsValid = objectId instanceof Types.ObjectId;
-      const isMatch = objectId.toString() == q;
-      return IsValid && isMatch;
-    }
-    catch(e){return false;}
-  };
   createSchema = () => {
     const datasig = "::" + OB.appvar("_DATA_ID");
     const {

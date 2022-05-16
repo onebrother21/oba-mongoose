@@ -1,8 +1,9 @@
-import { Schema } from "mongoose";
+import { Schema,Types } from "mongoose";
 import { Strings,Keys,Values,Constructor,AnyBoolean,
   TestProps,Status,Settings,InfoMap, } from "@onebro/oba-common";
-import { ModelMiscReference, StageGuard } from "../model-types";
+import { IsObjectId, ModelMiscReference, StageGuard } from "../model-types";
 import { mapEnumKey } from "../model-utils";
+
 
 export const getSpecialTypeSchemaDef = <S extends Strings>(S:S) => {
   const specialType = {

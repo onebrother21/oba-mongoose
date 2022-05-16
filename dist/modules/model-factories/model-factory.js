@@ -22,17 +22,6 @@ class ModelFactory {
     constructor(core, config) {
         this.core = core;
         this.config = config;
-        this.isObjectId = (q) => {
-            try {
-                const objectId = mongoose_1.Types.ObjectId(q);
-                const IsValid = objectId instanceof mongoose_1.Types.ObjectId;
-                const isMatch = objectId.toString() == q;
-                return IsValid && isMatch;
-            }
-            catch (e) {
-                return false;
-            }
-        };
         this.createSchema = () => {
             const datasig = "::" + oba_common_1.default.appvar("_DATA_ID");
             const { definition, virtuals, methods, statuses, opts, } = this.config;
@@ -76,7 +65,7 @@ class ModelFactory {
         });
         this.create_ = (c) => __awaiter(this, void 0, void 0, function* () { return yield this.autopopulate(new this.m(c), 1); });
         this.create = this.create_;
-        this.find = (q) => __awaiter(this, void 0, void 0, function* () { return this.isObjectId(q) ? yield this.m.findById(q) : yield this.m.findOne(this.m.translateAliases(q)); });
+        this.find = (q) => __awaiter(this, void 0, void 0, function* () { return (0, model_utils_1.isObjectId)(q) ? yield this.m.findById(q) : yield this.m.findOne(this.m.translateAliases(q)); });
         this.fetch = (q) => __awaiter(this, void 0, void 0, function* () {
             if (q == undefined || q == null)
                 throw E.badinfo();
@@ -89,22 +78,22 @@ class ModelFactory {
         this.shouldNotExist = (q) => __awaiter(this, void 0, void 0, function* () { if (yield this.exists(q))
             throw E.existing(businessName); });
         this.update_ = (q, u) => __awaiter(this, void 0, void 0, function* () {
-            const o = this.isObjectId(q) ?
+            const o = (0, model_utils_1.isObjectId)(q) ?
                 yield this.m.findByIdAndUpdate(q, u, { new: true }) :
                 yield this.m.findOneAndUpdate(q, u, { new: true });
             return yield this.autopopulate(o);
         });
         this.update = this.update_;
-        this.remove_ = (q) => __awaiter(this, void 0, void 0, function* () { return this.isObjectId(q) ? yield this.m.findByIdAndRemove(q) : yield this.m.findOneAndRemove(q); });
+        this.remove_ = (q) => __awaiter(this, void 0, void 0, function* () { return (0, model_utils_1.isObjectId)(q) ? yield this.m.findByIdAndRemove(q) : yield this.m.findOneAndRemove(q); });
         this.remove = this.remove_;
         this.query = (q) => __awaiter(this, void 0, void 0, function* () {
             const { query, opts: { limit, skip, sort } = { limit: 25, skip: 0, sort: "asc" }, select } = q;
             const R = yield this.m.find(this.m.translateAliases(query))
                 .populate(refs)
                 //.where(where)
-                .limit(limit || 25)
-                .skip(skip || 0)
-                .sort(sort || "asc")
+                .limit(limit)
+                .skip(skip)
+                .sort(sort)
                 .exec();
             const results = this.getSelectedData(select, R);
             return results;

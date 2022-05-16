@@ -4,7 +4,7 @@
 import { Schema, SchemaOptions } from "mongoose";
 import OBACore from "@onebro/oba-core";
 import { Enum, AllOfType } from "@onebro/oba-common";
-import { IsObjectId, Model, ModelPopulationRef } from "../model-types";
+import { Model, ModelPopulationRef } from "../model-types";
 export declare type SchemaDefinition = any;
 export declare type ModelFactoryConfig<T> = {
     modelName: string;
@@ -56,7 +56,6 @@ export declare class ModelFactory<T> {
         json: () => import("../model-types").IsModelSignature<T>["J"] & Partial<import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : { [k_1 in import("@onebro/oba-common").Keys<import("../model-types").IsModelSignature<T>["R"]>]: import("../model-types").IsModelSignature<T>["R"][k_1]["arr"] extends true | 1 ? import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]][] : import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]]; }>;
         preview: import("../model-types").IsModelSignature<T>["P"];
     } & import("mongoose").Document, {}>;
-    isObjectId: (q: any) => q is IsObjectId;
     createSchema: () => Schema<import("../model-types").IsModelSignature<T>["I"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : { [k in import("@onebro/oba-common").Keys<import("../model-types").IsModelSignature<T>["R"]>]: import("../model-types").IsModelSignature<T>["R"][k]["arr"] extends true | 1 ? (import("../model-types").IsModelSignature<T>["I"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : any) & {
         json: () => import("../model-types").IsModelSignature<T>["J"] & Partial<import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : { [k_1 in import("@onebro/oba-common").Keys<import("../model-types").IsModelSignature<T>["R"]>]: import("../model-types").IsModelSignature<T>["R"][k_1]["arr"] extends true | 1 ? import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]][] : import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]]; }>;
         preview: import("../model-types").IsModelSignature<T>["P"];

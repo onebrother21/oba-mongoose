@@ -1,5 +1,6 @@
-import { Document } from "mongoose";
+import { Document,Types } from "mongoose";
 import { Strings } from "@onebro/oba-common";
+import { IsObjectId } from "../model-types";
 
 export const mapEnumKey = (S:Strings,k:string) => Object.keys(S).find(k_ => S[k_] == k);
 export const fix = (v:number,p:number = 2) => Number(v.toFixed(p));
@@ -11,4 +12,13 @@ export const mapSelectedData = <T extends Document & {json:() => any}>(select:st
     if(i == select.length - 1) o.id = p._id;
     return o;},{}));
   return results.map(p => ({id:p._id}));
+};
+export const isObjectId = (q:any):q is IsObjectId => {
+  try {
+    const objectId = Types.ObjectId(q as string);
+    const IsValid = objectId instanceof Types.ObjectId;
+    const isMatch = objectId.toString() == q;
+    return IsValid && isMatch?objectId:null;
+  }
+  catch(e){return null;}
 };
