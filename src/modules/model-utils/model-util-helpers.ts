@@ -13,7 +13,7 @@ export const mapSelectedData = <T extends Document & {json:() => any}>(select:st
     return o;},{}));
   return results.map(p => ({id:p._id}));
 };
-export const isObjectId = (q:any):q is IsObjectId => {
+export const isObjectId = (q:any):IsObjectId => {
   try {
     const objectId = Types.ObjectId(q as string);
     const IsValid = objectId instanceof Types.ObjectId;

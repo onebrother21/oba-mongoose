@@ -7,4 +7,4 @@ export declare const checkIdOrModel: <T extends Document>(id: string, q: string 
 export declare const mapSelectedData: <T extends Document & {
     json: () => any;
 }>(select: string[], results: T[]) => any[];
-export declare const isObjectId: (q: any) => q is IsObjectId;
+export declare const isObjectId: (q: any) => IsObjectId;
