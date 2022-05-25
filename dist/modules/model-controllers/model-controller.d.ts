@@ -19,6 +19,6 @@ export declare class ModelController<R, T> {
     parseQueryObj: (q: ModelControllerQuery<T>) => Model<T>["queries"];
     unauthorized: (s: string) => never;
     isAuth: (okto: string, privileges?: string[]) => void;
-    isRole: (role: ModelControllerReqUserRole<R>, R: ModelControllerReqUserRole<R>[]) => never;
+    isRole: (role: ModelControllerReqUserRole<R>, roles: ModelControllerReqUserRole<R>[]) => void;
     isBadStatus: (o: Model<T>["instance"]) => boolean;
 }

@@ -26,9 +26,11 @@ class ModelController {
                 default: break;
             }
         };
-        this.isRole = (role, R) => {
+        this.isRole = (role, roles) => {
             switch (true) {
-                case !R.includes(role): return this.unauthorized("api privileges");
+                case !roles.includes(role):
+                    this.unauthorized("api privileges");
+                    break;
                 default: break;
             }
         };

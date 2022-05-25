@@ -35,9 +35,9 @@ export class ModelController<R,T> {
       default:break;
     }
   };
-  isRole = (role:ModelControllerReqUserRole<R>,R:ModelControllerReqUserRole<R>[]) => {
+  isRole = (role:ModelControllerReqUserRole<R>,roles:ModelControllerReqUserRole<R>[]) => {
     switch(true){
-      case !R.includes(role):return this.unauthorized("api privileges");
+      case !roles.includes(role):this.unauthorized("api privileges");break;
       default:break;
     }
   };
