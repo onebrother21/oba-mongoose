@@ -10,7 +10,9 @@ export declare type StageGuardAB<A, B, t> = t extends "I" ? A : B;
 export declare type ModelName = {
     model: string;
 };
-export declare type ModelMiscReference = ModelName & {
+export declare type ModelMiscReference<Name extends string = undefined> = Name extends undefined ? ModelName : {
+    model: Name;
+} & {
     ref: IsObjectId;
 };
 export declare type ModelPopulationRef = ModelName & {

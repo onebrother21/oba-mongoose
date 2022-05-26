@@ -11,7 +11,7 @@ export type StageGuard<t> = t extends "I"?true:false;
 export type StageGuardAB<A,B,t> = t extends "I"?A:B;
 
 export type ModelName = {model:string;};
-export type ModelMiscReference = ModelName & {ref:IsObjectId;};
+export type ModelMiscReference<Name extends string = undefined> = Name extends undefined?ModelName:{model:Name} & {ref:IsObjectId;};
 export type ModelPopulationRef = ModelName & {path:string;populate?:ModelPopulationRef[];};
 
 export type ModelSelfRefConfig = {arr:AnyBoolean;out:"J"|"P";};//|"json"|"preview";};
