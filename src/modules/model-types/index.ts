@@ -17,7 +17,7 @@ export type Model<T> = ModelType<T> & {
   model:ModelType<T>["M"];
   ctr:ModelType<T>["M"];
 };
-
+export * from "./model-signature-0";
 export * from "./model-signature-1";
 export * from "./model-signature-2";
 export * from "./model-signature-3";

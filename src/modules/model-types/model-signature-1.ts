@@ -1,22 +1,5 @@
-
-import {Types} from "mongoose";
-import {Enum,Status,Primitive,Strings,AnyBoolean,Entity} from "@onebro/oba-common";
-
-export type IsObjectId = string|Types.ObjectId;
-export type IsPrimitive = Primitive|IsObjectId;
-export type IsPrimitiveGuard<S> = S extends IsPrimitive?S:Partial<S>;
-
-/** MODELSTAGES: C -> CONFIG,I -> INSTANCE,J -> JSON */
-export type Stages = "C"|"I"|"J";
-export type StageGuard<t> = t extends "I"?true:false;
-export type StageGuardAB<A,B,t> = t extends "I"?A:B;
-
-export type ModelName = {model:string;};
-export type ModelMiscReference = ModelName & {oid:IsObjectId;};
-export type ModelPopulationRef = ModelName & {path:string;populate?:ModelPopulationRef[];};
-
-export type ModelSelfRefConfig = {arr:AnyBoolean;out:"J"|"P";};//|"json"|"preview";};
-export type ModelSelfRefsConfig = Enum<ModelSelfRefConfig,string>;
+import { Status,Strings,Entity } from "@onebro/oba-common";
+import { StageGuardAB,StageGuard,IsObjectId,ModelSelfRefsConfig } from "./model-signature-0";
 
 /** MODEL LVL 1 TYPES */
 export type ModelObjectID<t> = StageGuardAB<IsObjectId,string,t>;

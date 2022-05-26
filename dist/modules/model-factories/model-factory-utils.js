@@ -43,7 +43,7 @@ const getMiscReferenceSchemaDef = (arr) => {
     let miscRefOrRefs;
     const miscRefSchema = new mongoose_1.Schema({
         model: { type: String, required: true },
-        oid: { type: String, required: true },
+        ref: { type: String, required: true },
     }, { _id: false });
     switch (true) {
         case arr == true:

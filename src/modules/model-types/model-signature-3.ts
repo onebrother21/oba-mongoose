@@ -1,5 +1,5 @@
 import {Keys,Enum,Overwrite,Extends,DotNotation} from "@onebro/oba-common";
-import {IsObjectId,IsPrimitiveGuard} from "./model-signature-1";
+import {IsObjectId,IsPrimitiveGuard} from "./model-signature-0";
 import {ModelL2} from "./model-signature-2";
 
 /** LEVEL THREE MODEL TYPES */

@@ -1,5 +1,6 @@
 import { Keys } from "@onebro/oba-common";
-import { IsObjectId, ModelL1 } from "./model-signature-1";
+import { IsObjectId } from "./model-signature-0";
+import { ModelL1 } from "./model-signature-1";
 /** LEVEL TWO MODEL TYPES:P -> PREVIEW,R -> SELF REFS */
 declare type SelfRefArrParam<T, k extends Keys<ModelL1<T>["R"]>> = ModelL1<T>["R"][k]["arr"];
 declare type SelfRefOutParam<T, k extends Keys<ModelL1<T>["R"]>> = ModelL1<T>["R"][k]["out"];

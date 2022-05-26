@@ -43,7 +43,7 @@ export const getMiscReferenceSchemaDef = (arr?:AnyBoolean) => {
   let miscRefOrRefs;
   const miscRefSchema = new Schema<ModelMiscReference>({
     model:{type:String,required:true},
-    oid:{type:String,required:true},
+    ref:{type:String,required:true},
   },{_id:false});
   switch(true){
     case arr == true:
