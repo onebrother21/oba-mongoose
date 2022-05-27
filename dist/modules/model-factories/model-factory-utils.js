@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTestPropsSchemaDef = exports.getSettingsSchemaDef = exports.getStatusSchemaDef = exports.getMiscReferenceSchemaDef = exports.getInfoMapSchemaDef = exports.getSpecialTypeSchemaDef = void 0;
+exports.getTestPropsSchemaDef = exports.getSettingsSchemaDef = exports.getStatusSchemaDef = exports.getStatus = exports.getMiscReferenceSchemaDef = exports.getInfoMapSchemaDef = exports.getSpecialTypeSchemaDef = void 0;
 const mongoose_1 = require("mongoose");
 const model_utils_1 = require("../model-utils");
 const getSpecialTypeSchemaDef = (S) => {
@@ -57,6 +57,8 @@ const getMiscReferenceSchemaDef = (arr) => {
     return miscRefOrRefs;
 };
 exports.getMiscReferenceSchemaDef = getMiscReferenceSchemaDef;
+const getStatus = (s) => (Object.assign({ name: s.name, time: s.time }, s.info ? { info: s.info } : null));
+exports.getStatus = getStatus;
 const getStatusSchemaDef = (statuses) => {
     const statusSchema = new mongoose_1.Schema({
         name: {
@@ -72,7 +74,7 @@ const getStatusSchemaDef = (statuses) => {
     const status = {
         type: statusSchema,
         default: () => ({ name: "New" }),
-        get: (s) => (Object.assign({ name: s.name, time: s.time }, s.info ? { info: s.info } : null))
+        get: exports.getStatus,
     };
     return status;
 };

@@ -20,14 +20,19 @@ export declare const getMiscReferenceSchemaDef: (arr?: AnyBoolean) => {
     type: Schema<import("../model-types").ModelName>;
     default?: undefined;
 };
+export declare const getStatus: <S extends Strings<undefined>>(s: Status<S, true>) => {
+    info: import("@onebro/oba-common").Primitives;
+    name: Keys<S>;
+    time: Date;
+};
 export declare const getStatusSchemaDef: <S extends Strings<undefined>>(statuses: S) => {
     type: Schema<Status<S, true>>;
     default: () => {
         name: string;
     };
-    get: (s: Status<S, true>) => {
+    get: <S_1 extends Strings<undefined>>(s: Status<S_1, true>) => {
         info: import("@onebro/oba-common").Primitives;
-        name: Keys<S>;
+        name: Keys<S_1>;
         time: Date;
     };
 };

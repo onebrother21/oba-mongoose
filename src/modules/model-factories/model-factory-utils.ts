@@ -52,6 +52,7 @@ export const getMiscReferenceSchemaDef = (arr?:AnyBoolean) => {
   }
   return miscRefOrRefs;
 };
+export const getStatus = <S extends Strings>(s:Status<S,StageGuard<"I">>) => ({name:s.name,time:s.time,...s.info?{info:s.info}:null});
 export const getStatusSchemaDef = <S extends Strings>(statuses:S) => {
   const statusSchema = new Schema<Status<S,StageGuard<"I">>>({
     name:{
@@ -66,7 +67,7 @@ export const getStatusSchemaDef = <S extends Strings>(statuses:S) => {
   const status = {
     type:statusSchema,
     default:() => ({name:"New"}),
-    get:(s:Status<S,StageGuard<"I">>) => ({name:s.name,time:s.time,...s.info?{info:s.info}:null})
+    get:getStatus,
   };
   return status;
 };
