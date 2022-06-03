@@ -18,7 +18,7 @@ type queryable<T> = dotnotationable<enumerable<T>>;
 type superqueryable<T> = {[k in Keys<T>]?:
   T[k] extends number|Date?T[k]|Enum<T[k],undefined,"$eq"|"$ne"|"$gt"|"$lt"|"$gte"|"$lte">:
   T[k] extends Array<infer S>?Enum<IsPrimitiveGuard<S>[],undefined,"$in">:
-  T[k];
+  T[k]|{$ne:T[k]};
 };
 type megaqueryable<T> = superqueryable<queryable<T>>;
 type logical<T> = Enum<T[],undefined,"$and"|"$or"|"$where"|"$not">;
