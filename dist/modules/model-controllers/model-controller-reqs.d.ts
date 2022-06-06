@@ -3,13 +3,15 @@ import { IsObjectId, Model } from "../model-types";
 export declare type ModelControllerReqUserRole<R> = R extends Strings ? Values<R> : never;
 export declare type ModelControllerQuery<T> = Model<T>["queries"] | Record<Keys<Model<T>["queries"]>, string>;
 declare type ModelControllerReqUserCreds<R = undefined> = {
-    appuser: string;
-    authtkn: {
+    appuser: Partial<{
+        ip: string;
+        device: string;
         username: string;
         next: string;
         role: ModelControllerReqUserRole<R>;
+        info: any;
         okto: string;
-    };
+    }>;
 };
 declare type ModelControllerReqParams<P> = P extends undefined ? {} : {
     params: P;
@@ -22,10 +24,14 @@ declare type ModelControllerReqQuery<Q> = Q extends undefined ? {} : {
 };
 export declare type ModelControllerReq<P = undefined, B = undefined, Q = undefined, R = undefined> = ModelControllerReqUserCreds<R> & ModelControllerReqParams<P> & ModelControllerReqBody<B> & ModelControllerReqQuery<Q>;
 export declare type ModelControllerResp<T> = {
-    user: string;
     data: T;
+} & Partial<{
+    user: string;
+    role: string;
+    device: string;
+    okto: string;
     auth: AnyBoolean;
-};
+}>;
 export declare type ModelControllerReqs<R, T> = {
     create: ModelControllerReq<undefined, Model<T>["config"], undefined, R>;
     action: ModelControllerReq<undefined, Partial<Model<T>["config"]>, undefined, R>;

@@ -7,8 +7,15 @@ interface Flash {
   flash(type:string,message:any):void;
   id?:string;
   appname?:string;
-  appuser?:any;
-  ipdata?:any;
+  appuser?:Partial<{
+    ip:string;
+    device:string;
+    username:string;
+    next:string;
+    role:string;
+    info:any;
+    okto:string;
+  }>;
   warning?:any;
   error?:any;}
 declare module "express-flash";
