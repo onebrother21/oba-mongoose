@@ -12,34 +12,34 @@ export const profileControllerTestData:profileControllerTestData = {
   create:O => [
     {
       body:{
-        name:"",
+        name:O.users[0],
         role:"ADMIN",
         permissions:{cookies:new Date(),location:new Date()},
       },
-      appuser:{username:O.users[0],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[0],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
       body:{
-        name:"",
+        name:O.users[1],
         role:"USER",
         permissions:{cookies:new Date(),location:new Date()},
       },
-      appuser:{username:O.users[1],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[1],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
       body:{
-        name:"",
+        name:O.users[2],
         role:"USER",
         permissions:{cookies:new Date(),location:new Date()},
       },
-      appuser:{username:O.users[2],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[2],okto:"use-api",next:"123456",role:"ADMIN"}
     },
   ],
   fetch:O => [
     {
       params:{id:O.jsons.profiles[0].id},
-      appuser:{username:O.users[0],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[0],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
       params:{name:O.jsons.profiles[1].name},
-      appuser:{username:O.users[0],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[0],okto:"use-api",next:"123456",role:"ADMIN"}
     },
   ],
   update:O => [
@@ -65,7 +65,7 @@ export const profileControllerTestData:profileControllerTestData = {
           "following":{$in:[O.jsons.profiles[1].id]},
         }
       },
-      appuser:{username:O.users[0],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[0],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
       params:{id:O.jsons.profiles[1].id},
       body:{
@@ -80,7 +80,7 @@ export const profileControllerTestData:profileControllerTestData = {
         },
         $push:{"following":[O.jsons.profiles[0].id],},
       },
-      appuser:{username:O.users[1],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[1],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
       params:{id:O.jsons.profiles[2].id},
       body:{
@@ -95,19 +95,19 @@ export const profileControllerTestData:profileControllerTestData = {
         },
         $push:{"following":[O.jsons.profiles[0].id],},
       },
-      appuser:{username:O.users[2],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[2],okto:"use-api",next:"123456",role:"ADMIN"}
     },
   ],
   query:O => [
     {
       query:{query:{name:O.users[3]},select:"json"},
-      appuser:{username:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
       query:{query:{name:O.users[0]},select:"json"},
-      appuser:{username:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
       query:{query:{role:"USER"},select:"json"},
-      appuser:{username:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },
   ],
 };

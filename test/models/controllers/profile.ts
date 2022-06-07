@@ -10,57 +10,57 @@ export class ProfileController extends ModelController<ApiUserRoles,ProfileSigna
   constructor(public core:OBACore,public factories:ApiModelFactories){
     const profiles = factories["profiles"];
     super(core);
-    this.create$ = async ({body:newObj,appuser:{username,okto}}) => {
+    this.create$ = async ({body:newObj,appuser:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
-      .then(async () => await profiles.shouldNotExist({name:username}))
-      .then(async () => await profiles.create({...newObj,name:username}))
-      .then(o => ({user:username,data:o.json(),auth:true}));
+      .then(async () => await profiles.shouldNotExist({name:newObj.name}))
+      .then(async () => await profiles.create({...newObj}))
+      .then(o => ({data:o.json()}));
     };
-    this.fetchID$ = async ({params:{id},appuser:{username,okto}}) => {
+    this.fetchID$ = async ({params:{id},appuser:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(async () => await profiles.fetch(id))
-      .then(o => ({user:username,data:o.json(),auth:true}));
+      .then(o => ({data:o.json()}));
     };
-    this.fetch$ = async ({params,appuser:{username,okto}}) => {
+    this.fetch$ = async ({params,appuser:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(async () => await profiles.fetch(params))
-      .then(o => ({user:username,data:o.json(),auth:true}));
+      .then(o => ({data:o.json()}));
     };
-    this.update$ = async ({params,body:updates,appuser:{username,okto}}) => {
+    this.update$ = async ({params,body:updates,appuser:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(async () => await profiles.update((params as any).id||params,updates))
-      .then(o => ({user:username,data:o.json(),auth:true}));
+      .then(o => ({data:o.json()}));
     };
-    this.remove$ = async ({params:{id},appuser:{username,okto,role}}) => {
+    this.remove$ = async ({params:{id},appuser:{name,okto,role}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(async () => await profiles.update(id,{$set:{
-        status:{name:"Deleted",time:new Date(),info:{username,role}}
+        status:{name:"Deleted",time:new Date(),info:{user:name,role}}
       }}))
-      .then(o => ({user:username,data:o.json(),auth:true}));
+      .then(o => ({data:o.json()}));
     };
-    this.remove$$ = async ({params:{id,admin},appuser:{username,okto,role}}) => {
+    this.remove$$ = async ({params:{id,admin},appuser:{okto,role}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(() => this.isRole(role,["ADMIN","SUPER","_SA_"]))
       .then(async () => await profiles.remove(id))//activity line
-      .then(o => ({user:username,data:o.json(),auth:true}));
+      .then(o => ({data:o.json()}));
     };
-    this.query$ = async ({query,appuser:{username,okto}}) => {
+    this.query$ = async ({query,appuser:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(async () => await profiles.query(this.parseQueryObj(query)))
-      .then(o => ({user:username,data:{results:o},auth:true}));
+      .then(o => ({data:{results:o}}));
     };
-    this.search$ = async ({query:{text},appuser:{username,okto}}) => {
+    this.search$ = async ({query:{text},appuser:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuth(okto,["use-api"]))
       .then(async () => await profiles.search(text))
-      .then(o => ({user:username,data:{results:o},auth:true}));
+      .then(o => ({data:{results:o}}));
     };
   }
 }

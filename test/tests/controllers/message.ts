@@ -16,7 +16,7 @@ export const messageControllerTestData:messageControllerTestData = {
         body:"Jimmy was here",
         loc:"Houston,TX",
       },
-      appuser:{username:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
       body:{
         author:O.jsons.profiles[1].id,
@@ -29,7 +29,7 @@ export const messageControllerTestData:messageControllerTestData = {
           num:3,
           date:new Date("2021/01/01")},
       },
-      appuser:{username:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
       body:{
         author:O.jsons.profiles[2].id,
@@ -37,13 +37,13 @@ export const messageControllerTestData:messageControllerTestData = {
         body:"Jenn was here",
         loc:"Houston,TX",
       },
-      appuser:{username:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },
   ],
   fetch:O => [
     {
       params:{id:O.jsons.messages[0].id},
-      appuser:{username:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     }
   ],
   update:O => [
@@ -60,7 +60,7 @@ export const messageControllerTestData:messageControllerTestData = {
         },
         $push:{"notes":O.jsons.messages[1].id},
       },
-      appuser:{username:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },
   ],
   query:O => [
@@ -70,16 +70,16 @@ export const messageControllerTestData:messageControllerTestData = {
         {"info.public":true} as any,
         {recipients:{$in:[O.jsons.profiles[0].id]}},
       ]}},
-      appuser:{username:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
       query:{query:{$and:[
         {author:O.jsons.profiles[1].id},
         {"created":{$gte:new Date("2020/12/12"),$lte:new Date()}}
       ]}},
-      appuser:{username:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
       query:{query:{"status.name":"Novel" as any}},
-      appuser:{username:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
+      appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },
   ],
 };
