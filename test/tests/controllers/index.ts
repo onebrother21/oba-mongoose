@@ -13,7 +13,7 @@ export const initControllerTests = (O:ControllerNetwork) => J.desc("INIT",() => 
 export const wrapupControllerTests = ({jsons}:ControllerNetwork) => J.desc("WRAPUP",() => {
   it("Log Models",async () => {
     console.log(jsons.profiles[0]);
-    //console.log(jsons.messages[0]);
+    console.log(jsons.messages[0]);
   },1E9);
 });
 export const controllerTests = () => J.desc("MODEL CONTROLLER TESTS",() => {
