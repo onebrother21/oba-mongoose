@@ -15,6 +15,7 @@ interface Flash {
     role:string;
     info:any;
     okto:string;
+    token:any;
   }>;
   warning?:any;
   error?:any;}
