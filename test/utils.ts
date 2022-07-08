@@ -18,17 +18,3 @@ export const J = {
   error:(o:any) => expect(o).toBeInstanceOf(Error),
   noterror:(o:any) => expect(o).not.toBeInstanceOf(Error),
 };
-/*
-export const initApi = async () => {
-  try{
-    const config = masterConfig("OBA_API");
-    config.logger.dirname = path.join(__dirname,"/../../logs");
-    config.middleware.views.dirname = path.join(__dirname,"/../../views");
-    config.middleware.public.dirname = path.join(__dirname,"/../../views");
-    const core = new OBACore(config);
-    const app = request(core.app);
-    await core.db.start();
-    return {core,app};}
-  catch(e){console.error(e);throw e;}
-};
-*/
