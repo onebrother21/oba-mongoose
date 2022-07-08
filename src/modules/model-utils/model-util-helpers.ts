@@ -20,5 +20,8 @@ export const isObjectId = (q:any):IsObjectId => {
     const isMatch = objectId.toString() == q;
     return IsValid && isMatch?objectId:null;
   }
-  catch(e){return null;}
+  catch(e){
+    if(/accepted types/.test(e.message)) return null;
+    throw e;
+  }
 };

@@ -10,12 +10,12 @@ export const initFactoryTests = (O:FactoryNetwork) => J.desc("INIT",() => {
     await O.init(await App.initCore());
   },1E9);
 });
-export const wrapupFactoryTests = ({instances}:FactoryNetwork) => J.desc("WRAPUP",() => {
+export const wrapupFactoryTests = (O:FactoryNetwork) => J.desc("WRAPUP",() => {
   it("Log Models",async () => {
     const m:any = {};
-    for(const k in instances){
+    for(const k in O.instances){
       const K = k as keyof FactoryNetwork["instances"];
-      m[k] = instances[K].map((n:any) => n.json());
+      m[k] = O.instances[K].map((n:any) => n.json());
     }
     console.log(m.profiles[0]);
     console.log(m.messages[0]);

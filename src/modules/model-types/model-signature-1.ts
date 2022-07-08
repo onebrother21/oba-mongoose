@@ -16,8 +16,8 @@ R extends ModelSelfRefsConfig = undefined> = ModelBaseTypeSig<C,I,J> & {P:P;S:S;
 export type IsModelSignature<T> = T extends ModelSignature<infer C,infer I,infer J,infer P,infer S,infer R>?{
   C:C & Partial<Pick<ModelObject<S,"C">,"info"|"desc"|"status">>;
   I:I & ModelObject<S,"I">;
-  J:Partial<J & ModelObject<S,"J">>;
-  P:Partial<P & Pick<ModelObject<S,"J">,"id"|"stat">>;
+  J:Pick<ModelObject<S,"J">,"id"> & Partial<J & ModelObject<S,"J">>;
+  P:Pick<ModelObject<S,"J">,"id"> & Partial<P & Pick<ModelObject<S,"J">,"stat">>;
   S:S;
   R:R;
 }:never;

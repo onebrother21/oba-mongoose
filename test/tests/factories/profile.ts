@@ -67,7 +67,7 @@ export const profileFactoryTests:profileFactoryTests = {
       J.is(o);
       J.not(o,null);
       const j = o.json();
-      J.is(j.status.name,"New");
+      J.is(j.status?.name,"New");
       switch(i){
         case 0:{J.is(j.name,O.users[0]);break;}
         case 1:{J.is(j.name,O.users[1]);break;}
@@ -113,7 +113,7 @@ export const profileFactoryTests:profileFactoryTests = {
     J.is(o);
     J.not(o,null);
     const j = o.json();
-    J.is(j.status.name,"Enabled");
+    J.is(j.status?.name,"Enabled");
     J.is(j.name,O.users[3]);
   },
   query:async O => {

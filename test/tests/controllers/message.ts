@@ -23,11 +23,6 @@ export const messageControllerTestData:messageControllerTestData = {
         body:"James was here",
         loc:"Houston,TX",
         info:{public:true,views:17},
-        test:{
-          str:"oMg",
-          bool:false,
-          num:3,
-          date:new Date("2021/01/01")},
       },
       appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
@@ -78,7 +73,7 @@ export const messageControllerTestData:messageControllerTestData = {
       ]}},
       appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
-      query:{query:{"status.name":"Novel" as any}},
+      query:{query:{"status?.name":"Novel" as any}},
       appuser:{name:O.users[3],okto:"use-api",next:"123456",role:"ADMIN"}
     },
   ],
@@ -99,11 +94,11 @@ export const messageControllerTests:messageControllerTests = {
       O.jsons.messages[i] = o;
       J.is(o);
       J.not(o,null);
-      J.is(o.status.name,"New");
+      J.is(o.status?.name,"New");
       switch(i){
-        case 0:{J.is(o.author.name,O.users[3]);break;}
-        case 1:{J.is(o.author.name,O.users[1]);break;}
-        case 2:{J.is(o.author.name,O.users[2]);break;}
+        case 0:{J.is(o.author?.name,O.users[3]);break;}
+        case 1:{J.is(o.author?.name,O.users[1]);break;}
+        case 2:{J.is(o.author?.name,O.users[2]);break;}
         default:break;
       }
     }
@@ -144,8 +139,8 @@ export const messageControllerTests:messageControllerTests = {
     const {data:o} = await O.controllers.messages.fetch$(F[0]);
     J.is(o);
     J.not(o,null);
-    J.is(o.status.name.toLocaleUpperCase(),"SEEN");
-    J.is(o.author.name,O.users[3]);
+    J.is(o.status?.name.toLocaleUpperCase(),"SEEN");
+    J.is(o.author?.name,O.users[3]);
   },
   query:async O => {
     const Q = messageControllerTestData.query(O);
@@ -153,7 +148,8 @@ export const messageControllerTests:messageControllerTests = {
       const {data:o} = await O.controllers.messages.query$(Q[i]);
       J.is(o);
       J.arr(o.results);
-      /*switch(i){
+      /*
+      switch(i){
         case 0:{J.gt(o.results.length,3);break;}
         case 1:{J.is(o.results.length,1);break;}
         case 2:{J.is(o.results.length);break;}

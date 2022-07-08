@@ -9,8 +9,8 @@ export type ModelControllerType<R,T> = ModelControllerMethods<R,T> & {
   privileges:string[];
   badStatuses:Values<Model<T>["statuses"]>[];
   unauthorized:(s:string) => void;
-  isAuth:(okto:string,priv?:string[]) => void;
-  isRole:(role:ModelControllerReqUserRole<R>,R:ModelControllerReqUserRole<R>[]) => void;
+  isAuth:(priv?:string[],okto?:string) => void;
+  isRole:(R:ModelControllerReqUserRole<R>[],role?:ModelControllerReqUserRole<R>) => void;
   isBadStatus:(o:Model<T>["instance"]) => boolean;
 };
 export interface ModelController<R,T> extends ModelControllerType<R,T> {}
@@ -29,13 +29,13 @@ export class ModelController<R,T> {
     return q_ as Model<T>["queries"];
   };
   unauthorized = (s:string) => {throw this.core.e._.unauthorized(s);};
-  isAuth = (okto:string,privileges?:string[]) => {
+  isAuth = (privileges?:string[],okto?:string) => {
     switch(true){
       case !(privileges||this.privileges).includes(okto):this.unauthorized("api privileges");break;
       default:break;
     }
   };
-  isRole = (role:ModelControllerReqUserRole<R>,roles:ModelControllerReqUserRole<R>[]) => {
+  isRole = (roles:ModelControllerReqUserRole<R>[],role?:ModelControllerReqUserRole<R>) => {
     switch(true){
       case !roles.includes(role):this.unauthorized("api privileges");break;
       default:break;

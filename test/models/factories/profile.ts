@@ -69,7 +69,7 @@ export const profileVirtuals:ProfileFactoryConfig["virtuals"] = {
 export const profileMethods:ProfileFactoryConfig["methods"] = {
   json:function(){
     const s = this as Profile["instance"];
-    const j:Profile["json"] = {};
+    const j = {} as Profile["json"];
     j._type_ = "profile";
     j.id = s.id;
     j.status = s.status as any;

@@ -7,8 +7,8 @@ export declare type ModelControllerType<R, T> = ModelControllerMethods<R, T> & {
     privileges: string[];
     badStatuses: Values<Model<T>["statuses"]>[];
     unauthorized: (s: string) => void;
-    isAuth: (okto: string, priv?: string[]) => void;
-    isRole: (role: ModelControllerReqUserRole<R>, R: ModelControllerReqUserRole<R>[]) => void;
+    isAuth: (priv?: string[], okto?: string) => void;
+    isRole: (R: ModelControllerReqUserRole<R>[], role?: ModelControllerReqUserRole<R>) => void;
     isBadStatus: (o: Model<T>["instance"]) => boolean;
 };
 export interface ModelController<R, T> extends ModelControllerType<R, T> {
@@ -18,7 +18,7 @@ export declare class ModelController<R, T> {
     constructor(core: OBACore);
     parseQueryObj: (q: ModelControllerQuery<T>) => Model<T>["queries"];
     unauthorized: (s: string) => never;
-    isAuth: (okto: string, privileges?: string[]) => void;
-    isRole: (role: ModelControllerReqUserRole<R>, roles: ModelControllerReqUserRole<R>[]) => void;
+    isAuth: (privileges?: string[], okto?: string) => void;
+    isRole: (roles: ModelControllerReqUserRole<R>[], role?: ModelControllerReqUserRole<R>) => void;
     isBadStatus: (o: Model<T>["instance"]) => boolean;
 }

@@ -29,7 +29,9 @@ const isObjectId = (q) => {
         return IsValid && isMatch ? objectId : null;
     }
     catch (e) {
-        return null;
+        if (/accepted types/.test(e.message))
+            return null;
+        throw e;
     }
 };
 exports.isObjectId = isObjectId;

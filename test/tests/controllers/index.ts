@@ -10,10 +10,10 @@ export const initControllerTests = (O:ControllerNetwork) => J.desc("INIT",() => 
     await O.init(await App.initCore());
   },1E9);
 });
-export const wrapupControllerTests = ({jsons}:ControllerNetwork) => J.desc("WRAPUP",() => {
+export const wrapupControllerTests = (O:ControllerNetwork) => J.desc("WRAPUP",() => {
   it("Log Models",async () => {
-    console.log(jsons.profiles[0]);
-    console.log(jsons.messages[0]);
+    console.log(O.jsons.profiles[0]);
+    console.log(O.jsons.messages[0]);
   },1E9);
 });
 export const controllerTests = () => J.desc("MODEL CONTROLLER TESTS",() => {

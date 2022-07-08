@@ -11,15 +11,16 @@ export type ControllerCRUDMethodNames =  "create$"|"update$"|"fetch$"|"query$"|"
 export interface ControllerNetwork {
   users:string[];
   controllers:ApiModelControllers;
-  jsons:Partial<{[k in Keys<Sigs>]:Model<Sigs[k]>["json"][];}>;
+  jsons:{[k in Keys<Sigs>]:Model<Sigs[k]>["json"][];};
   init:(core:OBACore) => Promise<void>;
 }
 export class ControllerNetwork {
   users = [OB.slugId("John"),OB.slugId("Jim"),OB.slugId("Jenn"),OB.slugId("Jack")];
-  constructor(){this.jsons = {};}
   init = async (core:OBACore) => {
     this.controllers = await new ApiModelControllers().init$(core);
-    for(const k in this.controllers) this.jsons[k as Keys<Sigs>] = [];
+    const jsons:any = {};
+    for(const k in this.controllers) k !== "init$"?jsons[k as Keys<Sigs>] = []:null;
+    this.jsons = jsons as ControllerNetwork["jsons"];
   };
 }
 export type controllerreq<k extends Keys<Sigs>> = ModelControllerReqs<Roles,Sigs[k]>;

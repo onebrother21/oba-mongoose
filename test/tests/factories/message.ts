@@ -78,11 +78,11 @@ export const messageFactoryTests:messageFactoryTests = {
       J.is(o);
       J.not(o,null);
       const j = o.json();
-      J.is(j.status.name,"New");
+      J.is(j.status?.name,"New");
       switch(i){
-        case 0:{J.is(j.author.name,O.users[3]);break;}
-        case 1:{J.is(j.author.name,O.users[1]);break;}
-        case 2:{J.is(j.author.name,O.users[2]);break;}
+        case 0:{J.is(j.author?.name,O.users[3]);break;}
+        case 1:{J.is(j.author?.name,O.users[1]);break;}
+        case 2:{J.is(j.author?.name,O.users[2]);break;}
       }
     }
   },
@@ -124,8 +124,8 @@ export const messageFactoryTests:messageFactoryTests = {
     J.is(o);
     J.not(o,null);
     const j = o.json();
-    J.is(j.status.name,"Saved");
-    J.is(j.author.name,O.users[3]);
+    J.is(j.status?.name,"Saved");
+    J.is(j.author?.name,O.users[3]);
   },
   query:async O => {
     const Q = messageFactoryTestData.query(O);

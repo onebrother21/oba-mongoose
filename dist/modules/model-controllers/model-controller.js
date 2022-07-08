@@ -18,7 +18,7 @@ class ModelController {
             return q_;
         };
         this.unauthorized = (s) => { throw this.core.e._.unauthorized(s); };
-        this.isAuth = (okto, privileges) => {
+        this.isAuth = (privileges, okto) => {
             switch (true) {
                 case !(privileges || this.privileges).includes(okto):
                     this.unauthorized("api privileges");
@@ -26,7 +26,7 @@ class ModelController {
                 default: break;
             }
         };
-        this.isRole = (role, roles) => {
+        this.isRole = (roles, role) => {
             switch (true) {
                 case !roles.includes(role):
                     this.unauthorized("api privileges");

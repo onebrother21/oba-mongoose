@@ -16,15 +16,16 @@ export type FactoryCRUDMethods = {
 export interface FactoryNetwork {
   users:string[];
   factories:ApiModelFactories;
-  instances:Partial<{[k in Keys<Sigs>]:Model<Sigs[k]>["instance"][];}>;
+  instances:{[k in Keys<Sigs>]:Model<Sigs[k]>["instance"][];};
   init:(core:OBACore) => Promise<void>;
 }
 export class FactoryNetwork {
   users = [OB.slugId("John"),OB.slugId("Jim"),OB.slugId("Jenn"),OB.slugId("Jack")];
-  constructor(){this.instances = {};}
   init = async (core:OBACore) => {
     this.factories = await new ApiModelFactories().init(core);
-    for(const k in this.factories) this.instances[k as Keys<Sigs>] = [];
+    const instances:any = {};
+    for(const k in this.factories) instances[k as Keys<Sigs>] = [];
+    this.instances = instances as FactoryNetwork["instances"];
   };
 }
 export type FactoryTestData = {[k in Keys<Sigs>]:{[l in Keys<FactoryCRUDMethods>]:(O:FactoryNetwork) => Model<Sigs[k]>[FactoryCRUDMethods[l]][];};};
