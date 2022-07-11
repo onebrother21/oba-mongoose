@@ -30,15 +30,14 @@ export type MessageMethods = {};
 
 export type MessageAllProps<t extends Stages> = MessageProps<t> & MessageRefs<t> & MessageMeta<t>;
 export type MessageAllPropKeys<t extends Stages> = Keys<MessageAllProps<t>>;
-export type MessagePropSelector<
-t extends Stages,
-k extends MessageAllPropKeys<t> = undefined,
+export type MessagePropSelector<t extends Stages,
+k extends MessageAllPropKeys<t>,
 j extends MessageAllPropKeys<t> = undefined> = PropSelector<MessageAllProps<t>,k,j>;
 export type MessageSignature = ModelSignature<
 MessagePropSelector<"C",MessageConfigKeys,MessageConfigOptKeys>,
 MessagePropSelector<"I",MessageInstanceKeys> & MessageMethods,
-MessagePropSelector<"J",undefined,MessageJsonKeys>,
-MessagePropSelector<"J",undefined,MessagePreviewKeys>,
+MessagePropSelector<"J",MessageJsonKeys>,
+MessagePropSelector<"J",MessagePreviewKeys>,
 MessageStatuses,
 MessageSelfRefs>;
 export type Message = Model<MessageSignature>;

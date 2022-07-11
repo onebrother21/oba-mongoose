@@ -1,7 +1,7 @@
 import mongooseUniqueValidator from "mongoose-unique-validator";
 import {Schema,SchemaOptions} from "mongoose";
 import OBACore from "@onebro/oba-core";
-import OB,{Enum,AllOfType} from "@onebro/oba-common";
+import OB,{Enum,AllOfType,AnyBoolean} from "@onebro/oba-common";
 import {Model,ModelPopulationRef} from "../model-types";
 import {mapSelectedData,isObjectId} from "../model-utils";
 import {getStatusSchemaDef} from "./model-factory-utils";
@@ -22,7 +22,7 @@ export interface ModelFactory<T> {
   core:OBACore;
   model:Model<T>["ctr"];
   config:ModelFactoryConfig<T>;
-  autopopulate:(o:Model<T>["instance"],s?:boolean|0|1) => Promise<Model<T>["instance"]>;
+  autopopulate:(o:Model<T>["instance"],s?:AnyBoolean) => Promise<Model<T>["instance"]>;
   create_:(c:Model<T>["config"]) => Promise<Model<T>["instance"]>;
   create:(c:Model<T>["config"]) => Promise<Model<T>["instance"]>;
   find:(q:Model<T>["fetches"]) => Promise<Model<T>["instance"]>;

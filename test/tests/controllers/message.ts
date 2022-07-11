@@ -94,11 +94,11 @@ export const messageControllerTests:messageControllerTests = {
       O.jsons.messages[i] = o;
       J.is(o);
       J.not(o,null);
-      J.is(o.status?.name,"New");
+      J.is(o.status.name,"New");
       switch(i){
-        case 0:{J.is(o.author?.name,O.users[3]);break;}
-        case 1:{J.is(o.author?.name,O.users[1]);break;}
-        case 2:{J.is(o.author?.name,O.users[2]);break;}
+        case 0:{J.is(o.author.name,O.users[3]);break;}
+        case 1:{J.is(o.author.name,O.users[1]);break;}
+        case 2:{J.is(o.author.name,O.users[2]);break;}
         default:break;
       }
     }
@@ -139,8 +139,8 @@ export const messageControllerTests:messageControllerTests = {
     const {data:o} = await O.controllers.messages.fetch$(F[0]);
     J.is(o);
     J.not(o,null);
-    J.is(o.status?.name.toLocaleUpperCase(),"SEEN");
-    J.is(o.author?.name,O.users[3]);
+    J.is(o.status.name.toLocaleUpperCase(),"SEEN");
+    J.is(o.author.name,O.users[3]);
   },
   query:async O => {
     const Q = messageControllerTestData.query(O);

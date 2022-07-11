@@ -10,34 +10,37 @@ export class ProfileController extends ModelController<ApiUserRoles,ProfileSigna
   constructor(public core:OBACore,public factories:ApiModelFactories){
     const profiles = factories["profiles"];
     super(core);
+    this.badStatuses = ["Deleted"];
+    this.privileges = ["use-api"];
+    this.adminRoles = ["ADMIN","SUPER","_SA_"];
     this.create$ = async ({body:newObj,appuser:{okto}}) => {
       return await Promise.resolve()
-      .then(() => this.isAuth(["use-api"],okto))
+      .then(() => this.isAuthed(okto))
       .then(async () => await profiles.shouldNotExist({name:newObj.name}))
       .then(async () => await profiles.create({...newObj}))
       .then(o => ({data:o.json()}));
     };
     this.fetchID$ = async ({params:{id},appuser:{okto}}) => {
       return await Promise.resolve()
-      .then(() => this.isAuth(["use-api"],okto))
+      .then(() => this.isAuthed(okto))
       .then(async () => await profiles.fetch(id))
       .then(o => ({data:o.json()}));
     };
     this.fetch$ = async ({params,appuser:{okto}}) => {
       return await Promise.resolve()
-      .then(() => this.isAuth(["use-api"],okto))
+      .then(() => this.isAuthed(okto))
       .then(async () => await profiles.fetch((params as any).id||params))
       .then(o => ({data:o.json()}));
     };
     this.update$ = async ({params,body:updates,appuser:{okto}}) => {
       return await Promise.resolve()
-      .then(() => this.isAuth(["use-api"],okto))
+      .then(() => this.isAuthed(okto))
       .then(async () => await profiles.update((params as any).id||params,updates))
       .then(o => ({data:o.json()}));
     };
     this.remove$ = async ({params:{id},appuser:{name,okto,role}}) => {
       return await Promise.resolve()
-      .then(() => this.isAuth(["use-api"],okto))
+      .then(() => this.isAuthed(okto))
       .then(async () => await profiles.update(id,{$set:{
         status:{name:"Deleted",time:new Date(),info:{user:name,role}}
       }}))
@@ -45,20 +48,20 @@ export class ProfileController extends ModelController<ApiUserRoles,ProfileSigna
     };
     this.remove$$ = async ({params:{id,admin},appuser:{okto,role}}) => {
       return await Promise.resolve()
-      .then(() => this.isAuth(["use-api"],okto))
-      .then(() => this.isRole(["ADMIN","SUPER","_SA_"],role))
+      .then(() => this.isAuthed(okto))
+      .then(() => this.isAdmin(role))
       .then(async () => await profiles.remove(id))//activity line
       .then(o => ({data:o.json()}));
     };
     this.query$ = async ({query,appuser:{okto}}) => {
       return await Promise.resolve()
-      .then(() => this.isAuth(["use-api"],okto))
+      .then(() => this.isAuthed(okto))
       .then(async () => await profiles.query(this.parseQueryObj(query)))
       .then(o => ({data:{results:o}}));
     };
     this.search$ = async ({query:{text},appuser:{okto}}) => {
       return await Promise.resolve()
-      .then(() => this.isAuth(["use-api"],okto))
+      .then(() => this.isAuthed(okto))
       .then(async () => await profiles.search(text))
       .then(o => ({data:{results:o}}));
     };

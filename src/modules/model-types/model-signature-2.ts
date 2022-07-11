@@ -21,6 +21,6 @@ export type ModelL2Type<T> = ModelL1<T> & {
     json:() => ModelL2<T>["J"];
     preview:ModelL2<T>["P"];
   };
-  J:Partial<ModelSelfRefs<T,"J">>;
+  J:ModelSelfRefs<T,"J">;
 };
 export type ModelL2<T> = ModelL2Type<T>;

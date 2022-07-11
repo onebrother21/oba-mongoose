@@ -52,13 +52,13 @@ export type ProfileAllProps<t extends Stages> =  ProfileProps<t> & ProfileRefs<t
 export type ProfileAllPropKeys<t extends Stages> = Keys<ProfileAllProps<t>>;
 export type ProfilePropSelector<
 t extends Stages,
-k extends ProfileAllPropKeys<t> = undefined,
+k extends ProfileAllPropKeys<t>,
 j extends ProfileAllPropKeys<t> = undefined> = PropSelector<ProfileAllProps<t>,k,j>;
 export type ProfileSignature = ModelSignature<
 ProfilePropSelector<"C",ProfileConfigKeys,ProfileConfigOptKeys>,
 ProfilePropSelector<"I",ProfileInstanceKeys> & ProfileMethods,
-ProfilePropSelector<"J",undefined,ProfileJsonKeys>,
-ProfilePropSelector<"J",undefined,ProfilePreviewKeys>,
+ProfilePropSelector<"J",ProfileJsonKeys>,
+ProfilePropSelector<"J",ProfilePreviewKeys>,
 ProfileStatuses,
 ProfileSelfRefs>;
 export type Profile = Model<ProfileSignature>;

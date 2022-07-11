@@ -49,7 +49,7 @@ export const profileControllerTestData:profileControllerTestData = {
         $set:{
           name:O.users[3],
           status:{name:"Enabled",time:new Date()},
-          "settings.data":{...O.jsons.profiles[0].settings?.data,timeout:3600},
+          "settings.data":{...O.jsons.profiles[0].settings.data,timeout:3600},
           "settings.app.withBal":true,
           "settings.app.optionsOnly":true,
           "permissions.video":new Date(),
@@ -69,7 +69,7 @@ export const profileControllerTestData:profileControllerTestData = {
       body:{
         $set:{
           status:{name:"Enabled" as any,time:new Date()},
-          "settings.data":{...O.jsons.profiles[1].settings?.data,timeout:3600},
+          "settings.data":{...O.jsons.profiles[1].settings.data,timeout:3600},
           "settings.app.withBal":true,
           "settings.app.optionsOnly":true,
           "permissions.video":new Date(),
@@ -84,7 +84,7 @@ export const profileControllerTestData:profileControllerTestData = {
       body:{
         $set:{
           status:{name:"Enabled" as any,time:new Date()},
-          "settings.data":{...O.jsons.profiles[2].settings?.data,timeout:3600},
+          "settings.data":{...O.jsons.profiles[2].settings.data,timeout:3600},
           "settings.app.withBal":true,
           "settings.app.optionsOnly":true,
           "permissions.video":new Date(),
@@ -125,7 +125,7 @@ export const profileControllerTests:profileControllerTests = {
       O.jsons.profiles[i] = o;
       J.is(o);
       J.not(o,null);
-      J.is(o.status?.name,"New");
+      J.is(o.status.name,"New");
       switch(i){
         case 0:{J.is(o.name,O.users[0]);break;}
         case 1:{J.is(o.name,O.users[1]);break;}
@@ -169,10 +169,10 @@ export const profileControllerTests:profileControllerTests = {
     const {data:o} = await O.controllers.profiles.fetch$(F[0]);
     J.is(o);
     J.not(o,null);
-    J.is(o.status?.name,"Enabled");
+    J.is(o.status.name,"Enabled");
     J.is(o.name,O.users[3]);
     J.is(o.role,"ADMIN");
-    J.instance(o.permissions?.cookies,Date);
+    J.instance(o.permissions.cookies,Date);
   },
   query:async O => {
     const Q = profileControllerTestData.query(O);

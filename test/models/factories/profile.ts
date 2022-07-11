@@ -61,6 +61,8 @@ export const profileVirtuals:ProfileFactoryConfig["virtuals"] = {
       const s = this as Profile["instance"];
       const p = {} as Profile["preview"];
       p.id = s.id;
+      p.stat = s.stat;
+      p.memberSince = s.created;
       p.name = s.name;
       return p;
     }
@@ -76,8 +78,8 @@ export const profileMethods:ProfileFactoryConfig["methods"] = {
     j.stat = s.stat;
     s.desc?j.desc = s.desc:null;
     s.info?j.info = s.info:null;
-    s.bio?j.bio = s.bio:null;
-    s.motto?j.motto = s.motto:null;
+    j.bio = s.bio;
+    j.motto = s.motto;
     j.settings = s.settings;
     j.permissions = s.permissions as any;
     j.socials = s.socials as any;

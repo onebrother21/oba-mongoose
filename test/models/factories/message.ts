@@ -68,8 +68,8 @@ export const messageMethods:MessageFactoryConfig["methods"] = {
     j.stat = s.stat;
     s.desc?j.desc = s.desc:null;
     s.info?j.info = s.info:null;
-    s.title?j.title = s.title:null;
-    s.slug?j.slug = s.slug:null;
+    j.title = s.title;
+    j.slug = s.slug;
     j.author = s.author as any;
     j.recipients = s.recipients.map(o => o.preview);
     j.body = s.body;

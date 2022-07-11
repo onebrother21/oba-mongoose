@@ -18,25 +18,25 @@ class ModelController {
             return q_;
         };
         this.unauthorized = (s) => { throw this.core.e._.unauthorized(s); };
-        this.isAuth = (privileges, okto) => {
-            switch (true) {
-                case !(privileges || this.privileges).includes(okto):
-                    this.unauthorized("api privileges");
-                    break;
-                default: break;
-            }
+        this.isAuthed = (okto) => {
+            if (this.privileges)
+                switch (true) {
+                    case !(this.privileges).includes(okto):
+                        this.unauthorized("api privileges");
+                        break;
+                    default: break;
+                }
         };
-        this.isRole = (roles, role) => {
-            switch (true) {
-                case !roles.includes(role):
-                    this.unauthorized("api privileges");
-                    break;
-                default: break;
-            }
+        this.isAdmin = (role) => {
+            if (this.adminRoles)
+                switch (true) {
+                    case !this.adminRoles.includes(role):
+                        this.unauthorized("api privileges");
+                        break;
+                    default: break;
+                }
         };
-        this.isBadStatus = (o) => this.badStatuses.includes(o.status.name);
-        this.privileges = ["use-api"];
-        this.badStatuses = ["Deleted"];
+        this.isBadStatus = (o) => this.badStatuses ? this.badStatuses.includes(o.status.name) : false;
     }
 }
 exports.ModelController = ModelController;
