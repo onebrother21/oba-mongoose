@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { Enum, Primitive, AnyBoolean } from "@onebro/oba-common";
+import { Primitive, AnyBoolean } from "@onebro/oba-common";
 export declare type IsObjectId = string | Types.ObjectId;
 export declare type IsPrimitive = Primitive | IsObjectId;
 export declare type IsPrimitiveGuard<S> = S extends IsPrimitive ? S : Partial<S>;
@@ -23,4 +23,4 @@ export declare type ModelSelfRefConfig = {
     arr: AnyBoolean;
     out: "J" | "P";
 };
-export declare type ModelSelfRefsConfig = Enum<ModelSelfRefConfig, string>;
+export declare type ModelSelfRefsConfig = Record<string, ModelSelfRefConfig>;

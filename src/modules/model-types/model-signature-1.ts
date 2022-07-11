@@ -17,7 +17,7 @@ export type IsModelSignature<T> = T extends ModelSignature<infer C,infer I,infer
   C:C & Partial<Pick<ModelObject<S,"C">,"info"|"desc"|"status">>;
   I:I & ModelObject<S,"I">;
   J:J & ModelObject<S,"J">;
-  P:P & Pick<IsModelSignature<T>["J"],"id"|"stat">;
+  P:P & Pick<ModelObject<S,"J">,"id"|"stat">;
   S:S;
   R:R;
 }:never;

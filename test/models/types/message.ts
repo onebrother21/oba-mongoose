@@ -16,7 +16,8 @@ import {ProfileAsProp} from "./profile";
 import {MessageStatuses} from "../dicts";
 
 export type MessageProps<t extends Stages> = CommonPropSelector<"title"|"slug"|"body"> & Record<"loc",string> & {test:TestProps;};
-export type MessageRefs<t extends Stages> = {author:ProfileAsProp<0>[t];recipients:ProfileAsProp<1>[t];};
+export type MessageRefs<t extends Stages> = {author:ProfileAsProp<false,false>[t];recipients:ProfileAsProp<true,false>[t];};
+type m = MessageRefs<"J">["author"]
 export type MessageMeta<t extends Stages> = {_type_:"message";published:Date;};
 
 export type MessageConfigKeys = "author"|"body"|"loc";
@@ -41,7 +42,7 @@ MessagePropSelector<"J",MessagePreviewKeys>,
 MessageStatuses,
 MessageSelfRefs>;
 export type Message = Model<MessageSignature>;
-export type MessageAsProp<IsArr extends AnyBoolean> = ModelBaseTypeSig<
-Extends<IsArr,true|1,string[],string>,
-Extends<IsArr,true|1,Message["instance"],Message["instance"][]>,
-Extends<IsArr,true|1,Message["preview"],Message["preview"][]>>;
+export type MessageAsProp<IsArr = undefined> = ModelBaseTypeSig<
+Extends<[IsArr],[true|1],string[],string>,
+Extends<[IsArr],[true|1],Message["instance"][],Message["instance"]>,
+Extends<[IsArr],[true|1],Message["preview"][],Message["preview"]>>;

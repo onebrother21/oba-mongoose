@@ -62,9 +62,9 @@ ProfilePropSelector<"J",ProfilePreviewKeys>,
 ProfileStatuses,
 ProfileSelfRefs>;
 export type Profile = Model<ProfileSignature>;
-export type ProfileAsProp<IsArr extends AnyBoolean,IsUser extends AnyBoolean = null> = ModelBaseTypeSig<
-Extends<IsArr,true|1,string[],string>,
-Extends<IsArr,true|1,Profile["instance"][],Profile["instance"]>,
-Extends<IsArr,true|1,
-Extends<IsUser,true|1,Profile["json"][],Profile["preview"][]>,
-Extends<IsUser,true|1,Profile["json"],Profile["preview"]>>>;
+export type ProfileAsProp<IsArr = undefined,IsUser = undefined> = ModelBaseTypeSig<
+Extends<[IsArr],[true|1],string[],string>,
+Extends<[IsArr],[true|1],Profile["instance"][],Profile["instance"]>,
+Extends<[IsArr],[true|1],
+Extends<[IsUser],[true|1],Profile["json"][],Profile["preview"][]>,
+Extends<[IsUser],[true|1],Profile["json"],Profile["preview"]>>>;

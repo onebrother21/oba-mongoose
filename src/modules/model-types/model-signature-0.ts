@@ -15,4 +15,4 @@ export type ModelMiscReference<Name extends string = undefined> = Name extends u
 export type ModelPopulationRef = ModelName & {path:string;populate?:ModelPopulationRef[];};
 
 export type ModelSelfRefConfig = {arr:AnyBoolean;out:"J"|"P";};//|"json"|"preview";};
-export type ModelSelfRefsConfig = Enum<ModelSelfRefConfig,string>;
+export type ModelSelfRefsConfig = Record<string,ModelSelfRefConfig>;
