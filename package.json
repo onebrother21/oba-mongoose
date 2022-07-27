@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@onebro/oba-common": "^2.9.3",
-    "@onebro/oba-core": "^2.9.10",
+    "@onebro/oba-core": "^2.9.11",
     "@onebro/oba-core-api": "^2.9.3",
     "config": "^3.3.6",
     "mongoose": "^6.0.12",
