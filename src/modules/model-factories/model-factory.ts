@@ -90,7 +90,6 @@ export class ModelFactory<T> {
   }
   get m(){return this.model;}
   createSchema = () => {
-    const datasig = "::" + OB.appvar("_DATA_ID");
     const {
       definition,
       virtuals,
@@ -112,7 +111,7 @@ export class ModelFactory<T> {
     },schemaOpts);
     schema.plugin(mongooseUniqueValidator);
     if(statuses) schema.virtual("stat").get(function(){
-      return this.status.name+" @ "+(this.status.time as Date).toLocaleString("en-us")+" "+datasig;
+      return this.status.name+" @ "+(this.status.time as Date).toLocaleString("en-us");
     });
     for(const k in virtuals){
       if(virtuals[k].get) schema.virtual(k).get(virtuals[k].get);

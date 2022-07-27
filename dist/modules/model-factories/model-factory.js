@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ModelFactory = void 0;
 const mongoose_unique_validator_1 = __importDefault(require("mongoose-unique-validator"));
 const mongoose_1 = require("mongoose");
-const oba_common_1 = __importDefault(require("@onebro/oba-common"));
 const model_utils_1 = require("../model-utils");
 const model_factory_utils_1 = require("./model-factory-utils");
 class ModelFactory {
@@ -23,14 +22,13 @@ class ModelFactory {
         this.core = core;
         this.config = config;
         this.createSchema = () => {
-            const datasig = "::" + oba_common_1.default.appvar("_DATA_ID");
             const { definition, virtuals, methods, statuses, opts, } = this.config;
             const schemaOpts = Object.assign(Object.assign({}, opts), { toObject: { getters: true, virtuals: true }, toJSON: { getters: true, virtuals: true }, timestamps: { createdAt: "created", updatedAt: "updated" } });
             const schema = new mongoose_1.Schema(Object.assign(Object.assign(Object.assign({}, definition), { desc: { type: String }, info: { type: Object } }), (statuses ? { status: (0, model_factory_utils_1.getStatusSchemaDef)(statuses) } : null)), schemaOpts);
             schema.plugin(mongoose_unique_validator_1.default);
             if (statuses)
                 schema.virtual("stat").get(function () {
-                    return this.status.name + " @ " + this.status.time.toLocaleString("en-us") + " " + datasig;
+                    return this.status.name + " @ " + this.status.time.toLocaleString("en-us");
                 });
             for (const k in virtuals) {
                 if (virtuals[k].get)
