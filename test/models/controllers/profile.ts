@@ -3,7 +3,6 @@ import {ModelController} from "../../../src";
 import {ProfileSignature} from "../types";
 import {ApiUserRoles} from "../dicts";
 import {ApiModelFactories} from "../factories";
-import OB, { AppError } from "@onebro/oba-common";
 
 export interface ProfileController extends ModelController<ApiUserRoles,ProfileSignature> {}
 export class ProfileController extends ModelController<ApiUserRoles,ProfileSignature> {
@@ -20,22 +19,16 @@ export class ProfileController extends ModelController<ApiUserRoles,ProfileSigna
       .then(async () => await profiles.create({...newObj}))
       .then(o => ({data:o.json()}));
     };
-    this.fetchID$ = async ({params:{id},appuser:{okto}}) => {
-      return await Promise.resolve()
-      .then(() => this.isAuthed(okto))
-      .then(async () => await profiles.fetch(id))
-      .then(o => ({data:o.json()}));
-    };
     this.fetch$ = async ({params,appuser:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuthed(okto))
-      .then(async () => await profiles.fetch((params as any).id||params))
+      .then(async () => await profiles.fetch(this.serializeFetch(params)))
       .then(o => ({data:o.json()}));
     };
     this.update$ = async ({params,body:updates,appuser:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuthed(okto))
-      .then(async () => await profiles.update((params as any).id||params,updates))
+      .then(async () => await profiles.update(this.serializeFetch(params),updates))
       .then(o => ({data:o.json()}));
     };
     this.remove$ = async ({params:{id},appuser:{name,okto,role}}) => {

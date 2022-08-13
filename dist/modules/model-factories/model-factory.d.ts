@@ -1,6 +1,27 @@
-/// <reference types="mongoose/types/pipelinestage" />
-/// <reference types="mongoose/types/error" />
+/// <reference types="mongoose/types/schemaoptions" />
+/// <reference types="mongoose/types/aggregate" />
+/// <reference types="mongoose/types/callback" />
+/// <reference types="mongoose/types/collection" />
 /// <reference types="mongoose/types/connection" />
+/// <reference types="mongoose/types/cursor" />
+/// <reference types="mongoose/types/document" />
+/// <reference types="mongoose/types/error" />
+/// <reference types="mongoose/types/expressions" />
+/// <reference types="mongoose/types/helpers" />
+/// <reference types="mongoose/types/middlewares" />
+/// <reference types="mongoose/types/indexes" />
+/// <reference types="mongoose/types/models" />
+/// <reference types="mongoose/types/mongooseoptions" />
+/// <reference types="mongoose/types/pipelinestage" />
+/// <reference types="mongoose/types/populate" />
+/// <reference types="mongoose/types/query" />
+/// <reference types="mongoose/types/schematypes" />
+/// <reference types="mongoose/types/session" />
+/// <reference types="mongoose/types/types" />
+/// <reference types="mongoose/types/utility" />
+/// <reference types="mongoose/types/validation" />
+/// <reference types="mongoose/types/virtuals" />
+/// <reference types="mongoose/types/inferschematype" />
 import { Schema, SchemaOptions } from "mongoose";
 import OBACore from "@onebro/oba-core";
 import { Enum, AllOfType, AnyBoolean } from "@onebro/oba-common";
@@ -46,24 +67,12 @@ export declare class ModelFactory<T> {
     core: OBACore;
     config: ModelFactoryConfig<T>;
     constructor(core: OBACore, config: ModelFactoryConfig<T>);
-    get m(): import("mongoose").Model<import("../model-types").IsModelSignature<T>["I"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : { [k in import("@onebro/oba-common").Keys<import("../model-types").IsModelSignature<T>["R"]>]: import("../model-types").IsModelSignature<T>["R"][k]["arr"] extends true | 1 ? (import("../model-types").IsModelSignature<T>["I"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : any) & {
-        json: () => import("../model-types").IsModelSignature<T>["J"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : { [k_1 in import("@onebro/oba-common").Keys<import("../model-types").IsModelSignature<T>["R"]>]: import("../model-types").IsModelSignature<T>["R"][k_1]["arr"] extends true | 1 ? import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]][] : import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]]; });
-        preview: import("../model-types").IsModelSignature<T>["P"];
-    })[] : import("../model-types").IsModelSignature<T>["I"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : any) & {
-        json: () => import("../model-types").IsModelSignature<T>["J"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : { [k_1 in import("@onebro/oba-common").Keys<import("../model-types").IsModelSignature<T>["R"]>]: import("../model-types").IsModelSignature<T>["R"][k_1]["arr"] extends true | 1 ? import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]][] : import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]]; });
-        preview: import("../model-types").IsModelSignature<T>["P"];
-    }; }) & {
-        json: () => import("../model-types").IsModelSignature<T>["J"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : { [k_1 in import("@onebro/oba-common").Keys<import("../model-types").IsModelSignature<T>["R"]>]: import("../model-types").IsModelSignature<T>["R"][k_1]["arr"] extends true | 1 ? import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]][] : import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]]; });
+    get m(): import("mongoose").Model<import("../model-types").IsModelSignature<T>["I"] & import("../model-types").SelfRefs<T, "I"> & {
+        json: () => import("../model-types").IsModelSignature<T>["J"] & import("../model-types").SelfRefs<T, "J">;
         preview: import("../model-types").IsModelSignature<T>["P"];
     } & import("mongoose").Document, {}>;
-    createSchema: () => Schema<import("../model-types").IsModelSignature<T>["I"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : { [k in import("@onebro/oba-common").Keys<import("../model-types").IsModelSignature<T>["R"]>]: import("../model-types").IsModelSignature<T>["R"][k]["arr"] extends true | 1 ? (import("../model-types").IsModelSignature<T>["I"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : any) & {
-        json: () => import("../model-types").IsModelSignature<T>["J"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : { [k_1 in import("@onebro/oba-common").Keys<import("../model-types").IsModelSignature<T>["R"]>]: import("../model-types").IsModelSignature<T>["R"][k_1]["arr"] extends true | 1 ? import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]][] : import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]]; });
-        preview: import("../model-types").IsModelSignature<T>["P"];
-    })[] : import("../model-types").IsModelSignature<T>["I"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : any) & {
-        json: () => import("../model-types").IsModelSignature<T>["J"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : { [k_1 in import("@onebro/oba-common").Keys<import("../model-types").IsModelSignature<T>["R"]>]: import("../model-types").IsModelSignature<T>["R"][k_1]["arr"] extends true | 1 ? import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]][] : import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]]; });
-        preview: import("../model-types").IsModelSignature<T>["P"];
-    }; }) & {
-        json: () => import("../model-types").IsModelSignature<T>["J"] & (import("../model-types").IsModelSignature<T>["R"] extends undefined ? {} : { [k_1 in import("@onebro/oba-common").Keys<import("../model-types").IsModelSignature<T>["R"]>]: import("../model-types").IsModelSignature<T>["R"][k_1]["arr"] extends true | 1 ? import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]][] : import("../model-types").ModelL2<T>[import("../model-types").IsModelSignature<T>["R"][k_1]["out"]]; });
+    createSchema: () => Schema<import("../model-types").IsModelSignature<T>["I"] & import("../model-types").SelfRefs<T, "I"> & {
+        json: () => import("../model-types").IsModelSignature<T>["J"] & import("../model-types").SelfRefs<T, "J">;
         preview: import("../model-types").IsModelSignature<T>["P"];
     } & import("mongoose").Document>;
     init: () => Promise<this>;

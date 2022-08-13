@@ -38,7 +38,7 @@ export const profileControllerTestData:profileControllerTestData = {
       params:{id:O.jsons.profiles[0].id},
       appuser:{name:O.users[0],okto:"use-api",next:"123456",role:"ADMIN"}
     },{
-      params:{name:O.jsons.profiles[1].name},
+      params:{name:O.jsons.profiles[0].name},
       appuser:{name:O.users[0],okto:"use-api",next:"123456",role:"ADMIN"}
     },
   ],

@@ -1,5 +1,5 @@
 import {Keys,Values,Strings,AnyBoolean} from "@onebro/oba-common";
-import {IsObjectId,Model} from "../model-types";
+import {IsObjectId,Model,ModelFetchObject} from "../model-types";
 
 export type ModelControllerReqUserRole<R> = R extends Strings?Values<R>:never;
 export type ModelControllerQuery<T> = Model<T>["queries"]|Record<Keys<Model<T>["queries"]>,string>;
@@ -23,8 +23,7 @@ export type ModelControllerResp<R,T> = {data:T;auth?:AnyBoolean;} & Partial<Mode
 export type ModelControllerReqs<R,T> = {
   create:ModelControllerReq<undefined,Model<T>["config"],undefined,R>;
   action:ModelControllerReq<undefined,Partial<Model<T>["config"]>,undefined,R>;
-  fetchID:ModelControllerReq<{id:IsObjectId;},undefined,undefined,R>;
-  fetch:ModelControllerReq<Model<T>["fetches"],undefined,undefined,R>;
+  fetch:ModelControllerReq<{id:IsObjectId;}|ModelFetchObject<T>,undefined,undefined,R>;
   update:ModelControllerReq<{id:IsObjectId;},Model<T>["updates"],undefined,R>;
   remove:ModelControllerReq<{id:IsObjectId;},undefined,undefined,R>;
   remove_:ModelControllerReq<{id:IsObjectId;admin:IsObjectId;},undefined,undefined,R>;
@@ -35,7 +34,6 @@ export type ModelControllerMethods<R,T> = {
   create$:(req:ModelControllerReqs<R,T>["create"]) => Promise<ModelControllerResp<R,Model<T>["json"]>>;
   action$:(req:ModelControllerReqs<R,T>["action"]) => Promise<ModelControllerResp<R,Model<T>["json"]>>;
   fetch$:(req:ModelControllerReqs<R,T>["fetch"]) => Promise<ModelControllerResp<R,Model<T>["json"]>>;
-  fetchID$:(req:ModelControllerReqs<R,T>["fetchID"]) => Promise<ModelControllerResp<R,Model<T>["json"]>>;
   update$:(req:ModelControllerReqs<R,T>["update"]) => Promise<ModelControllerResp<R,Model<T>["json"]>>;
   updateMany$:(req:ModelControllerReqs<R,T>["update"]) => Promise<ModelControllerResp<R,{results:(IsObjectId|Model<T>["json"])[]}>>;
   remove$:(req:ModelControllerReqs<R,T>["remove"]) => Promise<ModelControllerResp<R,Model<T>["json"]>>;

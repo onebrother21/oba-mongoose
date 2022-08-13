@@ -1,8 +1,8 @@
 import OBACore from "@onebro/oba-core";
-import {ModelController,Model} from "../../../src";
-import {ApiUserRoles} from "../dicts";
+import {ModelController} from "../../../src";
 import {MessageSignature} from "../types";
-import {ApiModelFactories,MessageFactory} from "../factories";
+import {ApiUserRoles} from "../dicts";
+import {ApiModelFactories} from "../factories";
 
 export interface MessageController extends ModelController<ApiUserRoles,MessageSignature> {}
 export class MessageController extends ModelController<ApiUserRoles,MessageSignature> {
@@ -18,16 +18,10 @@ export class MessageController extends ModelController<ApiUserRoles,MessageSigna
       .then(async () => await messages.create(body))
       .then(o => ({data:o.json()}));
     };
-    this.fetchID$ = async ({params:{id},appuser:{okto}}) => {
-      return await Promise.resolve()
-      .then(() => this.isAuthed(okto))
-      .then(async () => await messages.fetch(id))
-      .then(o => ({data:o.json()}));
-    };
     this.fetch$ = async ({params,appuser:{okto}}) => {
       return await Promise.resolve()
       .then(() => this.isAuthed(okto))
-      .then(async () => await messages.fetch((params as any).id||params))
+      .then(async () => await messages.fetch(this.serializeFetch(params)))
       .then(o => ({data:o.json()}));
     };
     this.update$ = async ({params:{id},body:updates,appuser:{okto}}) => {

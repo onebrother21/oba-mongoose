@@ -8,6 +8,7 @@ const oba_common_1 = __importDefault(require("@onebro/oba-common"));
 class ModelController {
     constructor(core) {
         this.core = core;
+        this.serializeFetch = (params) => params.id || params;
         this.parseQueryObj = (q) => {
             const q_ = {};
             for (const k in q) {

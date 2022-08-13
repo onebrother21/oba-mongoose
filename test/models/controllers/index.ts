@@ -1,6 +1,6 @@
+import OBACore from "@onebro/oba-core";
 import { ProfileController } from "./profile";
 import { MessageController } from "./message";
-import OBACore from "@onebro/oba-core";
 import { ApiModelFactories } from "../factories";
 
 export interface ApiModelControllers {

@@ -3,16 +3,16 @@ import {IsObjectId} from "./model-signature-0";
 import {ModelL1} from "./model-signature-1";
 
 /** LEVEL TWO MODEL TYPES:P -> PREVIEW,R -> SELF REFS */
-type SelfRefArrParam<T,k extends Keys<ModelL1<T>["R"]>> = ModelL1<T>["R"][k]["arr"];
-type SelfRefOutParam<T,k extends Keys<ModelL1<T>["R"]>> = ModelL1<T>["R"][k]["out"];
-type SelfRefArrGuard<T,k extends Keys<ModelL1<T>["R"]>,U> = SelfRefArrParam<T,k> extends true|1?U[]:U;
-type SelfRefStageGuard<t,A,B,C> = t extends "C"?A:t extends "I"?B:C;
-type SelfRef<T,k extends Keys<ModelL1<T>["R"]>,t> =
+export type SelfRefArrParam<T,k extends Keys<ModelL1<T>["R"]>> = ModelL1<T>["R"][k]["arr"];
+export type SelfRefOutParam<T,k extends Keys<ModelL1<T>["R"]>> = ModelL1<T>["R"][k]["out"];
+export type SelfRefArrGuard<T,k extends Keys<ModelL1<T>["R"]>,U> = SelfRefArrParam<T,k> extends true|1?U[]:U;
+export type SelfRefStageGuard<t,A,B,C> = t extends "C"?A:t extends "I"?B:C;
+export type SelfRef<T,k extends Keys<ModelL1<T>["R"]>,t> =
 SelfRefStageGuard<t,
 SelfRefArrGuard<T,k,IsObjectId>,
 SelfRefArrGuard<T,k,ModelL2<T>["I"]>,
 SelfRefArrGuard<T,k,ModelL2<T>[SelfRefOutParam<T,k>]>>;
-type SelfRefs<T,t> =  ModelL1<T>["R"] extends undefined?{}:{[k in Keys<ModelL1<T>["R"]>]:SelfRef<T,k,t>;};
+export type SelfRefs<T,t> =  ModelL1<T>["R"] extends undefined?{}:{[k in Keys<ModelL1<T>["R"]>]:SelfRef<T,k,t>;};
 
 export type ModelSelfRefs<T,t> = SelfRefs<T,t>;
 export type ModelL2Type<T> = ModelL1<T> & {
