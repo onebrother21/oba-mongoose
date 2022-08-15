@@ -25,8 +25,8 @@
     "start": "npm run serve"
   },
   "dependencies": {
-    "@onebro/oba-common": "^2.9.22",
-    "@onebro/oba-core": "^2.9.21",
+    "@onebro/oba-common": "^2.9.24",
+    "@onebro/oba-core": "^2.9.22",
     "config": "^3.3.6",
     "mongoose": "^6.0.12",
     "mongoose-unique-validator": "^3.0.0"
